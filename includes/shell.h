@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 14:41:55 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 16:54:16 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct  s_cmds
 typedef struct  s_shell
 {
     char    **env;
+    char    **result;
     t_cmds  cmds;
 }               t_shell;
 
