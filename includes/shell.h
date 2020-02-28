@@ -6,11 +6,12 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 10:59:43 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 11:31:00 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 typedef struct  s_shell
 {
     int     a;
+    char    *str;
 }               t_shell;
