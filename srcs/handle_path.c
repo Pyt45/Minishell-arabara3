@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 18:56:50 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/02/28 19:21:03 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/02/28 19:33:27 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*try_path(char *filename, char *dir)
 	ft_strcpy(path, dir);
 	ft_strcat(path, "/");
 	ft_strcat(path, filename);
-	if (ft_access(path, mode) == 0)
+	if (ft_access(path, 1) == 0)
 		return (path);
 	free(path);
 	return (NULL);
