@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 11:40:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 14:41:55 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@
 # include "../libft/libft.h"
 # define BUFFER_SIZE 1
 
+typedef struct  s_cmds
+{
+    char    *cmd;
+    char    **args;
+    t_cmds  *next;
+}               t_cmds;
+
 typedef struct  s_shell
 {
     char    **env;
     t_cmds  cmds;
 }               t_shell;
-
-typedef struct  s_cmds
-{
-    char    *cmd;
-    char    **args;
-    void    *next;
-}               t_cmds;
 
 #endif
