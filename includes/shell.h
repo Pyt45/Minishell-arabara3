@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 11:40:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 15:01:41 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,8 @@
 # include <signal.h>
 # include <dirent.h>
 # include <stdio.h>
-# include "../libft/libft.h"
+//# include "../libft/libft.h"
 # define BUFFER_SIZE 1
-
-typedef struct  s_shell
-{
-    char    **env;
-    t_cmds  cmds;
-}               t_shell;
 
 typedef struct  s_cmds
 {
@@ -36,5 +30,11 @@ typedef struct  s_cmds
     char    **args;
     void    *next;
 }               t_cmds;
+
+typedef struct  s_shell
+{
+    char    **env;
+    t_cmds  cmds;
+}               t_shell;
 
 #endif
