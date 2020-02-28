@@ -1,4 +1,15 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/28 18:56:59 by aaqlzim           #+#    #+#             */
+/*   Updated: 2020/02/28 19:00:35 by aaqlzim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/shell.h"
 
 int     ft_strlen(char *str)
@@ -100,18 +111,57 @@ int     env_command(char **argv, char **env)
     return (1);
 }
 
+t_cmds    *get_test()
+{
+    t_cmds *cmds;
+    t_cmds *head;
+    cmds = malloc(sizeof(t_cmds));
+    head = cmds;
+    cmds->cmd = "env";
+    *cmds->args[0] = NULL;
+    cmds->next = malloc(sizeof(t_cmds));
+    cmds = cmds->next;
+    cmds->cmd = "grep";
+    *cmds->args[1] = "PATH";
+    cmds->next = malloc(sizeof(t_cmds));
+    cmds = cmds->next;
+    cmds->cmd = "cat";
+    *cmds->args[2] = "-e";
+    cmds->next = NULL;
+    return head;   
+}
+
 int     main(int argc, char **argv, char **envp)
 {
+    int     pid;
     int     status;
+    int     fds[2];
     t_shell shell;
-    status = 1;
-    //if (argc)
-   // {
-        //while (status)
-        //{
-            shell.env = ft_arrdup(envp);
-            status = env_command(argv, shell.env);
-        //}
+    t_cmds  *cmds;
+
+    shell.env = ft_arrdup(envp);
+    cmds = get_test();
+    if (cmds->cmd && (*cmds->args[0] == NULL) && !cmds->next)
+        return (env_command(argv, shell.env));
+    //else
+    //{
+    pipe(fds);
+    if ((pid == fork()) == 0)
+    {
+        dup2(fds[0], 0);
+        close(fds[0]);
+        close(fds[1]);
+
+        if (execve(get_bin_path(argv[0], shell.env), argv, shell.env) < 0)
+            exit(0);
+    }
+    else
+    {
+        close(fds[0]);
+        dup2(fds[1], 1);
+        close(fds[1]);
+    }
    // }
+    status = waitpid(pid, &status, 0);
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:12:59 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 18:45:33 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 19:28:17 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,5 @@ t_cmds  *get_commands(char *str)
             cmds = cmds->next;
         }
     }
-    return (head);
+   return (head);
 }
