@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 19:02:56 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 19:27:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ typedef struct		s_shell
 char    *get_cmd(char *str);
 char    **get_args(char *str);
 t_cmds  *get_commands(t_shell *shell, char split);
+int     ft_access(char *path, int mode);
 
 #endif
