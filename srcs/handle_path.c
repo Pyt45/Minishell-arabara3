@@ -69,3 +69,21 @@ char    *get_bin_path(char *filename, char **env)
 	}
 	return (filename);
 }
+
+/* char	**ft_setenv(char *var, char *path, char **env)
+{
+	int		i;
+	int		len;
+	
+	if ((i = ))
+} */
+
+char	*get_home_dir(t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	if ((i = ft_getenv("HOME", shell->env)) >= 0)
+		return (shell->env[i] + 5);
+	return (NULL);
+}

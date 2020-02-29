@@ -59,6 +59,7 @@ t_shell     *get_single_command(t_shell *shell)
     shell->cmds->cmd = get_cmd(shell->line);
     shell->cmds->args = get_args(shell->line);
     shell->cmds->next = NULL;
+    return (shell);
 }
 
 t_shell     *control_command(t_shell *shell)
@@ -72,14 +73,13 @@ t_shell     *control_command(t_shell *shell)
 }
 
 // --------------- TEST -------------------
-/* 
-int main()
-{
-    t_shell shell;
 
-    shell.line = ft_strdup("env | grep PATH | cat -e");
-    shell.cmds = get_commands(&shell, '|');
-    shell.line = ft_strdup("echo PATH;find .;env");
-    shell.cmds = get_commands(&shell, ';');
-}
- */
+/* int main()
+{
+    t_shell *shell;
+    shell = malloc(sizeof(t_shell));
+
+    shell->line = ft_strdup("echo -n");
+    shell = get_single_command(shell);
+    printf("%s %s\n", shell->cmds->cmd, shell->cmds->args[1]);
+} */
