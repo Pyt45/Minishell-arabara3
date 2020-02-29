@@ -15,7 +15,7 @@ int     ft_getenv(char *name, char **env)
     i = 0;
     while (env[i] != NULL)
     {
-        if (ft_strncmp(env[i], search, 5) == 0)
+        if (ft_strncmp(env[i], search, ft_strlen(name)) == 0)
         {
             free(search);
             return (i);
@@ -70,13 +70,29 @@ char    *get_bin_path(char *filename, char **env)
 	return (filename);
 }
 
-/* char	**ft_setenv(char *var, char *path, char **env)
+char	**ft_setenv(char *var, char *path, char **env)
 {
 	int		i;
 	int		len;
+	char	*record;
 	
-	if ((i = ))
-} */
+	len = ft_strlen(var) + ft_strlen(path) + 2;
+	if (!(record = (char *)malloc(sizeof(char) * len)))
+		return (NULL);
+	ft_strcpy(record, var);
+	ft_strcat(record, "=");
+	ft_strcat(record, path);
+	if ((i = ft_getenv(var, env)) >= 0)
+	{
+		puts("OK");
+		free(env[i]);
+		env[i] = record;
+		//printf("%s\n", env[i]);
+	}
+	/* else
+		return (ft_add_to_arr()); */
+	return (env);	
+}
 
 char	*get_home_dir(t_shell *shell)
 {
@@ -85,5 +101,15 @@ char	*get_home_dir(t_shell *shell)
 	i = 0;
 	if ((i = ft_getenv("HOME", shell->env)) >= 0)
 		return (shell->env[i] + 5);
+	return (NULL);
+}
+
+char	*get_old_dir(t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	if ((i = ft_getenv("OLDPWD", shell->env)) >= 0)
+		return (shell->env[i] + 6);
 	return (NULL);
 }
