@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/29 10:09:22 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/29 10:39:07 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ int     ft_access(char *path, int mode);
 int     ft_getenv(char *name, char **env);
 char	*try_path(char *filename, char *dir);
 char    *get_bin_path(char *filename, char **env);
+t_shell     *control_command(t_shell *shell);
+t_shell     *get_single_command(t_shell *shell);
 
 #endif
