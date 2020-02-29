@@ -53,6 +53,23 @@ t_shell  *get_commands(t_shell *shell, char split)
     return (shell);
 }
 
+t_shell     *get_single_command(t_shell *shell)
+{
+    shell->cmds = malloc(sizeof(t_cmds));
+    shell->cmds->cmd = get_cmd(shell->line);
+    shell->cmds->args = get_args(shell->line);
+    shell->cmds->next = NULL;
+}
+
+t_shell     *control_command(t_shell *shell)
+{
+    if (ft_strchr(shell->line, '|'))
+        return (get_commands(shell, '|'));
+    else if (ft_strchr(shell->line, ';'))
+        return (get_commands(shell, ';'));
+    else
+        return (get_single_command(shell));
+}
 
 // --------------- TEST -------------------
 /* 
