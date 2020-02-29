@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/29 11:45:25 by zlayine          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef SHELL_H
 # define SHELL_H
 
@@ -46,5 +34,11 @@ char	*try_path(char *filename, char *dir);
 char    *get_bin_path(char *filename, char **env);
 t_shell     *control_command(t_shell *shell);
 t_shell     *get_single_command(t_shell *shell);
+char    *ft_strcat(char *dest, char *src);
+char    *ft_strcpy(char *s1, char *s2);
+int     ft_arr_len(char **arr);
+char    **ft_arrdup(char **arr);
+void    ft_print_env_arr(char **arr);
+int		ft_free_arr(char **arr);
 
 #endif
