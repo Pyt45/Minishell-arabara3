@@ -1,15 +1,19 @@
+<<<<<<< HEAD
+=======
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/28 18:56:59 by aaqlzim           #+#    #+#             */
+/*   Updated: 2020/02/29 09:52:21 by aaqlzim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+>>>>>>> 7783d754a41fa85bd4c3bac1ba68873cc59f8da0
 
 #include "../includes/shell.h"
-
-int     ft_strlen(char *str)
-{
-    int     i;
-
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
 
 char    *ft_strcpy(char *s1, char *s2)
 {
@@ -107,50 +111,63 @@ t_cmds    *get_test()
     cmds = malloc(sizeof(t_cmds));
     head = cmds;
     cmds->cmd = "env";
-    *cmds->args[0] = NULL;
+    cmds->args = NULL;
     cmds->next = malloc(sizeof(t_cmds));
     cmds = cmds->next;
     cmds->cmd = "grep";
-    *cmds->args[1] = "PATH";
-    cmds->next = malloc(sizeof(t_cmds));
+    cmds->args = malloc(sizeof(char *));
+	cmds->args[0] = "PATH";
+    /* cmds->next = malloc(sizeof(t_cmds));
     cmds = cmds->next;
     cmds->cmd = "cat";
-    *cmds->args[2] = "-e";
+    *cmds->args[2] = "-e"; */
     cmds->next = NULL;
     return head;   
 }
 
 int     main(int argc, char **argv, char **envp)
 {
-    int     pid;
-    int     status;
-    int     fds[2];
+	int     pid;
+	int     status;
+	int     fds[2];
+	char	*cmd;
+	char	*cmd1[] = {"env", NULL};
     t_shell shell;
     t_cmds  *cmds;
 
     shell.env = ft_arrdup(envp);
     cmds = get_test();
-    if (cmds->cmd && (*cmds->args[0] == NULL) && !cmds->next)
-        return (env_command(argv, shell.env));
+	cmd = (char *)malloc(sizeof(char) * 10);
+    /* if (cmds->cmd && (cmds->args == NULL) && !cmds->next)
+        return (env_command(argv, shell.env)); */
     //else
     //{
     pipe(fds);
-    if ((pid == fork()) == 0)
+    if ((pid = fork()) == 0)
     {
         dup2(fds[0], 0);
         close(fds[0]);
         close(fds[1]);
-
-        if (execve(get_bin_path(argv[0], shell.env), argv, shell.env) < 0)
-            exit(0);
+		
+        //if (execve(get_bin_path(cmds->cmd, shell.env), cmds->args, shell.env) < 0)
+		//execve(get_bin_path(cmds->next->cmd, shell.env), cmds->next->args, shell.env);
+		//printf("%s\n", cmds->next->args[0]);
+		cmds->next->args[0] = "grep";
+		cmds->next->args[1] = "HOME";
+		cmds->next->args[2] = 0;
+		if (execve(get_bin_path(cmds->next->cmd, shell.env), cmds->next->args, shell.env) < 0)
+			exit(0);
     }
     else
     {
         close(fds[0]);
         dup2(fds[1], 1);
-        close(fds[1]);
+		//execve(get_bin_path(cmds->next->cmd, shell.env), cmds->next->args, shell.env);
+		cmds->args = ft_arrdup(cmd1);
+        execve(get_bin_path(cmds->cmd, shell.env), cmds->args, shell.env);
+		//printf("PATH=HELLO");
+		close(fds[1]);
     }
-   // }
-    status = waitpid(pid, &status, 0);
+	waitpid(pid, &status, 0);
     return (0);
 }
