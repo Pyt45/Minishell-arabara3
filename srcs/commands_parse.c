@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:12:59 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 19:31:48 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/29 09:50:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ char    **get_args(char *str)
     i = 0;
     while (!ft_isalpha(*str))
         str++;
-    while (ft_isalpha(*str))
-        str++;
     return (ft_split(str, ' '));
 }
 
@@ -52,9 +50,10 @@ t_cmds  *get_commands(t_shell *shell, char split)
     while (*tmp)
     {
         cmds->cmd = get_cmd(*tmp);
-        printf("COMMAND: %s|\n", cmds->cmd);
+        //printf("COMMAND: %s|\n", cmds->cmd);
         cmds->args = get_args(*tmp);
-        printf("ARG1: %s|\n", cmds->args[0]);
+        //printf("ARG0: %s|\n", cmds->args[0]);
+        //printf("ARG1: %s|\n", cmds->args[1]);
         tmp++;
         if (*tmp)
         {
@@ -68,12 +67,12 @@ t_cmds  *get_commands(t_shell *shell, char split)
 
 // --------------- TEST -------------------
 
-// int main()
-// {
-//     t_shell shell;
+int main()
+{
+    t_shell shell;
 
-//     shell.line = ft_strdup("env | grep PATH | cat -e");
-//     shell.cmds = get_commands(&shell, '|');
-//     shell.line = ft_strdup("echo PATH;find .;env");
-//     shell.cmds = get_commands(&shell, ';');
-// }
+    shell.line = ft_strdup("env | grep PATH | cat -e");
+    shell.cmds = get_commands(&shell, '|');
+    shell.line = ft_strdup("echo PATH;find .;env");
+    shell.cmds = get_commands(&shell, ';');
+}

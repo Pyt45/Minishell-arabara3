@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 18:56:50 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/02/28 19:33:27 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/02/28 20:55:10 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char    *get_bin_path(char *filename, char **env)
 		i = 0;
 		while (a_path[i] != NULL)
 		{
-			if (b_path = try_path(filename, a_path[i]) != NULL)
+			if ((b_path = try_path(filename, a_path[i])) != NULL)
 			{
 				//ft_free_arr(a_path);
 				return (b_path);
