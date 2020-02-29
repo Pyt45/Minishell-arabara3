@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_parse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 15:12:59 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/29 09:50:38 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/29 10:01:34 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,3 @@ t_cmds  *get_commands(t_shell *shell, char split)
 
 
 // --------------- TEST -------------------
-
-int main()
-{
-    t_shell shell;
-
-    shell.line = ft_strdup("env | grep PATH | cat -e");
-    shell.cmds = get_commands(&shell, '|');
-    shell.line = ft_strdup("echo PATH;find .;env");
-    shell.cmds = get_commands(&shell, ';');
-}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
+#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 09:48:59 by zlayine           #+#    #+#              #
-#    Updated: 2019/12/28 20:13:18 by zlayine          ###   ########.fr        #
+#    Updated: 2020/02/28 20:40:59 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 	ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c \
 	ft_pow.c ft_putnbr.c ft_putstr.c ft_putchar.c ft_hex_digit.c \
 	ft_nblen.c ft_nblen_un.c ft_putnbr_un.c ft_get_next_line.c \
-	ft_get_newln_len.c ft_new_str.c ft_del.c ft_strstr.c ft_strcmp.c
+	ft_get_newln_len.c ft_new_str.c ft_del.c ft_strstr.c ft_strcmp.c ft_strcpy.c ft_strcat.c
 BONUS_C = ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c \
 	ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c \
 	ft_lstlast_bonus.c ft_lstmap_bonus.c ft_lstnew_bonus.c \

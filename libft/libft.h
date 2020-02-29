@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 10:54:07 by zlayine           #+#    #+#             */
-/*   Updated: 2019/12/28 20:13:36 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/02/28 20:42:58 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void			ft_bzero(void *b, size_t n);
 void			*ft_calloc(size_t count, size_t size);
 int				ft_isalnum(int c);
 int				ft_isalpha(int c);
+char			*ft_strcat(char *dest, char *src);
+char			*ft_strcpy(char *dest, char *src);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_isdigit(int c);
