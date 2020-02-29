@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/02/28 19:34:55 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/02/29 10:09:22 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct		s_shell
 
 char    *get_cmd(char *str);
 char    **get_args(char *str);
-t_cmds  *get_commands(t_shell *shell, char split);
+t_shell	*get_commands(t_shell *shell, char split);
 int     ft_access(char *path, int mode);
 int     ft_getenv(char *name, char **env);
 char	*try_path(char *filename, char *dir);

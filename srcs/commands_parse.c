@@ -26,7 +26,7 @@ char    **get_args(char *str)
     return (ft_split(str, ' '));
 }
 
-t_cmds  *get_commands(t_shell *shell, char split)
+t_shell  *get_commands(t_shell *shell, char split)
 {
     t_cmds  *cmds;
 
@@ -50,7 +50,7 @@ t_cmds  *get_commands(t_shell *shell, char split)
             cmds = cmds->next;
         }
     }
-    return (shell->cmds);
+    return (shell);
 }
 
 
