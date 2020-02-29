@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 18:56:50 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/02/28 19:33:27 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/02/28 21:26:44 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int     ft_getenv(char *name, char **env)
     i = 0;
     while (env[i] != NULL)
     {
-        if (!ft_strcmp(env[i], search) == 0)
+        if (ft_strncmp(env[i], search, 5) == 0)
         {
             free(search);
             return (i);
@@ -49,7 +49,7 @@ char	*try_path(char *filename, char *dir)
 	ft_strcpy(path, dir);
 	ft_strcat(path, "/");
 	ft_strcat(path, filename);
-	if (ft_access(path, 1) == 0)
+	if (ft_access(path, 1) == 1)
 		return (path);
 	free(path);
 	return (NULL);
@@ -63,14 +63,15 @@ char    *get_bin_path(char *filename, char **env)
     char    *b_path;
     
     path = NULL;
+	i = 0;
 	if ((i = ft_getenv("PATH", env)) >= 0)
 		path = env[i] + 5;
-	if (path != NULL && (a_path = ft_spilt(path, ':')) != NULL)
+	if (path != NULL && (a_path = ft_split(path, ':')) != NULL)
 	{
 		i = 0;
 		while (a_path[i] != NULL)
 		{
-			if (b_path = try_path(filename, a_path[i]) != NULL)
+			if ((b_path = try_path(filename, a_path[i])) != NULL)
 			{
 				//ft_free_arr(a_path);
 				return (b_path);
