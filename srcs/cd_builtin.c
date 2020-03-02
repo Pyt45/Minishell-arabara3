@@ -14,11 +14,6 @@ int     cd_builtin(t_shell *shell)
 			if ((path = get_home_dir(shell)) != NULL && chdir(path) != 0)
 				ft_putstr_fd("Error: file or dir not exist\n", 2);
 		}
-		/* else if (!ft_strcmp(path, "-"))
-		{
-			if ((path = get_old_dir(shell)) != NULL && chdir(path) != 0)
-				ft_putstr_fd("Error: file or dir not exist\n", 2);
-		} */
 		else
 			if (chdir(path) != 0)
 				ft_putstr_fd("Error: file or dir not exist\n", 2);

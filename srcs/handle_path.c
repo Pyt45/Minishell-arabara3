@@ -84,7 +84,6 @@ char	**ft_setenv(char *var, char *path, char **env)
 	ft_strcat(record, path);
 	if ((i = ft_getenv(var, env)) >= 0)
 	{
-		puts("OK");
 		free(env[i]);
 		env[i] = record;
 		//printf("%s\n", env[i]);

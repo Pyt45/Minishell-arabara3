@@ -30,7 +30,7 @@ void	sig_handle_ctrl_c(int signal)
 int     main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
-
+	shell.spr = 0;
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);

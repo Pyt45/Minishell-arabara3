@@ -30,6 +30,7 @@ t_shell  *get_commands(t_shell *shell, char split)
 {
     t_cmds  *cmds;
 
+    shell->num_pipe = 0;
     char **tmp = ft_split(shell->line, split);
     if (*tmp)
     {
@@ -49,7 +50,9 @@ t_shell  *get_commands(t_shell *shell, char split)
             cmds->next = malloc(sizeof(t_cmds));
             cmds = cmds->next;
         }
+        shell->num_pipe++;
     }
+    shell->num_pipe = shell->num_pipe - 1;
     return (shell);
 }
 
@@ -65,9 +68,15 @@ t_shell     *get_single_command(t_shell *shell)
 t_shell     *control_command(t_shell *shell)
 {
     if (ft_strchr(shell->line, '|'))
+	{
+		shell->spr = 0;
         return (get_commands(shell, '|'));
+	}
     else if (ft_strchr(shell->line, ';'))
+	{
+		shell->spr = 1;
         return (get_commands(shell, ';'));
+	}
     else
         return (get_single_command(shell));
 }
