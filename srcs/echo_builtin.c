@@ -1,85 +1,6 @@
 
 #include "../includes/shell.h"
 
-char    *ft_strcat(char *dest, char *src)
-{
-    int     i;
-    int     len;
-    i = 0;
-    len = ft_strlen(dest);
-    while (dest[i] != '\0')
-    {
-        dest[i + len] = src[i];
-        i++;
-    }
-    dest[i + len] = '\0';
-    return (dest);
-}
-
-char    *ft_strcpy(char *s1, char *s2)
-{
-    int     i;
-
-    i = 0;
-    while (s2[i] != '\0')
-    {
-        s1[i] = s2[i];
-        i++;
-    }
-    s1[i] = '\0';
-    return (s1);
-}
-
-void    ft_putchar_fd(char ch, int fd)
-{
-    write(fd, &ch, 1);
-}
-
-void    ft_putstr_fd(char *str, int fd)
-{
-    while (*str)
-    {
-        ft_putchar_fd(*str, fd);
-        str++;
-    }
-}
-
-int     ft_arr_len(char **arr)
-{
-    int     i;
-
-    i = 0;
-    if (arr)
-    {
-        while (arr[i] != NULL)
-            i++;
-    }
-    return (i);
-}
-
-char    **ft_arrdup(char **arr)
-{
-    int     i;
-    int     len;
-	size_t	str_len;
-    char    **new_arr;
-
-    len = ft_arr_len(arr);
-    if (!(new_arr = (char **)malloc(sizeof(char *) * (len + 1))))
-        return (NULL);
-    i = 0;
-    while (i < len)
-    {
-        str_len = (int)ft_strlen(arr[i]);
-        if (!(new_arr[i] = (char *)malloc(sizeof(char) * (str_len + 1))))
-            return (NULL);
-        ft_strcpy(new_arr[i], arr[i]);
-        i++;
-    }
-    new_arr[i] = NULL;
-    return (new_arr);
-}
-
 static void	ft_putnstr(char *str, int n)
 {
 	int		i;
@@ -97,25 +18,47 @@ static void	ft_putnstr(char *str, int n)
 	}
 }
 
+# define IS_S_QUOTE(x) (x == '\'')
+
 # define IS_QUOTE(x) (x == '"' || x == '\'')
 
-static void echo_print(char **str, int pos)
+int     parse_quotes(char **str)
 {
     int     s_with;
     int     e_with;
+    int     is_s_quote;
     int     len;
 
-    s_with = IS_QUOTE(str[pos][0]);
-	len = (int)ft_strlen(str[pos]);
-	e_with = IS_QUOTE(str[pos][len - 1]);
-	if (e_with && s_with)
-		ft_putnstr(str[pos] + 1, -1);
-	else if (e_with)
-		ft_putnstr(str[pos], -1);
-	else if (s_with)
-		ft_putstr_fd(str[pos] + 1, 1);
-	else
-		ft_putstr_fd(str[pos], 1);
+    is_s_quote = IS_S_QUOTE(*str[0]);
+    s_with = IS_QUOTE(*str[0]);
+	len = (int)ft_strlen(*str);
+    e_with = IS_QUOTE((*str)[len - 1]);
+    if (s_with)
+        (*str)++;
+    if (e_with)
+        (*str)[len - 2] = '\0';
+    if (is_s_quote)
+        return (1);
+    return (0);
+}
+
+static void echo_print(char **str, int pos)
+{
+    // int     s_with;
+    // int     e_with;
+    // int     len;
+
+    // s_with = IS_QUOTE(str[pos][0]);
+	// len = (int)ft_strlen(str[pos]);
+	// e_with = IS_QUOTE(str[pos][len - 1]);
+	// if (e_with && s_with)
+	// 	ft_putnstr(str[pos] + 1, -1);
+	// else if (e_with)
+	// 	ft_putnstr(str[pos], -1);
+	// else if (s_with)
+	// 	ft_putstr_fd(str[pos] + 1, 1);
+	// else
+    ft_putstr_fd(str[pos], 1);
 	if (str[pos + 1])
 		ft_putchar_fd(' ', 1);
 }
@@ -127,7 +70,7 @@ char    *parse_variable(char *arg, char **env)
     char *path;
 
     i = 0;
-    while(arg[i])
+    while(arg[i] && !IS_QUOTE(arg[i]))
     {
         if (arg[i] == '$')
             pos = i + 1;
@@ -144,6 +87,7 @@ int     echo_command(t_cmds *cmd, char **env)
 {
     int     i;
     int     n_flag;
+    int     is_s_quote;
 
     n_flag = 0;
     if (!cmd->args[1])
@@ -158,7 +102,8 @@ int     echo_command(t_cmds *cmd, char **env)
         ++i;
     while (cmd->args[++i])
     {
-        if (ft_strchr(cmd->args[i], '$'))
+        is_s_quote = parse_quotes(&cmd->args[i]);
+        if (!is_s_quote && ft_strchr(cmd->args[i], '$'))
             cmd->args[i] = parse_variable(cmd->args[i], env);
         echo_print(cmd->args, i);
         if (!cmd->args[i + 1] && !n_flag)
@@ -176,7 +121,10 @@ int main(int argc, char **argv, char **envp)
     cmd->cmd = "echo";
     cmd->args = malloc(sizeof(char *) * 3);
     cmd->args[0] = "echo";
-    cmd->args[1] = ft_strdup("oh_$HOME");
+    cmd->args[1] = ft_strdup("\"oh_$HOME\"");
     cmd->args[2] = 0;
     echo_command(cmd, envp);
+    //printf("%s\n",cmd->args[1]);
+    //int r = parse_quotes(&cmd->args[1]);
+    //printf("R=%d|%s\n", r, cmd->args[1]);
 }
