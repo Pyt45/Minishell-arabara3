@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/01 19:16:47 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/03/02 10:34:40 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ typedef struct		s_shell
     int				spr;
     struct s_cmds   *cmds;
 }					t_shell;
+
+# define IS_S_QUOTE(x) (x == '\'')
+# define IS_QUOTE(x) (x == '"' || x == '\'')
 
 char				*get_cmd(char *str);
 char				**get_args(char *str);
@@ -74,4 +77,6 @@ char				**ft_unset_cmd(t_shell *shell, char *value);
 int					unset_builtin(t_shell *shell);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
+int					echo_builtin(t_cmds *cmd, char **env);
+
 #endif

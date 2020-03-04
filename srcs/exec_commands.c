@@ -15,7 +15,7 @@ int     exec_commands(t_shell *shell)
     else if (!ft_strcmp(shell->cmds->cmd, "unset"))
         return (unset_builtin(shell));
     else if (!ft_strcmp(shell->cmds->cmd, "echo"))
-        return (echo_builtin(shell));
+        return (echo_builtin(shell->cmds, shell->env));
     return (0);
 }
 
