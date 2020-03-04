@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/04 12:36:42 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/03/04 19:38:52 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ typedef struct		s_shell
 # define IS_S_QUOTE(x) (x == '\'')
 # define IS_QUOTE(x) (x == '"' || x == '\'')
 
-char				*get_cmd(char *str);
-char				**get_args(char *str);
-// t_shell				*get_commands(t_shell *shell, char split);
+char                *get_cmd(char *str, int n);
+char                **get_args(char *str, int n);
+t_s_cmds            *add_command(t_s_cmds *cmds, char *cmd, int i);
+t_s_cmds            *get_commands(t_m_cmds *m_cmd, char *cmd);
+t_m_cmds            *get_pipe_commands(t_b_cmds *b_cmd);
+t_shell             *get_comma_commands(t_shell *shell);
 int					ft_access(char *path, int mode);
 int					ft_getenv(char *name, char **env);
 char				*try_path(char *filename, char *dir);
@@ -99,6 +102,6 @@ char				**ft_unset_cmd(t_shell *shell, char *value);
 int					unset_builtin(t_shell *shell);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
-int					echo_builtin(t_cmds *cmd, char **env);
+// int					echo_builtin(t_cmds *cmd, char **env);
 
 #endif
