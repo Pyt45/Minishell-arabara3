@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/04 19:38:52 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/03/04 20:37:35 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char				*try_path(char *filename, char *dir);
 char				*get_bin_path(char *filename, char **env);
 t_shell				*control_command(t_shell *shell);
 t_shell				*get_single_command(t_shell *shell);
-int					excute_command_by_order(t_shell *shell);
+//int					excute_command_by_order(t_shell *shell);
 int					exec_commands(t_shell *shell);
 int					cd_builtin(t_shell *shell);
 int					command_line(t_shell *shell);
@@ -102,6 +102,6 @@ char				**ft_unset_cmd(t_shell *shell, char *value);
 int					unset_builtin(t_shell *shell);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
-// int					echo_builtin(t_cmds *cmd, char **env);
+//int					echo_builtin(t_cmds *cmd, char **env);
 
 #endif
