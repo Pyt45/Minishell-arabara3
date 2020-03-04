@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/02 10:34:40 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/03/04 12:36:42 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,42 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
-typedef struct		s_cmds
+typedef struct		s_b_cmds
 {
     char			*cmd;
-    char			**args;
-    struct s_cmds 	*next;
-}					t_cmds;
+    int				num_pipe;
+    struct s_m_cmds *m_cmds;
+    struct s_b_cmds *next;
+}					t_b_cmds;
+
+typedef struct      s_m_cmds
+{
+    char            *cmd;
+    struct s_s_cmds *s_cmds;
+    struct s_m_cmds *next;
+}                   t_m_cmds;
+
+typedef struct      s_s_cmds
+{
+    char            *cmd;
+    char            **args;
+	int				append;
+    struct s_s_cmds *next;
+}                   t_s_cmds;
+
+// typedef struct		s_cmds
+// {
+//     char			*cmd;
+//     char			**args;
+//     struct s_cmds 	*next;
+// }					t_cmds;
 
 typedef struct		s_shell
 {
     char			**env;
 	char			*line;
-    int				num_pipe;
-    int				spr;
-    struct s_cmds   *cmds;
+    int             ret;
+    struct s_b_cmds	*cmds;
 }					t_shell;
 
 # define IS_S_QUOTE(x) (x == '\'')
@@ -44,7 +66,7 @@ typedef struct		s_shell
 
 char				*get_cmd(char *str);
 char				**get_args(char *str);
-t_shell				*get_commands(t_shell *shell, char split);
+// t_shell				*get_commands(t_shell *shell, char split);
 int					ft_access(char *path, int mode);
 int					ft_getenv(char *name, char **env);
 char				*try_path(char *filename, char *dir);

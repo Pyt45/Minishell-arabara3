@@ -28,7 +28,7 @@ int     excute_command_by_order(t_shell *shell)
 	int		j = 0;
     shell = control_command(shell);
 	
-	if ((shell->cmds->next && shell->spr == 0) || !exec_commands(shell))
+	if (shell->cmds->next || !exec_commands(shell))
 	{
 		for (i = 0; i < shell->num_pipe; i++)
 		{
