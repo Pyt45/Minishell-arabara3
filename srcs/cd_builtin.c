@@ -1,14 +1,14 @@
 #include "../includes/shell.h"
 
-int     cd_builtin(t_shell *shell)
+int     cd_builtin(t_shell *shell, t_cmds *cmds)
 {
 	char	*path;
 	//char	*path1;
 	//int		i;
 
-    if (shell->cmds->args[1] != NULL)
+    if (cmds->args[1] != NULL)
     {
-		path = shell->cmds->args[1];
+		path = cmds->args[1];
 		if (!ft_strcmp(path, "~"))
 		{
 			if ((path = get_home_dir(shell)) != NULL && chdir(path) != 0)

@@ -5,11 +5,13 @@ int     ft_getenv(char *name, char **env)
 {
     char    *search;
     int     i;
+	int		x;
     int     len;
 
     len = ft_strlen(name) + 2;
     if (!(search = (char *)malloc(sizeof(char) * len)))
         return (-1);
+	x = 1;
     ft_strcpy(search, name);
     ft_strcat(search, "=");
     i = 0;
@@ -17,12 +19,13 @@ int     ft_getenv(char *name, char **env)
     {
         if (ft_strncmp(env[i], search, ft_strlen(name)) == 0)
         {
-            free(search);
+            (x) ? free(search) : 0;
+			x = 0;
             return (i);
         }
         i++;
     }
-    (search) ? (free(search)) : 0;
+    (x) ? (free(search)) : 0;
     return (-1);
 }
 
@@ -30,6 +33,7 @@ char	*try_path(char *filename, char *dir)
 {
 	char	*path;
 	int		len;
+	int		x;
 
 	len = ft_strlen(filename) + ft_strlen(dir) + 2;
 	if (!(path = (char *)malloc(sizeof(char) * len)))
@@ -39,7 +43,8 @@ char	*try_path(char *filename, char *dir)
 	ft_strcat(path, filename);
 	if (ft_access(path, 1) == 1)
 		return (path);
-	free(path);
+	// this is an error check it and must be freed
+	//free(path);
 	return (NULL);
 }
 
