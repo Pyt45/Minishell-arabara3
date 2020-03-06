@@ -1,19 +1,40 @@
 #include "../includes/shell.h"
 
+
+void save_restor_fd(int save, int restore)
+{
+	static int fds[3];
+	int i;
+
+	i = -1;
+	if(save)
+	{
+		while (++i < 3)
+			fds[i] = dup(i);
+	}
+	if(restore)
+	{
+		while (++i < 3)
+			dup2(fds[i], i);
+	}
+}
+
 int     exec_commands(t_shell *shell, t_cmds *cmds)
 {
+	if (!cmds->cmd)
+		return (1);
     if (!ft_strcmp(cmds->cmd, "env"))
-        return (env_builtin(cmds, shell->env));
+        return (env_builtin(cmds, shell->env) * 0 + 1);
 	else if (!ft_strcmp(cmds->cmd, "cd"))
-        return (cd_builtin(shell, cmds));
+        return (cd_builtin(shell, cmds)* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "pwd"))
-        return (pwd_builtin());
+        return (pwd_builtin()* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "exit"))
-        return (exit_builtin(shell, cmds));
+        return (exit_builtin(shell, cmds)* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "export"))
-        return (export_builtin(shell, cmds));
+        return (export_builtin(shell, cmds)* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "unset"))
-        return (unset_builtin(shell, cmds));
+        return (unset_builtin(shell, cmds)* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "echo"))
        return (echo_builtin(cmds, shell->env));
     return (0);
@@ -29,7 +50,6 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 	int 	status = 0;
     int		i = 0;
 	int		fds[2 * num_pipe];
-	int		x = 0;
 	int		j = 0;
 	
 	//origina cmds
@@ -52,21 +72,19 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 			pid = fork();
 			if (pid == 0)
 			{
-				printf("1 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
+				// printf("1 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
 				// child gets input from the previous command, if it's not the first command
 				if (cmds->next)
 				{
-					printf("1.5 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
+					// printf("1.5 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
 					
 					if (dup2(fds[j + 1], 1) < 0)
 					{
 						perror("1.|dup2|");
 						exit(EXIT_FAILURE);
 					}
-					if (exec_commands(shell, cmds))
-						x = 1;
 				}
-				printf("1.8 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
+				// dprintf(2,"1.8 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
 				//child outputs to next command, if it's not the last command
 				if (j != 0)
 				{
@@ -75,13 +93,15 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 						perror("2.|dup2|");
 					}
 				}
-				for (i = 0; i < 2 * num_pipe; i++)
+				for (i = 0; i < 2 *  num_pipe; i++)
 					close(fds[i]);
 				// 1 : > | 2 : >> | -1 : <
-				printf("2 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
+				// printf("2 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
 				char *s = get_bin_path(cmds->cmd, shell->env);
-				printf("%s | %s | %s\n", s, cmds->args[0], cmds->args[1]);
-				if (/* !exec_commands(shell, cmds) &&  */ !x && execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
+				// printf("%s | %s | %s\n", s, cmds->args[0], cmds->args[1]);
+				// if (exec_commands(shell, cmds))
+				// 	exit(0);
+				if (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
 				{
 					perror("cmd");
 					exit(EXIT_FAILURE);
@@ -100,9 +120,10 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 		}
 		for (i = 0; i < 2 * num_pipe; i++)
 			close(fds[i]);
-		// puts("before wait");
-		waitpid(pid, &status, 0);
-		// puts("after wait");
+	/* 	i = -1;
+		while (++i < num_pipe)
+			wait(&status); */
+		while (waitpid(pid, &status, 0) < 0);
 	}
     return (cmds);
 }
@@ -128,8 +149,12 @@ int		run_commands(t_shell *shell)
 	cmds = shell->cmds;
 	while (cmds)
 	{
+		save_restor_fd(1,0);
 		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds));
+		// dprintf(2, "\n---------before restoring fd\n");
+		save_restor_fd(0,1);
 		cmds = cmds->next;
+		// printf("\n---------\n");
 	}
 	return (1);
 }

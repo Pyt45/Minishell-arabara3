@@ -66,7 +66,7 @@ char    *get_bin_path(char *filename, char **env)
 		{
 			if ((b_path = try_path(filename, a_path[i])) != NULL)
 			{
-				//ft_free_arr(a_path);
+				ft_free_arr(a_path);
 				return (b_path);
 			}
 			i++;
