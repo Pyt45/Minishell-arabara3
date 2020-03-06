@@ -1,6 +1,6 @@
 #include "../includes/shell.h"
 
-int		pwd_builtin(t_shell *shell)
+int		pwd_builtin()
 {
 	char	*buff;
 
@@ -14,6 +14,5 @@ int		pwd_builtin(t_shell *shell)
 		ft_putstr_fd("\n", 1);
 		free(buff);
 	}
-		
 	return (1);
 }

@@ -114,7 +114,7 @@ char    **ft_get_arr(char *value, char **arr)
         new_arr[i] = arr[i];
         i++;
     }
-    free(arr);
+    //free(arr);
     new_arr[i] = value;
     new_arr[i + 1] = NULL;
     return (new_arr);

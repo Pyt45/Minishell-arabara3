@@ -1,13 +1,13 @@
 #include "../includes/shell.h"
 
-int     unset_builtin(t_shell *shell)
+int     unset_builtin(t_shell *shell, t_cmds *cmds)
 {
     int     i;
 
     i = 1;
-    while (shell->cmds->args[i] != NULL)
+    while (cmds->args[i] != NULL)
     {
-        shell->env = ft_unset_cmd(shell, shell->cmds->args[i]);
+        shell->env = ft_unset_cmd(shell, cmds->args[i]);
         i++;
     }
     return (1);

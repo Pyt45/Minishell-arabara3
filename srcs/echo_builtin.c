@@ -60,7 +60,6 @@ static char	*parse_variable(char *arg, char **env)
     }
     if ((i = ft_getenv(arg + pos, env)) >= 0)
 		path = env[i] + ft_strlen(arg + pos) + 1;
-    //printf("%c\n", arg[pos - 1]);
     arg[pos - 1] = '\0';
     return (ft_strjoin(arg, path));
 }
