@@ -34,7 +34,7 @@ int     excute_command_by_order(t_shell *shell, t_m_cmds *p_cmds, int num_pipe)
 	cmds = p_cmds;
 	if (cmds->next /* || !exec_commands(shell->env, cmds->s_cmds) */)
 	{
-		for (i = 0; i < num_pipe; i++)
+		for (i = 0; i < 2 * num_pipe; i++)
 		{
 			if (pipe(fds + i * 2) < 0)
 			{
@@ -48,21 +48,21 @@ int     excute_command_by_order(t_shell *shell, t_m_cmds *p_cmds, int num_pipe)
 			pid = fork();
 			if (pid == 0)
 			{
-				// child gets input from the previous command, if it's not the first command
-				if (cmds->next)
-				{
-					if (dup2(fds[j + 1], 1) < 0)
-					{
-						perror("1.|dup2|");
-						exit(EXIT_FAILURE);
-					}
-				}
 				//child outputs to next command, if it's not the last command
 				if (j != 0)
 				{
-					if (dup2(fds[j - 2], 0) < 0)
+					if (dup2(fds[(j - 1) * 2], 0) < 0)
 					{
 						perror("2.|dup2|");
+					}
+				}
+				// child gets input from the previous command, if it's not the first command
+				if (cmds->next)
+				{
+					if (dup2(fds[j * 2 + 1], 1) < 0)
+					{
+						perror("1.|dup2|");
+						exit(EXIT_FAILURE);
 					}
 				}
 				for (i = 0; i < 2 * num_pipe; i++)
@@ -80,12 +80,16 @@ int     excute_command_by_order(t_shell *shell, t_m_cmds *p_cmds, int num_pipe)
 				perror("Error");
 				exit(EXIT_FAILURE);
 			} */
-			cmds = cmds->next;
-			j += 2;
+			else
+			{
+				if (cmds != NULL)
+					cmds = cmds->next;
+				j++;
+				for (i = 0; i < 2 * num_pipe; i++)
+					close(fds[i]);
+				while (waitpid(pid, &status, 0) < 0);
+			}
 		}
-		for (i = 0; i < 2 * num_pipe; i++)
-			close(fds[i]);
-		waitpid(pid, &status, 0);
 	}
 	//shell->num_pipe = 0;
     return (1);
@@ -105,7 +109,7 @@ int		execute_command(t_shell *shell)
 	return (0);
 }
 
-int main(int args, char **argv, char **env)
+/* int main(int args, char **argv, char **env)
 {
 	t_shell *shell;
 
@@ -114,4 +118,4 @@ int main(int args, char **argv, char **env)
 	shell->line = ft_strdup("env | grep PATH ; env | grep PWD ; ls /bin | grep mkdir");
 	execute_command(shell);
 
-}
+} */
