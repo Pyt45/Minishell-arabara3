@@ -40,78 +40,77 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     return (0);
 }
 
-// env
+int		*pipe_fds(int num_pipe, int *fds)
+{
+	int i;
 
+	i = 0;
+	fds = malloc(sizeof(int) * num_pipe);
+	while (i < num_pipe)
+	{
+		if (pipe(fds + i * 2) < 0)
+		{
+			perror("couldn't pipe");
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+	return (fds);
+}
+
+int		*create_fds(t_cmds *cmds, int j, int *fds)
+{
+	if (cmds->next)
+	{
+		if (dup2(fds[j + 1], 1) < 0)
+		{
+			perror("1.|dup2|");
+			exit(EXIT_FAILURE);
+		}
+	}
+	if (j != 0)
+	{
+		if (dup2(fds[j - 2], 0) < 0)
+		{
+			perror("2.|dup2|");
+		}
+	}
+	return (fds);
+}
 
 t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 {
-	// t_cmds	*cmds;
 	pid_t	pid;
 	int 	status = 0;
     int		i = 0;
-	int		fds[2 * num_pipe];
+	int		*fds;
 	int		j = 0;
 	
-	//origina cmds
-	// cmds = o_cmds;
-	// printf("NUM PIPE %d\n----------------------\n", num_pipe);
 	if ((cmds->next && !cmds->end) || !exec_commands(shell, cmds))
 	{
-		for (i = 0; i < num_pipe; i++)
-		{
-			if (pipe(fds + i * 2) < 0)
-			{
-				perror("couldn't pipe");
-            	exit(EXIT_FAILURE);
-			}
-		}
+		fds = pipe_fds(num_pipe, fds);
 		j = 0;
 		while (cmds)
 		{
-			
 			pid = fork();
 			if (pid == 0)
 			{
-				// printf("1 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
-				// child gets input from the previous command, if it's not the first command
-				if (cmds->next)
-				{
-					// printf("1.5 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
-					
-					if (dup2(fds[j + 1], 1) < 0)
-					{
-						perror("1.|dup2|");
-						exit(EXIT_FAILURE);
-					}
-				}
-				// dprintf(2,"1.8 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
-				//child outputs to next command, if it's not the last command
-				if (j != 0)
-				{
-					if (dup2(fds[j - 2], 0) < 0)
-					{
-						perror("2.|dup2|");
-					}
-				}
+				fds = create_fds(cmds, j, fds);
 				for (i = 0; i < 2 *  num_pipe; i++)
 					close(fds[i]);
-				// 1 : > | 2 : >> | -1 : <
-				// printf("2 S=%d E=%d |CMD=%s\n", cmds->start, cmds->end, cmds->cmd);
-				char *s = get_bin_path(cmds->cmd, shell->env);
-				// printf("%s | %s | %s\n", s, cmds->args[0], cmds->args[1]);
-				// if (exec_commands(shell, cmds))
-				// 	exit(0);
-				if (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
+				if (!exec_commands(shell, cmds) && execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
 				{
 					perror("cmd");
 					exit(EXIT_FAILURE);
 				}
+				dprintf(2, "CMD=%s\n", cmds->cmd);
+				printf("CMD=%s\n", cmds->cmd);
 			}
-			else if (pid < 0)
-			{
-				perror("Error");
-				exit(EXIT_FAILURE);
-			}
+			// else if (pid < 0)
+			// {
+			// 	perror("Error");
+			// 	exit(EXIT_FAILURE);
+			// }
 			if (cmds->end)
 				break;
 			else
@@ -124,6 +123,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 		while (++i < num_pipe)
 			wait(&status); */
 		while (waitpid(pid, &status, 0) < 0);
+		free(fds);
 	}
     return (cmds);
 }
@@ -151,10 +151,8 @@ int		run_commands(t_shell *shell)
 	{
 		save_restor_fd(1,0);
 		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds));
-		// dprintf(2, "\n---------before restoring fd\n");
 		save_restor_fd(0,1);
 		cmds = cmds->next;
-		// printf("\n---------\n");
 	}
 	return (1);
 }
