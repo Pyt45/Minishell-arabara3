@@ -118,5 +118,28 @@ int                 unset_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
 int					echo_builtin(t_cmds *cmd, char **env);
+void    print_line_up(t_config *config);
+void    print_line_down(t_config *config);
+void    display_cursor(t_config *config);
+void    move_cursor(t_config *config, int dir);
+void    display_content(t_config *config);
+void    delete_char(t_config *config);
+void    print_char(t_config *config);
+void    get_cursor_pos(t_config *config);
+t_history   *new_history(t_history *prev);
+void    free_next_history(t_history **history);
+t_config    *add_history(t_config *config);
+void    display_history(t_config *config, int dir);
+void    re_init_shell(t_config *config);
+void    paste_control(t_config *config);
+void    cut_control(t_config *config);
+void    copy_control(t_config *config);
+void    set_control(t_config *config, int a);
+void    handle_control(t_config *config);
+void    handle_btns(t_config *config);
+void    handle_keys(t_config *config);
+void    init_config_data(t_config *config);
+void    init_config(t_config *config);
+void    end_terminal(t_config *config);
 
 #endif

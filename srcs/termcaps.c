@@ -748,4 +748,3 @@ int main(void)
     end_terminal(&config);
     return (0);
 }
-,
