@@ -53,11 +53,11 @@ char    **get_args(char *str, int n)
 t_shell     *parse_commands(t_shell *shell)
 {
     t_cmds      *cmds;
-    t_cmds      *prev;
     int         i;
     int         pos;
     char        *tmp;
     int         j;
+    
 
     pos = 0;
     i = 0;
@@ -66,6 +66,7 @@ t_shell     *parse_commands(t_shell *shell)
     shell->cmds = cmds;
     while (tmp[i])
     {
+        j = 0;
         if (tmp[i] == '|')
         {
             cmds->cmd = get_cmd(tmp + pos, i - pos);
@@ -86,24 +87,19 @@ t_shell     *parse_commands(t_shell *shell)
         }
         else if (tmp[i] == ';' || tmp[i + 1] == '\0')
         {
-            if (tmp[i + 1] == '\0')
-            {
-                cmds->cmd = get_cmd(tmp + pos, i - pos + 1);
-                cmds->args = get_args(tmp + pos, i - pos + 1);
-            }
-            else
-            {
-                cmds->cmd = get_cmd(tmp + pos, i - pos);
-                cmds->args = get_args(tmp + pos, i - pos);
-            }
+            if (tmp[i + 1] == '\0' && tmp[i] != ';')
+                j = 1;
+            cmds->cmd = get_cmd(tmp + pos, i - pos + j);
+            cmds->args = get_args(tmp + pos, i - pos + j);
+
             cmds->s = 1;
-            // printf("POS:%d | I=%d\n", pos, i);
-            // printf("CMD: %s|\n", cmds->cmd);
-            // j = 0;
-            // while (cmds->args[j]){
-            //     printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-            //     j++;
-            // }
+            printf("CHAR: %c | POS:%d | I=%d\n", tmp[i], pos, i);
+            printf("CMD: %s|\n", cmds->cmd);
+            j = 0;
+            while (cmds->args[j]){
+                printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
+                j++;
+            }
             if (!cmds->prev)
                 cmds->start = 1;
             cmds->end = 1;
