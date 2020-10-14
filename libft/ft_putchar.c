@@ -6,13 +6,13 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 20:31:50 by zlayine           #+#    #+#             */
-/*   Updated: 2019/11/18 20:37:03 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/14 12:18:14 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_putchar(char c)
+void		ft_putchar(char c)
 {
 	write(1, &c, 1);
 }

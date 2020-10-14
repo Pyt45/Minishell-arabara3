@@ -57,6 +57,7 @@ t_shell     *parse_commands(t_shell *shell)
     int         i;
     int         pos;
     char        *tmp;
+    int         j;
 
     pos = 0;
     i = 0;
@@ -73,7 +74,9 @@ t_shell     *parse_commands(t_shell *shell)
             // printf("CMD: %s|\n", cmds->cmd);
             // printf("ARG0: %s|\n", cmds->args[0]);
             // printf("ARG1: %s|\n---------------------------\n", cmds->args[1]);
-            cmds->p = 1;
+            // while (cmds->args[j])
+                // printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j++]);
+            // cmds->p = 1;
             if (!cmds->prev)
                 cmds->start = 1;
             cmds->next = init_cmds(cmds);
@@ -96,8 +99,11 @@ t_shell     *parse_commands(t_shell *shell)
             cmds->s = 1;
             // printf("POS:%d | I=%d\n", pos, i);
             // printf("CMD: %s|\n", cmds->cmd);
-            // printf("ARG0: %s|\n", cmds->args[0]);
-            // printf("ARG1: %s|\n--------------------------\n", cmds->args[1]);
+            // j = 0;
+            // while (cmds->args[j]){
+            //     printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
+            //     j++;
+            // }
             if (!cmds->prev)
                 cmds->start = 1;
             cmds->end = 1;
