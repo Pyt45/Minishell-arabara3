@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/14 09:08:48 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/14 09:40:59 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,40 +27,6 @@
 # include <curses.h>
 # include <term.h>
 # include "../libft/libft.h"
-
-
-// typedef struct		s_b_cmds
-// {
-//     char			*cmd;
-//     int				num_pipe;
-//     struct s_m_cmds *m_cmds;
-//     struct s_b_cmds *next;
-// }					t_b_cmds;
-
-
-
-
-// typedef struct      s_m_cmds
-// {
-//     char            *cmd;
-//     struct s_s_cmds *s_cmds;
-//     struct s_m_cmds *next;
-// }                   t_m_cmds;
-
-// typedef struct      s_s_cmds
-// {
-//     char            *cmd;
-//     char            **args;
-// 	int				append;
-//     struct s_s_cmds *next;
-// }                   t_s_cmds;
-
-// typedef struct		s_cmds
-// {
-//     char			*cmd;
-//     char			**args;
-//     struct s_cmds 	*next;
-// }					t_cmds;
 
 typedef struct      s_cmds
 {

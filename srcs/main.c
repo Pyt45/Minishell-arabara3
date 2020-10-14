@@ -38,7 +38,6 @@ int		command_line(t_shell *shell)
 	init_config_data(&shell->config);
 	while (status)
 	{
-		// ft_putstr_fd("minishell~>", 1);
 		read(0, &shell->config.buff, sizeof(&shell->config.buff));
 		handle_keys(&shell->config);
 		if (ft_isprint(shell->config.buff))
@@ -75,9 +74,7 @@ int     main(int argc, char **argv, char **envp)
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);
-		//signal(SIGINT, sig_handle_ctrl_c);
-		// while (command_line(&shell))
-			// ;
+		signal(SIGINT, sig_handle_ctrl_c);
 		command_line(&shell);
 	}
     return (0);

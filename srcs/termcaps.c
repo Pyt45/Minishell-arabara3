@@ -269,7 +269,7 @@ void    re_init_shell(t_config *config)
     config->c = 0;
     config->buff = 0;
     config->len = 0;
-    ft_putstr_fd("minishell~>", 0);
+    ft_putstr_fd("minishell~>", 1);
     get_cursor_pos(config);
     display_cursor(config);
 }
