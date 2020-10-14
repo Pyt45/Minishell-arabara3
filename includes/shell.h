@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/14 09:56:26 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/14 13:47:45 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
-#include <fcntl.h>
+# include <fcntl.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <termios.h>
@@ -29,61 +29,61 @@
 # include <term.h>
 # include "../libft/libft.h"
 
-typedef struct      s_cmds
+typedef struct		s_cmds
 {
-    int     start;
-    int     end;
-    int     p;
-    int     s;
-    int     append;
-    char    *cmd;
-    char    **args;
-    int     ret;
-    struct s_cmds   *prev;
-    struct s_cmds   *next;
-}                   t_cmds;
+	int				start;
+	int				end;
+	int				p;
+	int				s;
+	int				append;
+	char			*cmd;
+	char			**args;
+	int				ret;
+	struct s_cmds	*prev;
+	struct s_cmds	*next;
+}					t_cmds;
 
-typedef struct  s_control
+typedef struct		s_control
 {
-    char    *str;
-    int     start;
-    int     len;
-    int     cut;
-}               t_control;
+	char	*str;
+	int		start;
+	int		len;
+	int		cut;
+}					t_control;
 
-typedef struct  s_config
+typedef struct		s_config
 {
-    struct termios  term;
-    char            *str;
-    int             x;
-    int             y;
-    int             o_x;
-    int             o_y;
-    int             width;
-    int             height;
-    char            *cursor;
-    long             buff;
-    int             c;
-    int             len;
-    struct s_history *history;
-    struct s_control control;
-}               t_config;      
+	struct termios		term;
+	char				*str;
+	int					x;
+	int					y;
+	int					o_x;
+	int					o_y;
+	int					width;
+	int					height;
+	char				*cursor;
+	long				buff;
+	int					c;
+	int					len;
+	struct s_history	*history;
+	struct s_control	control;
+}					t_config;
 
 typedef struct		s_shell
 {
-    char			**env;
+	char			**env;
 	char			*line;
-    int             ret;
-    struct s_cmds	*cmds;
-    struct s_config config;
+	int				ret;
+	struct s_cmds	*cmds;
+	struct s_config	config;
 }					t_shell;
 
-typedef struct  s_history
+typedef struct		s_history
 {
-    char                *data;
-    struct s_history    *prev;
-    struct s_history    *next;
-}               t_history;
+	char				*data;
+	struct s_history	*prev;
+	struct s_history	*next;
+}					t_history;
 
 # define IS_S_QUOTE(x) (x == '\'')
 # define IS_D_QUOTE(x) (x == '\"')
@@ -109,19 +109,20 @@ typedef struct  s_history
 # define SIG_D 4
 # define SIG_SL 28
 
-char                *get_cmd(char *str, int n);
-char                **get_args(char *str, int n);
-t_shell             *parse_commands(t_shell *shell);
-t_shell             *get_comma_commands(t_shell *shell);
+char				*get_cmd(char *str, int n);
+char				**get_args(char *str, int n);
+t_shell				*parse_commands(t_shell *shell);
+t_shell				*get_comma_commands(t_shell *shell);
 int					ft_access(char *path, int mode);
 int					ft_getenv(char *name, char **env);
 char				*try_path(char *filename, char *dir);
 char				*get_bin_path(char *filename, char **env);
 t_shell				*control_command(t_shell *shell);
 t_shell				*get_single_command(t_shell *shell);
-t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp);
-int                 exec_commands(t_shell *shell, t_cmds *cmds);
-int		            run_commands(t_shell *shell);
+t_cmds				*excute_command_by_order(t_shell *shell,
+	t_cmds *cmds, int num_pipe, int num_sp);
+int					exec_commands(t_shell *shell, t_cmds *cmds);
+int					run_commands(t_shell *shell);
 int					cd_builtin(t_shell *shell, t_cmds *cmds);
 int					command_line(t_shell *shell);
 int					exit_builtin(t_shell *shell, t_cmds *cmds);
@@ -138,39 +139,39 @@ void				sig_handle_ctrl_c(int signal);
 char				**ft_setenv(char *var, char *path, char **env);
 int					pwd_builtin();
 char				**ft_export_cmd(t_shell *shell, char *value);
-int                 export_builtin(t_shell *shell, t_cmds *cmds);
+int					export_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_add_to_arr(char *value, char **arr);
 char				**ft_get_arr(char *value, char **arr);
 char				**ft_remove_from_arr(int pos, char **env);
 char				**ft_unset_cmd(t_shell *shell, char *value);
-int                 unset_builtin(t_shell *shell, t_cmds *cmds);
+int					unset_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_unset_cmd(t_shell *shell, char *value);
-char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
+char				**ft_copy_arr_without(int pos,
+	char **arr, char **new_arr, int len);
 int					echo_builtin(t_cmds *cmd, char **env, int ret);
-
-void    print_line_up(t_config *config);
-void    print_line_down(t_config *config);
-void    display_cursor(t_config *config);
-void    move_cursor(t_config *config, int dir);
-void    display_content(t_config *config);
-void    delete_char(t_config *config);
-void    print_char(t_config *config);
-void    get_cursor_pos(t_config *config);
-t_history   *new_history(t_history *prev);
-void    free_next_history(t_history **history);
-t_config    *add_history(t_config *config);
-void    display_history(t_config *config, int dir);
-void    re_init_shell(t_config *config);
-void    paste_control(t_config *config);
-void    cut_control(t_config *config);
-void    copy_control(t_config *config);
-void    set_control(t_config *config, int a);
-void    handle_control(t_config *config);
-void    handle_btns(t_config *config);
-void    handle_keys(t_config *config);
-void    init_config_data(t_config *config);
-void    init_config(t_config *config);
-void    end_terminal(t_config *config);
-int     ft_putchars(int c);
-void    newline_config(t_config *config);
+void				print_line_up(t_config *config);
+void				print_line_down(t_config *config);
+void				display_cursor(t_config *config);
+void				move_cursor(t_config *config, int dir);
+void				display_content(t_config *config);
+void				delete_char(t_config *config);
+void				print_char(t_config *config);
+void				get_cursor_pos(t_config *config);
+t_history			*new_history(t_history *prev);
+void				free_next_history(t_history **history);
+t_config			*add_history(t_config *config);
+void				display_history(t_config *config, int dir);
+void				re_init_shell(t_config *config);
+void				paste_control(t_config *config);
+void				cut_control(t_config *config);
+void				copy_control(t_config *config);
+void				set_control(t_config *config, int a);
+void				handle_control(t_config *config);
+void				handle_btns(t_config *config);
+void				handle_keys(t_config *config);
+void				init_config_data(t_config *config);
+void				init_config(t_config *config);
+void				end_terminal(t_config *config);
+int					ft_putchars(int c);
+void				newline_config(t_config *config);
 #endif

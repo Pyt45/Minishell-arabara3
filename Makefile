@@ -6,14 +6,20 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/14 12:25:08 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/14 13:49:44 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = srcs/utils.c \
-		srcs/termcaps.c \
+		srcs/termcaps/config.c \
+		srcs/termcaps/controls.c \
+		srcs/termcaps/cursor.c \
+		srcs/termcaps/display.c \
+		srcs/termcaps/handlers.c \
+		srcs/termcaps/history.c \
+		srcs/termcaps/utils.c \
 		srcs/exec_commands.c \
 		srcs/commands_parse.c \
 		srcs/handle_path.c \
@@ -24,7 +30,6 @@ SRC = srcs/utils.c \
 		srcs/builtins/pwd_builtin.c \
 		srcs/builtins/unset_builtin.c \
 		srcs/builtins/export_builtin.c
-		# srcs/main.c
 
 LIBFT = ./libft
 

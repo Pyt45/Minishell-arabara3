@@ -1,5 +1,6 @@
 
-#include "../includes/shell.h"
+#include "../../includes/shell.h"
+
 
 static void	ft_putnstr(char *str, int n)
 {
