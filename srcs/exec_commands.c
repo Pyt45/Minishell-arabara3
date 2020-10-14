@@ -128,7 +128,8 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
 					{
 						perror("cmd");
 						printf("ERR %d\n", errno);
-						exit(get_error_num(errno));
+						// exit(get_error_num(errno));
+						exit(0);
 					}
 				}
 				exit(EXIT_SUCCESS);

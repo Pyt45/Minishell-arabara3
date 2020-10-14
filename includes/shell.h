@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/14 09:02:02 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/14 09:08:48 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ char				**ft_unset_cmd(t_shell *shell, char *value);
 int                 unset_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
-int					echo_builtin(t_cmds *cmd, char **env);
+int					echo_builtin(t_cmds *cmd, char **env, int ret);
 
 void    print_line_up(t_config *config);
 void    print_line_down(t_config *config);

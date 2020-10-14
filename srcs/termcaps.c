@@ -459,19 +459,19 @@ void    display_history(t_config *config, int dir)
     }
     if (exist)
     {
-        tputs(tgoto(config->cursor, config->o_x, config->o_y), 0, ft_putchar);
-        tputs(tgetstr("cd", NULL), 0, ft_putchar);
-        ft_strcpy(config->str, config->history->data);
-        config->len = ft_strlen(config->str);
-        config->c = config->len;
-        dprintf(0, "%s", config->str);
+        // tputs(tgoto(config->cursor, config->o_x, config->o_y), 0, ft_putchar);
+        // tputs(tgetstr("cd", NULL), 0, ft_putchar);
+        // ft_strcpy(config->str, config->history->data);
+        // config->len = ft_strlen(config->str);
+        // config->c = config->len;
+        // dprintf(0, "%s", config->str);
 
-        /*tputs(tgoto(config->cursor, config->o_x, config->o_y), 0, ft_putchars);
+        tputs(tgoto(config->cursor, config->o_x, config->o_y), 0, ft_putchars);
         tputs(tgetstr("cd", NULL), 0, ft_putchars);
         ft_strcpy(config->str, config->history->data);
         config->len = ft_strlen(config->str);
         config->c = config->len;
-        ft_putstr_fd(config->str, 0);*/
+        ft_putstr_fd(config->str, 0);
         display_cursor(config);
     }
 }
