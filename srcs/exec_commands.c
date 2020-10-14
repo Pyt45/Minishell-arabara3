@@ -36,7 +36,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     else if (!ft_strcmp(cmds->cmd, "unset"))
         return (unset_builtin(shell, cmds)* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "echo"))
-       return (echo_builtin(cmds, shell->env));
+       return (echo_builtin(cmds, shell->env, shell->ret));
     return (0);
 }
 
@@ -45,7 +45,7 @@ int		*pipe_fds(int num_pipe, int *fds)
 	int i;
 
 	i = 0;
-	fds = malloc(sizeof(int) * num_pipe);
+	fds = malloc(sizeof(int) * 2 * num_pipe);
 	while (i < num_pipe)
 	{
 		if (pipe(fds + i * 2) < 0)
@@ -60,6 +60,7 @@ int		*pipe_fds(int num_pipe, int *fds)
 
 int		*create_fds(t_cmds *cmds, int j, int *fds)
 {
+	
 	if (cmds->next)
 	{
 		if (dup2(fds[j + 1], 1) < 0)
@@ -73,6 +74,7 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 		if (dup2(fds[j - 2], 0) < 0)
 		{
 			perror("2.|dup2|");
+			exit(EXIT_FAILURE);
 		}
 	}
 	return (fds);
@@ -85,44 +87,77 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe)
     int		i = 0;
 	int		*fds;
 	int		j = 0;
-	
+
 	if ((cmds->next && !cmds->end) || !exec_commands(shell, cmds))
 	{
 		fds = pipe_fds(num_pipe, fds);
 		j = 0;
 		while (cmds)
 		{
+			save_restor_fd(1,0);
 			pid = fork();
 			if (pid == 0)
 			{
 				fds = create_fds(cmds, j, fds);
 				for (i = 0; i < 2 *  num_pipe; i++)
 					close(fds[i]);
-				if (!exec_commands(shell, cmds) && execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
+				if (cmds->append)
 				{
-					perror("cmd");
-					exit(EXIT_FAILURE);
+					if (!cmds->prev || cmds->prev->append == 0)
+					{
+						// run exec
+					}
+					else
+					{
+						// open fd , print f 1
+					}
+
+					// printf("CMD=%s ARG0=%s ARG1=%s\n", cmds->cmd, cmds->args[0], cmds->args[1]);
+					// printf("CMD=%s ARG0=%s ARG1=%s\n", cmds->next->cmd, cmds->next->args[0], cmds->next->args[1]);
 				}
-				dprintf(2, "CMD=%s\n", cmds->cmd);
-				printf("CMD=%s\n", cmds->cmd);
+				else if (cmds->prev && cmds->prev->append)
+				{
+
+					//printf("CMD=%s ARG1=%s ARG2=%s\n", cmds->cmd, cmds->args[0], cmds->args[1]);
+				}
+				else
+				{
+					char *s = get_bin_path(cmds->cmd, shell->env);
+					// printf("PATH: %s\n", s);
+					if (!exec_commands(shell, cmds) && execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
+					{
+						perror("cmd");
+						printf("ERR %d\n", errno);
+						exit(get_error_num(errno));
+					}
+				}
+				exit(EXIT_SUCCESS);
 			}
-			// else if (pid < 0)
-			// {
-			// 	perror("Error");
-			// 	exit(EXIT_FAILURE);
-			// }
+			else if (pid < 0)
+			{
+				perror("Error");
+				exit(EXIT_FAILURE);
+			}
 			if (cmds->end)
 				break;
 			else
 				cmds = cmds->next;
 			j += 2;
+			save_restor_fd(0,1);
 		}
 		for (i = 0; i < 2 * num_pipe; i++)
 			close(fds[i]);
-	/* 	i = -1;
-		while (++i < num_pipe)
-			wait(&status); */
-		while (waitpid(pid, &status, 0) < 0);
+		if (!num_pipe)
+			// while (waitpid(pid, &status, 0) < 0);
+			wait(&status);
+		else
+		{
+			i = -1;
+			while (++i < 2 * num_pipe)
+				wait(&status);
+		}
+		// dprintf(2, "%d\n", WEXITSTATUS(status));
+		shell->ret = (((*(int *)&(status)) >> 8) & 0x000000ff);
 		free(fds);
 	}
     return (cmds);
@@ -149,9 +184,7 @@ int		run_commands(t_shell *shell)
 	cmds = shell->cmds;
 	while (cmds)
 	{
-		save_restor_fd(1,0);
 		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds));
-		save_restor_fd(0,1);
 		cmds = cmds->next;
 	}
 	return (1);

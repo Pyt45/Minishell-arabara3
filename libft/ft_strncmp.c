@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:20:00 by zlayine           #+#    #+#             */
-/*   Updated: 2019/10/21 10:56:21 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/03/06 18:45:42 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 			return (b1[i] - b2[i]);
 		i++;
 	}
-	return (0);
+	return (b1[i] - b2[i]);
 }

@@ -6,22 +6,27 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/05 20:16:01 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/03/08 13:30:50 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHELL_H
 # define SHELL_H
 
+# include <errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <dirent.h>
 # include <stdio.h>
+# include <curses.h>
+# include <term.h>
 # include "../libft/libft.h"
+
 
 // typedef struct		s_b_cmds
 // {
@@ -78,6 +83,7 @@ typedef struct		s_shell
 }					t_shell;
 
 # define IS_S_QUOTE(x) (x == '\'')
+# define IS_D_QUOTE(x) (x == '\"')
 # define IS_QUOTE(x) (x == '"' || x == '\'')
 
 char                *get_cmd(char *str, int n);
@@ -117,6 +123,7 @@ char				**ft_unset_cmd(t_shell *shell, char *value);
 int                 unset_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len);
-int					echo_builtin(t_cmds *cmd, char **env);
-
+int					echo_builtin(t_cmds *cmd, char **env, int ret);
+int                 get_error_num(int err);     
+double              ft_fatoi(const char *str);
 #endif

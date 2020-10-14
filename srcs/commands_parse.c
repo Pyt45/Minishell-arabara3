@@ -24,11 +24,11 @@ char    *get_cmd(char *str, int n)
     char    *cmd;
 
     i = 0;
-    while (!ft_isalpha(*str))
+    while (!ft_isprint(*str) || *str == ' ')
         str++;
     if (n == 0)
         n = ft_strlen(str);
-    while (ft_isalpha(str[i]) && i < n)
+    while (ft_isprint(str[i]) && str[i] != ' ' && i < n)
         i++;
     cmd = malloc(sizeof(char) * (++i));
     ft_strlcpy(cmd, str, i);
