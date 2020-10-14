@@ -37,7 +37,6 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
         return (unset_builtin(shell, cmds)* 0 + 1);
     else if (!ft_strcmp(cmds->cmd, "echo"))
        return (echo_builtin(cmds, shell->env));
-
     return (0);
 }
 
