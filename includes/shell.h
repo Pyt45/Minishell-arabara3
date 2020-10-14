@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/10 12:59:28 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/10/14 14:18:55 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 #include <fcntl.h>
 # include <dirent.h>
+#include <string.h>
 # include <stdio.h>
 # include "../libft/libft.h"
 
