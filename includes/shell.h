@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/14 09:40:59 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/14 09:56:26 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
+#include <fcntl.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <termios.h>
@@ -33,6 +34,7 @@ typedef struct      s_cmds
     int     start;
     int     end;
     int     p;
+    int     s;
     int     append;
     char    *cmd;
     char    **args;
@@ -117,7 +119,7 @@ char				*try_path(char *filename, char *dir);
 char				*get_bin_path(char *filename, char **env);
 t_shell				*control_command(t_shell *shell);
 t_shell				*get_single_command(t_shell *shell);
-t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe);
+t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp);
 int                 exec_commands(t_shell *shell, t_cmds *cmds);
 int		            run_commands(t_shell *shell);
 int					cd_builtin(t_shell *shell, t_cmds *cmds);

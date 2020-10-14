@@ -9,6 +9,7 @@ t_cmds      *init_cmds(t_cmds   *prev)
     cmds->start = 0;
     cmds->end = 0;
     cmds->p = 0;
+    cmds->s = 0;
     cmds->append = 0;
     cmds->ret = 0;
     cmds->prev = NULL;
@@ -92,6 +93,7 @@ t_shell     *parse_commands(t_shell *shell)
                 cmds->cmd = get_cmd(tmp + pos, i - pos);
                 cmds->args = get_args(tmp + pos, i - pos);
             }
+            cmds->s = 1;
             // printf("POS:%d | I=%d\n", pos, i);
             // printf("CMD: %s|\n", cmds->cmd);
             // printf("ARG0: %s|\n", cmds->args[0]);
@@ -116,10 +118,18 @@ t_shell     *parse_commands(t_shell *shell)
             // printf("ARG1: %s|\n--------------------------\n", cmds->args[1]);
             if (!cmds->prev)
                 cmds->start = 1;
-            cmds->append = (tmp[i] == '>') ? 1 : -1;
+            if (tmp[i] == '>')
+                cmds->append = 1;
+            else if (tmp[i] == '<')
+                cmds->append = -1;
             if (tmp[i + 1] == '>')
             {
                 cmds->append++;
+                i++;
+            }
+            else if (tmp[i + 1] == '<')
+            {
+                cmds->append--;
                 i++;
             }
             pos = i + 1;
