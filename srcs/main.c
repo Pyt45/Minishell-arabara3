@@ -28,37 +28,35 @@ void	free_shell(t_shell *shell)
 
 int		command_line(t_shell *shell)
 {
-	int		r;
-	int		status;
-	int		column_count;
-	int		line_count;
+	int			r;
+	int			status;
+
 	r = 1;
 	status = 1;
-	char *buffer = malloc(2048);
-	tgetent(buffer, getenv("TERM")); //TERM = xterm-256color
-	char *keyup = tgetstr("ku", &buffer);
-	// int ret = setupterm(NULL, STDOUT_FILENO, NULL);
+	init_config(&shell->config);
+	ft_putstr_fd("minishell~>", 1);
+	init_config_data(&shell->config);
 	while (status)
 	{
-		printf("%s\n", keyup);
-		// column_count = tigetnum("cols");
-		// line_count = tigetnum("lines");
-		// printf("%d %d\n", column_count, line_count);
-		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
-		// column_count = tigetnum("cols");
-		// line_count = tigetnum("lines");
-		// printf("%d %d\n", column_count, line_count);
-		// int key = getch();
-		// printf("%d\n", key);
-
-		// char* color_cap = tigetstr("setaf");
-		// tputs(tparm(color_cap, COLOR_RED), 1, putchar);
-		// printf("Cool ! Maintenant j'ecris en rouge !\n");
-		
-		r = get_next_line(0, &shell->line);
-		if (ft_strlen(shell->line))
-			status = run_commands(shell);
+		// ft_putstr_fd("minishell~>", 1);
+		read(0, &shell->config.buff, sizeof(&shell->config.buff));
+		handle_keys(&shell->config);
+		if (ft_isprint(shell->config.buff))
+            print_char(&shell->config);
+		if (shell->config.buff == ENTER_BTN)
+    	{
+			shell->line = shell->config.str;
+			newline_config(&shell->config);
+			if (ft_strlen(shell->line))
+				status = run_commands(shell);
+			if (status)
+        		re_init_shell(&shell->config);
+    	}
+		// r = get_next_line(0, &shell->line);
+		// if (ft_strlen(shell->line))
+		// 	status = run_commands(shell);
 		//free_shell(shell);
+		shell->config.buff = 0;
 	}
 	return (status);
 }
@@ -78,8 +76,9 @@ int     main(int argc, char **argv, char **envp)
 	{
 		shell.env = ft_arrdup(envp);
 		//signal(SIGINT, sig_handle_ctrl_c);
-		while (command_line(&shell))
-			;
+		// while (command_line(&shell))
+			// ;
+		command_line(&shell);
 	}
     return (0);
 }

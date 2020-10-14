@@ -1,84 +1,44 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   termcaps.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/07 19:13:51 by zlayine           #+#    #+#             */
-/*   Updated: 2020/03/12 13:00:14 by zlayine          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../includes/shell.h"
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <termios.h>
-# include <curses.h>
-# include <term.h>
-#include <unistd.h>
-#include <math.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <stdio.h>
+// #include <termios.h>
+// # include <curses.h>
+// # include <term.h>
+// #include <unistd.h>
+// #include <math.h>
 
-# define ARRW_LEFT 4479771
-# define ARRW_RIGHT 4414235
-# define ALT_LEFT 25115
-# define ALT_RIGHT 26139
-# define HOME_BTN 4610843
-# define END_BTN 4741915
-# define ALT_V 10127586
-# define ALT_X 8948194
-# define ALT_C 42947
-# define ALT_S 40899
-# define ALT_UP 71688292227867
-# define ALT_DOWN 72787803855643
-# define ARRW_UP 4283163
-# define ARRW_DOWN 4348699
-# define BCK_SP 127
-# define ENTER_BTN 10
-# define SIG_C 3
-# define SIG_D 4
-# define SIG_SL 28
+// # define ARRW_LEFT 4479771
+// # define ARRW_RIGHT 4414235
+// # define ALT_LEFT 25115
+// # define ALT_RIGHT 26139
+// # define HOME_BTN 4610843
+// # define END_BTN 4741915
+// # define ALT_V 10127586
+// # define ALT_X 8948194
+// # define ALT_C 42947
+// # define ALT_S 40899
+// # define ALT_UP 71688292227867
+// # define ALT_DOWN 72787803855643
+// # define ARRW_UP 4283163
+// # define ARRW_DOWN 4348699
+// # define BCK_SP 127
+// # define ENTER_BTN 10
+// # define SIG_C 3
+// # define SIG_D 4
+// # define SIG_SL 28
 
 
-typedef struct  s_control
-{
-    char    *str;
-    int     start;
-    int     len;
-    int     cut;
-}               t_control;
 
-typedef struct  s_config
-{
-    struct termios  term;
-    char            *str;
-    int             x;
-    int             y;
-    int             o_x;
-    int             o_y;
-    int             width;
-    int             height;
-    char            *cursor;
-    long             buff;
-    int             c;
-    int             len;
-    struct s_history *history;
-    struct s_control control;
-}               t_config;      
 
-typedef struct  s_history
-{
-    char                *data;
-    struct s_history    *prev;
-    struct s_history    *next;
-}               t_history;
-
-int     ft_putchar(int c)
+int     ft_putchars(int c)
 {
     write(0, &c, 1);
     return (0);
 }
 
+/*
 static int	ft_check(long n, int sign)
 {
 	if (n < 0 && sign > 0)
@@ -271,7 +231,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	r[j] = '\0';
 	return (r);
 }
-
+*/
 void    print_line_up(t_config *config)
 {
     int i;
@@ -282,18 +242,18 @@ void    print_line_up(t_config *config)
     {
         i = 0;
         c = 0;
-        dprintf(0, "minishell~>");
-        tputs(tgoto(config->cursor, 12, config->y), 0, ft_putchar);
+        ft_putstr_fd("minishell~>", 0);
+        tputs(tgoto(config->cursor, 12, config->y), 0, ft_putchars);
     }
     else
     {
         i = 0;
         c = config->c - config->width + 1;
-        tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchar);
+        tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchars);
     }
-    while (i < config->width && config->str[i])
+    while (i < config->width && config->str[i + c])
     {
-        ft_putchar(config->str[i + c]);
+        ft_putchars(config->str[i + c]);
         i++;
     }
 }
@@ -306,10 +266,10 @@ void    print_line_down(t_config *config)
     config->y = ((config->o_x + config->c) / config->width) + config->o_y;
     i = 0;
     c = config->c;
-    tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchar);
-    while (i < config->width && config->str[i])
+    tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchars);
+    while (i < config->width && config->str[i + c])
     {
-        ft_putchar(config->str[i + c]);
+        ft_putchars(config->str[i + c]);
         i++;
     }
 }
@@ -319,15 +279,15 @@ void    display_cursor(t_config *config)
     if (config->x == 0 && config->y == 0)
     {
         config->o_y++;
-        tputs(tgetstr("sr", 0), 0, ft_putchar);
+        tputs(tgetstr("sr", 0), 0, ft_putchars);
         print_line_up(config);
     }
     config->x = (config->o_x + config->c) % config->width;
     config->y = ((config->o_x + config->c) / config->width) + config->o_y;
-    tputs(tgoto(config->cursor, config->x, config->y), 0, ft_putchar);
+    tputs(tgoto(config->cursor, config->x, config->y), 0, ft_putchars);
     if (config->o_y + ((config->o_x + config->c) / config->width) >= config->height)
     {
-        tputs(tgetstr("sf", 0), 0, ft_putchar);
+        tputs(tgetstr("sf", 0), 0, ft_putchars);
         config->o_y--;
         print_line_down(config);
     }
@@ -366,7 +326,7 @@ void    move_cursor(t_config *config, int dir)
 void    display_content(t_config *config)
 {
     config->str[config->len] = 0;
-    ft_putchar((int)config->str[config->len]);
+    ft_putchars((int)config->str[config->len]);
     display_cursor(config);
 }
 
@@ -379,11 +339,11 @@ void    delete_char(t_config *config)
         i = config->c - 1;
         config->c--;
         display_cursor(config);
-        tputs(tgetstr("cd", NULL), 0, ft_putchar);
+        tputs(tgetstr("cd", NULL), 0, ft_putchars);
         while(i < config->len)
         {
             config->str[i] = config->str[i + 1];
-            ft_putchar((int)config->str[i]);
+            ft_putchars((int)config->str[i]);
             i++;
         }
         config->len--;
@@ -394,7 +354,7 @@ void    delete_char(t_config *config)
         config->c--;
         config->len--;
         display_content(config);
-        tputs(tgetstr("cd", NULL), 0, ft_putchar);
+        tputs(tgetstr("cd", NULL), 0, ft_putchars);
     }
 }
 
@@ -406,13 +366,13 @@ void    print_char(t_config *config)
     if (config->c < config->len)
     {
         i = config->c;
-        tputs(tgetstr("cd", NULL), 0, ft_putchar);
+        tputs(tgetstr("cd", NULL), 0, ft_putchars);
         while (i <= config->len)
         {
             tmp = config->str[i];
             config->str[i] = config->buff;
             config->buff = tmp;
-            ft_putchar((int)config->str[i]);
+            ft_putchars((int)config->str[i]);
             i++;
         }
         config->c++;
@@ -421,7 +381,7 @@ void    print_char(t_config *config)
     else
     {
         config->str[config->c] = config->buff;
-        ft_putchar((int)config->buff);
+        ft_putchars((int)config->buff);
         config->c++;
         config->len = config->c;
     }
@@ -435,7 +395,7 @@ void    get_cursor_pos(t_config *config)
     char    buff[20];
 
     i = 0;
-    bzero(buff, sizeof(char) * 20);
+    ft_bzero(buff, sizeof(char) * 20);
     dprintf(2, "\e[6n");
     read(2, buff, sizeof(buff));
     while (buff[i] < '0' || buff[i] > '9')
@@ -505,18 +465,37 @@ void    display_history(t_config *config, int dir)
         config->len = ft_strlen(config->str);
         config->c = config->len;
         dprintf(0, "%s", config->str);
+
+        /*tputs(tgoto(config->cursor, config->o_x, config->o_y), 0, ft_putchars);
+        tputs(tgetstr("cd", NULL), 0, ft_putchars);
+        ft_strcpy(config->str, config->history->data);
+        config->len = ft_strlen(config->str);
+        config->c = config->len;
+        ft_putstr_fd(config->str, 0);*/
         display_cursor(config);
     }
+}
+
+void    newline_config(t_config *config)
+{
+    if (config->y == config->height - 1)
+    {
+        tputs(tgetstr("sf", 0), 0, ft_putchars);
+        config->o_y--;
+    }
+    else
+        config->y++;
+    tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchars);
 }
 
 void    re_init_shell(t_config *config)
 {
     config = add_history(config);
-    bzero(config->str, config->len * sizeof(char));
+    ft_bzero(config->str, config->len * sizeof(char));
     config->c = 0;
     config->buff = 0;
     config->len = 0;
-    dprintf(0, "\nminishell~>");
+    ft_putstr_fd("minishell~>", 0);
     get_cursor_pos(config);
     display_cursor(config);
 }
@@ -530,9 +509,9 @@ void    paste_control(t_config *config)
     ft_memcpy(config->str + config->c, config->control.str, config->control.len);
     config->len += config->control.len;
     i = config->c - 1;
-    tputs(tgetstr("cd", NULL), 0, ft_putchar);
+    tputs(tgetstr("cd", NULL), 0, ft_putchars);
     while(++i < config->len)
-        ft_putchar((int)config->str[i]);
+        ft_putchars((int)config->str[i]);
     config->c += config->control.len;
     display_cursor(config);
 }
@@ -608,8 +587,6 @@ void    handle_btns(t_config *config)
     }
     else if (config->buff == BCK_SP)
         delete_char(config);
-    else if (config->buff == ENTER_BTN)
-        re_init_shell(config);
 }
 
 void    handle_keys(t_config *config)
@@ -638,7 +615,7 @@ void    init_config_data(t_config *config)
 {
     config->len = 0;
     config->str = malloc(sizeof(char) * 512);
-    bzero(config->str, sizeof(char) * 512);
+    ft_bzero(config->str, sizeof(char) * 512);
     config->buff = 0;
     config->history = malloc(sizeof(t_history));
     config->history->prev = NULL;
@@ -675,92 +652,87 @@ void    end_terminal(t_config *config)
         printf("this is an error");
 }
 
-int main(void)
-{
-    t_config config;
+// int main(void)
+// {
+//     t_config config;
     
-    // term_type = getenv("TERM");
-    // ret = tgetent(NULL, term_type);
-    // if (ret < 1)
-    //     printf("this is an error");
+//     // term_type = getenv("TERM");
+//     // ret = tgetent(NULL, term_type);
+//     // if (ret < 1)
+//     //     printf("this is an error");
     
-    // if (tcgetattr(0, &config.term) == -1)
-    //     return (-1);
-    
-    
-    // config.term.c_lflag &= ~(ICANON | ECHO);
-    // config.cursor = tgetstr("cm", NULL);
-    // config.term.c_lflag &= ~(ISIG); // remove control+c...
-
-    // if (tcsetattr(0, 0, &config.term) == -1)
-	// 		return (-1);
-    init_config(&config);
-    dprintf(0, "minishell~>");
-    init_config_data(&config);
-    // config.c = 0;
-    // config.len = 0;
-    // config.str = malloc(sizeof(char) * 512);
-    // bzero(config.str, sizeof(char) * 512);
-    // config.buff = 0;
-    // config.history = malloc(sizeof(t_history));
-    // config.history->prev = NULL;
-    // config.history->next = NULL;
-    // config.width = tgetnum("co");
-    // config.height = tgetnum("li");
+//     // if (tcgetattr(0, &config.term) == -1)
+//     //     return (-1);
     
     
-    // get_cursor_pos(&config);
-    // config.x = config.o_x;
-    // config.y = config.o_y;
-    // move_cursor(&config, 0);
-    int stop = 0;
-    while (!stop)
-    {
-        read(0, &config.buff, sizeof(&config.buff));
-        // dprintf(0, "%ld\n", config.buff);
-        // check_scroll(&config);
-        handle_keys(&config);
-        if (ft_isprint(config.buff))
-            print_char(&config);
-        if (config.buff == 4)
-        {
-            ft_putchar('\n');
-            stop = 1;
-        }
-        // if (strncmp(read_buffer, ku, strlen(ku)) == 0)
-        // {
-        //     printf("keyup\n");
-        //     stop = 1;
-        // }
-        // else if (x == 5)
-        // {
-        //     x--;
-        //     // putchar('\n');
-        //     tputs(tgoto(cursor, x, y), 1, putchar);
-        // }
-        // // else if (x == 5)
-        // // {
-        // //     // dprintf(2, "left\n");
-        // //     putchar('\n');
-        // //     x = 0;
-        // //     y++;
-        // //     tputs(tgoto(tgetstr("cm", NULL), x, y), 1, putchar);
-        // // } 
-        // else if (ft_isprint(read_buffer[0]))
-        // {            
-        //     x++;
-        //     putchar(read_buffer[0]);
-        //     // tputs(read_buffer, 1, putchar);
-            // tputs(tgoto(cursor, x, y), 1, putchar);
-        // }
-        // fflush(stdout);
-        config.buff = 0;
-    }
-    end_terminal(&config);
-    return (0);
-}
+//     // config.term.c_lflag &= ~(ICANON | ECHO);
+//     // config.cursor = tgetstr("cm", NULL);
+//     // config.term.c_lflag &= ~(ISIG); // remove control+c...
 
-
-
-
-
+//     // if (tcsetattr(0, 0, &config.term) == -1)
+// 	// 		return (-1);
+//     init_config(&config);
+//     dprintf(0, "minishell~>");
+//     init_config_data(&config);
+//     // config.c = 0;
+//     // config.len = 0;
+//     // config.str = malloc(sizeof(char) * 512);
+//     // bzero(config.str, sizeof(char) * 512);
+//     // config.buff = 0;
+//     // config.history = malloc(sizeof(t_history));
+//     // config.history->prev = NULL;
+//     // config.history->next = NULL;
+//     // config.width = tgetnum("co");
+//     // config.height = tgetnum("li");
+    
+    
+//     // get_cursor_pos(&config);
+//     // config.x = config.o_x;
+//     // config.y = config.o_y;
+//     // move_cursor(&config, 0);
+//     int stop = 0;
+//     while (!stop)
+//     {
+//         read(0, &config.buff, sizeof(&config.buff));
+//         // dprintf(0, "%ld\n", config.buff);
+//         // check_scroll(&config);
+//         handle_keys(&config);
+//         if (ft_isprint(config.buff))
+//             print_char(&config);
+//         if (config.buff == 4)
+//         {
+//             ft_putchars('\n');
+//             stop = 1;
+//         }
+//         // if (strncmp(read_buffer, ku, strlen(ku)) == 0)
+//         // {
+//         //     printf("keyup\n");
+//         //     stop = 1;
+//         // }
+//         // else if (x == 5)
+//         // {
+//         //     x--;
+//         //     // putchar('\n');
+//         //     tputs(tgoto(cursor, x, y), 1, putchar);
+//         // }
+//         // // else if (x == 5)
+//         // // {
+//         // //     // dprintf(2, "left\n");
+//         // //     putchar('\n');
+//         // //     x = 0;
+//         // //     y++;
+//         // //     tputs(tgoto(tgetstr("cm", NULL), x, y), 1, putchar);
+//         // // } 
+//         // else if (ft_isprint(read_buffer[0]))
+//         // {            
+//         //     x++;
+//         //     putchar(read_buffer[0])q;
+//         //     // tputs(read_buffer, 1, putchar);
+//             // tputs(tgoto(cursor, x, y), 1, putchar);
+//         // }
+//         // fflush(stdout);
+//         config.buff = 0;
+//     }
+//     end_terminal(&config);
+//     return (0);
+// }

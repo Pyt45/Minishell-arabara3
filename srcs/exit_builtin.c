@@ -9,15 +9,9 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 
 	tstatus = 0;
 	if (cmds->args[1] != NULL)
-        tstatus = ft_fatoi(cmds->args[1]);
-    status = ft_fatoi(cmds->args[1]);
-    if (status != tstatus)
-    {
-        ft_putstr_fd("Invalid argument to exit\n", 2);
-        exit(128);
-    }
-    else
-        exit(status);
+        status = ft_atoi(cmds->args[1]);
+    end_terminal(&shell->config);
+    exit(status);
     //ft_free_arr(shell->env);
     return (1);
 }
