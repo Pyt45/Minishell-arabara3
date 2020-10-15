@@ -93,8 +93,8 @@ char	**ft_setenv(char *var, char *path, char **env)
 		env[i] = record;
 		//printf("%s\n", env[i]);
 	}
-	/* else
-		return (ft_add_to_arr()); */
+	else
+		return (ft_add_to_arr(record, env));
 	return (env);	
 }
 

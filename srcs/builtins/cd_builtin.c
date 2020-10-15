@@ -3,9 +3,11 @@
 int     cd_builtin(t_shell *shell, t_cmds *cmds)
 {
 	char	*path;
-	//char	*path1;
-	//int		i;
+	char	*home_dir;
+	char	*new_pwd;
+	char	*old_pwd;
 
+	old_pwd = getcwd(NULL, 0);
     if (cmds->args[1] != NULL)
     {
 		path = cmds->args[1];
@@ -15,22 +17,28 @@ int     cd_builtin(t_shell *shell, t_cmds *cmds)
 				ft_putstr_fd("Error: file or dir not exist\n", 2);
 		}
 		else
-			if (chdir(path) != 0)
-				ft_putstr_fd("Error: file or dir not exist\n", 2);
+		{
+			if (path[0] == '~' && path[1] == '/')
+			{
+				home_dir = ft_strdup(get_home_dir(shell));
+				path = ft_strcat(home_dir, path + 1);
+				if (path != NULL && chdir(path) != 0)
+					ft_putstr_fd("999 - Error: file or dir not exist\n", 2);
+			}
+			else
+			{
+				if (chdir(path) != 0)
+					ft_putstr_fd("999 - Error: file or dir not exist\n", 2);
+			}
+		}
     }
 	else
 	{
 		if ((path = get_home_dir(shell)) != NULL && chdir(path) != 0)
 			ft_putstr_fd("Error: file or dir not exist\n", 2);
 	}
-	/* if ((i = ft_getenv("PWD", shell->env)))
-	{
-		if (!(path1 = (char *)malloc(sizeof(char) * (ft_strlen(shell->env[i]) + ft_strlen(path) + 6))))
-			return (-1);
-		path1 = shell->env[i] + 4;
-		ft_strcat(path1, "/");
-		ft_strcat(path1, path);
-	} */
-	shell->env = ft_setenv("PWD", path, shell->env);
+	shell->env = ft_setenv("OLDPWD", old_pwd, shell->env);
+	new_pwd = getcwd(NULL, 0);
+	shell->env = ft_setenv("PWD", new_pwd, shell->env);
 	return (1);
 }
