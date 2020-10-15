@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 10:50:30 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/14 13:47:45 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/15 09:28:40 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@
 
 typedef struct		s_cmds
 {
-	int				start;
-	int				end;
-	int				p;
-	int				s;
+	int				start;    //start command
+	int				end;      // end command
+	int				p;         //pipes
+	int				s;		   //splits ??
 	int				append;
 	char			*cmd;
 	char			**args;

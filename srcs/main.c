@@ -24,14 +24,10 @@ void	free_shell(t_shell *shell)
 	shell->cmds = NULL;
 }
 
-
-
 int		command_line(t_shell *shell)
 {
-	int			r;
-	int			status;
+	int		status;
 
-	r = 1;
 	status = 1;
 	init_config(&shell->config);
 	ft_putstr_fd("minishell~>", 1);
@@ -51,9 +47,6 @@ int		command_line(t_shell *shell)
 			if (status)
         		re_init_shell(&shell->config);
     	}
-		// r = get_next_line(0, &shell->line);
-		// if (ft_strlen(shell->line))
-		// 	status = run_commands(shell);
 		//free_shell(shell);
 		shell->config.buff = 0;
 	}
