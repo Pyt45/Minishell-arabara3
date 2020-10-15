@@ -23,12 +23,12 @@ int     cd_builtin(t_shell *shell, t_cmds *cmds)
 				home_dir = ft_strdup(get_home_dir(shell));
 				path = ft_strcat(home_dir, path + 1);
 				if (path != NULL && chdir(path) != 0)
-					ft_putstr_fd("999 - Error: file or dir not exist\n", 2);
+					ft_putstr_fd("Error: file or dir not exist\n", 2);
 			}
 			else
 			{
 				if (chdir(path) != 0)
-					ft_putstr_fd("999 - Error: file or dir not exist\n", 2);
+					ft_putstr_fd("Error: file or dir not exist\n", 2);
 			}
 		}
     }
