@@ -281,7 +281,6 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 				{
 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
 					{
-						if ()
 						printf("Error: %d | %s\n", errno, strerror(errno));
 						perror(cmds->cmd);
 						// ft_putstr(strerror(errno));

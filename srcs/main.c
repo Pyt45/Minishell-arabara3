@@ -55,8 +55,10 @@ int		command_line(t_shell *shell)
 
 void	sig_handle_ctrl_c(int signal)
 {
-	if (signal)
-		exit(EXIT_FAILURE);
+	/* if (signal)
+		exit(EXIT_FAILURE); */
+		kill(0, SIGINT);
+		//signal ( SIGINT , sig_handle_ctrl_c);
 }
 
 int     main(int argc, char **argv, char **envp)
