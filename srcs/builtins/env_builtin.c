@@ -1,4 +1,5 @@
-#include "../includes/shell.h"
+#include "../../includes/shell.h"
+
 
 
 int     env_builtin(t_cmds *cmd, char **env)

@@ -1,4 +1,5 @@
 #include "../includes/shell.h"
+#include <signal.h>
 
 void	free_shell(t_shell *shell)
 {
@@ -22,21 +23,39 @@ void	free_shell(t_shell *shell)
 	}
 	shell->cmds = NULL;
 }
+
+
+
 int		command_line(t_shell *shell)
 {
-	int		r;
-	int		status;
+	int			r;
+	int			status;
 
 	r = 1;
 	status = 1;
-	
+	init_config(&shell->config);
+	ft_putstr_fd("minishell~>", 1);
+	init_config_data(&shell->config);
 	while (status)
 	{
-		ft_putstr_fd("minishell~>", 1);
-		r = get_next_line(0, &shell->line);
-		if (ft_strlen(shell->line))
-			status = run_commands(shell);
+		read(0, &shell->config.buff, sizeof(&shell->config.buff));
+		handle_keys(&shell->config);
+		if (ft_isprint(shell->config.buff))
+            print_char(&shell->config);
+		if (shell->config.buff == ENTER_BTN)
+    	{
+			shell->line = shell->config.str;
+			newline_config(&shell->config);
+			if (ft_strlen(shell->line))
+				status = run_commands(shell);
+			if (status)
+        		re_init_shell(&shell->config);
+    	}
+		// r = get_next_line(0, &shell->line);
+		// if (ft_strlen(shell->line))
+		// 	status = run_commands(shell);
 		//free_shell(shell);
+		shell->config.buff = 0;
 	}
 	return (status);
 }
@@ -53,12 +72,12 @@ int     main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
 
+	signal(SIGINT, SIG_IGN);
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);
 		signal(SIGINT, sig_handle_ctrl_c);
-		while (command_line(&shell))
-			;
+		command_line(&shell);
 	}
     return (0);
 }

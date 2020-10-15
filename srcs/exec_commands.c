@@ -45,7 +45,7 @@ int		*pipe_fds(int num_pipe, int *fds)
 	int i;
 
 	i = 0;
-	fds = malloc(sizeof(int) * (2 * num_pipe));
+	fds = malloc(sizeof(int) * 2 * num_pipe);
 	while (i < num_pipe)
 	{
 		if (pipe(fds + i * 2) < 0)
@@ -226,6 +226,44 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
 				for (i = 0; i < 2 * num_pipe; i++)
 					close(fds[i]);
+				/*if (cmds->append)
+				{
+					if (!cmds->prev || cmds->prev->append == 0)
+					{
+						// run exec
+					}
+					else
+					{
+						// open fd , print f 1
+					}
+
+					// printf("CMD=%s ARG0=%s ARG1=%s\n", cmds->cmd, cmds->args[0], cmds->args[1]);
+					// printf("CMD=%s ARG0=%s ARG1=%s\n", cmds->next->cmd, cmds->next->args[0], cmds->next->args[1]);
+				}
+				else if (cmds->prev && cmds->prev->append)
+				{
+
+					//printf("CMD=%s ARG1=%s ARG2=%s\n", cmds->cmd, cmds->args[0], cmds->args[1]);
+				}
+				else
+				{
+					char *s = get_bin_path(cmds->cmd, shell->env);
+					// printf("PATH: %s\n", s);
+					if (!exec_commands(shell, cmds) && execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
+					{
+						perror("cmd");
+						printf("ERR %d\n", errno);
+						// exit(get_error_num(errno));
+						exit(0);
+					}
+				}
+				exit(EXIT_SUCCESS);
+			}
+			else if (pid < 0)
+			{
+				perror("Error");
+				exit(EXIT_FAILURE);
+			}*/
 				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 				{
 					ior[0] = 0;
@@ -241,6 +279,12 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 				}
 				else
 				{
+					int j = 0;
+					while(cmds->args[j])
+					{
+						printf("ARG %d : %s \n--------------------\n", j, cmds->args[j]);
+						j++;
+					}
 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
 					{
 						perror("cmd");

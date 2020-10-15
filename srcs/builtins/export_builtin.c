@@ -1,5 +1,6 @@
 
-#include "../includes/shell.h"
+#include "../../includes/shell.h"
+
 
 int     export_builtin(t_shell *shell, t_cmds *cmds)
 {
