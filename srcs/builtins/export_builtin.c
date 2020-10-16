@@ -12,7 +12,7 @@ int     export_builtin(t_shell *shell, t_cmds *cmds)
 		shell->env = ft_export_cmd(shell, cmds->args[i]);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 char	**ft_export_cmd(t_shell *shell, char *value)

@@ -28,6 +28,7 @@ typedef struct		s_cmds
 	char			*cmd;
 	char			**args;
 	int				ret;
+	// int				quoted;  //for single 1 or double 2
 	struct s_cmds	*prev;
 	struct s_cmds	*next;
 }					t_cmds;

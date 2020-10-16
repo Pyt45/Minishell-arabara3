@@ -12,5 +12,5 @@ int     env_builtin(t_cmds *cmd, char **env)
     }
 	else
    		ft_print_env_arr(env);
-    return (1);
+    return (0);
 }

@@ -1,8 +1,5 @@
 #include "../../includes/shell.h"
 
-
-
-
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
     double  tstatus;
@@ -14,5 +11,5 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
     end_terminal(&shell->config);
     exit(status);
     //ft_free_arr(shell->env);
-    return (1);
+    return (0);
 }

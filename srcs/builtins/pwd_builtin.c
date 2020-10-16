@@ -15,5 +15,5 @@ int		pwd_builtin()
 		ft_putstr_fd("\n", 1);
 		free(buff);
 	}
-	return (1);
+	return (0);
 }

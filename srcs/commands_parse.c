@@ -56,6 +56,67 @@ char    **get_args(char *str, int n)
     return (NULL);
 }
 
+int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
+
+    (*cmds)->cmd = get_cmd(tmp + pos, i - pos);
+    (*cmds)->args = get_args(tmp + pos, i - pos);
+    // debug_cmd(cmds, i, pos, tmp[i]);
+    // cmds->p = 1;
+    if (!(*cmds)->prev)
+        (*cmds)->start = 1;
+    (*cmds)->next = init_cmds(*cmds);
+    (*cmds) = (*cmds)->next;
+    pos = i + 1;
+    return (pos);
+}
+
+int         parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
+{
+    int j;
+
+    if (tmp[i + 1] == '\0' && tmp[i] != ';')
+        j = 1;
+    (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
+    (*cmds)->args = get_args(tmp + pos, i - pos + j);
+    // debug_cmd((*cmds), i, pos, tmp[i]);
+    if (!(*cmds)->prev)
+        (*cmds)->start = 1;
+    (*cmds)->end = 1;
+    if (tmp[i + 1] != '\0')
+    {
+        (*cmds)->next = init_cmds(*cmds);
+        (*cmds) = (*cmds)->next;
+    }
+    pos = i + 1;
+    return (pos);
+}
+
+int        parse_redirections(t_cmds **cmds, int i, int pos,char *tmp){
+    (*cmds)->cmd = get_cmd(tmp + pos, i - pos);
+    (*cmds)->args = get_args(tmp + pos, i - pos);
+    // debug_cmd(cmds, i, pos, tmp[i]);
+    if (!(*cmds)->prev)
+        (*cmds)->start = 1;
+    if (tmp[i] == '>')
+        (*cmds)->append = 1;
+    else if (tmp[i] == '<')
+        (*cmds)->append = -1;
+    if (tmp[i + 1] == '>')
+    {
+        (*cmds)->append++;
+        i++;
+    }
+    else if (tmp[i + 1] == '<')
+    {
+        (*cmds)->append--;
+        i++;
+    }
+    (*cmds)->next = init_cmds((*cmds));
+    (*cmds) = (*cmds)->next;
+    pos = i + 1;
+    return (pos);
+}
+
 t_shell     *parse_commands(t_shell *shell)
 {
     t_cmds      *cmds;
@@ -64,7 +125,6 @@ t_shell     *parse_commands(t_shell *shell)
     char        *tmp;
     int         j;
     
-
     pos = 0;
     i = 0;
     tmp = shell->line;
@@ -75,77 +135,78 @@ t_shell     *parse_commands(t_shell *shell)
         j = 0;
         if (tmp[i] == '|')
         {
-            cmds->cmd = get_cmd(tmp + pos, i - pos);
-            cmds->args = get_args(tmp + pos, i - pos);
-            // printf("POS:%d | I=%d\n", pos, i);
-            // printf("CMD: %s|\n", cmds->cmd);
-            // printf("ARG0: %s|\n", cmds->args[0]);
-            // printf("ARG1: %s|\n---------------------------\n", cmds->args[1]);
-            // while (cmds->args[j])
-                // printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j++]);
-            // cmds->p = 1;
-            if (!cmds->prev)
-                cmds->start = 1;
-            cmds->next = init_cmds(cmds);
-            //printf("%s\n", cmds->next->prev->cmd);
-            cmds = cmds->next;
-            pos = i + 1;
+            // cmds->cmd = get_cmd(tmp + pos, i - pos);
+            // cmds->args = get_args(tmp + pos, i - pos);
+            // // debug_cmd(cmds, i, pos, tmp[i]);
+
+            // // cmds->p = 1;
+            // if (!cmds->prev)
+            //     cmds->start = 1;
+            // cmds->next = init_cmds(cmds);
+            // //printf("%s\n", cmds->next->prev->cmd);
+            // cmds = cmds->next;
+            // pos = i + 1;
+            pos = parse_pipes(&cmds, i, pos, tmp);
         }
         else if (tmp[i] == ';' || tmp[i + 1] == '\0')
         {
-            if (tmp[i + 1] == '\0' && tmp[i] != ';')
-                j = 1;
-            cmds->cmd = get_cmd(tmp + pos, i - pos + j);
-            cmds->args = get_args(tmp + pos, i - pos + j);
-            // cmds->s = 1;
-            // printf("CHAR: %c | POS:%d | I=%d\n", tmp[i], pos, i);
-            // printf("CMD: %s|\n", cmds->cmd);
-            // j = 0;
-            // while (cmds->args[j]){
-            //     printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-            //     j++;
+            // if (tmp[i + 1] == '\0' && tmp[i] != ';')
+            //     j = 1;
+            // cmds->cmd = get_cmd(tmp + pos, i - pos + j);
+            // cmds->args = get_args(tmp + pos, i - pos + j);
+            // // debug_cmd(cmds, i, pos, tmp[i]);
+            // if (!cmds->prev)
+            //     cmds->start = 1;
+            // cmds->end = 1;
+            // if (tmp[i + 1] != '\0')
+            // {
+            //     cmds->next = init_cmds(cmds);
+            //     cmds = cmds->next;
             // }
-            if (!cmds->prev)
-                cmds->start = 1;
-            cmds->end = 1;
-            if (tmp[i + 1] != '\0')
-            {
-                cmds->next = init_cmds(cmds);
-                cmds = cmds->next;
-            }
-            pos = i + 1;
+            // pos = i + 1;
+            pos = parse_semicolons(&cmds, i, pos, tmp);
         }
         else if (tmp[i] == '>' || tmp[i] == '<')
         {
-            cmds->cmd = get_cmd(tmp + pos, i - pos);
-            cmds->args = get_args(tmp + pos, i - pos);
-            // printf("POS:%d | I=%d\n", pos, i);
-            // printf("CMD: %s|\n", cmds->cmd);
-            // printf("ARG0: %s|\n", cmds->args[0]);
-            // printf("ARG1: %s|\n--------------------------\n", cmds->args[1]);
-            if (!cmds->prev)
-                cmds->start = 1;
-            if (tmp[i] == '>')
-                cmds->append = 1;
-            else if (tmp[i] == '<')
-                cmds->append = -1;
-            if (tmp[i + 1] == '>')
-            {
-                cmds->append++;
-                i++;
-            }
-            else if (tmp[i + 1] == '<')
-            {
-                cmds->append--;
-                i++;
-            }
-            pos = i + 1;
-            cmds->next = init_cmds(cmds);
-            cmds = cmds->next;
+            // cmds->cmd = get_cmd(tmp + pos, i - pos);
+            // cmds->args = get_args(tmp + pos, i - pos);
+            // // debug_cmd(cmds, i, pos, tmp[i]);
+            // if (!cmds->prev)
+            //     cmds->start = 1;
+            // if (tmp[i] == '>')
+            //     cmds->append = 1;
+            // else if (tmp[i] == '<')
+            //     cmds->append = -1;
+            // if (tmp[i + 1] == '>')
+            // {
+            //     cmds->append++;
+            //     i++;
+            // }
+            // else if (tmp[i + 1] == '<')
+            // {
+            //     cmds->append--;
+            //     i++;
+            // }
+            // pos = i + 1;
+            // cmds->next = init_cmds(cmds);
+            // cmds = cmds->next;
+            pos = parse_redirections(&cmds, i, pos, tmp);
         }
         i++;
     }
     return (shell);
+}
+
+void    debug_cmd(t_cmds *cmds, int i, int pos, char c){
+    int j;
+
+    printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
+    printf("CMD: %s|\n", cmds->cmd);
+    j = 0;
+    while (cmds->args[j]){
+        printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
+        j++;
+    }
 }
 
 // --------------- TEST -------------------

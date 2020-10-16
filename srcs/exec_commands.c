@@ -234,7 +234,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
        ret = echo_builtin(cmds, shell->env, shell->ret);
 	else
 		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
-	printf("exec ret: %d \n", ret);
+	// printf("exec ret: %d \n", ret);
     return (0);
 }
 
@@ -406,12 +406,18 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
     return (cmds);
 }
 
+void	clear_quotes(t_cmds *cmds)
+{
+
+}
+
 int		run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
 
 	shell = parse_commands(shell);
 	cmds = shell->cmds;
+	clear_quotes(cmds);
 	while (cmds)
 	{
 		//save_restor_fd(1,0);
