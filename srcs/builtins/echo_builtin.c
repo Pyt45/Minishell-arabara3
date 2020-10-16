@@ -253,7 +253,6 @@ char    *parse_variable_name(char *str, int pos, int len){
     strlcpy(var, str, len);
     return var;
 }
-
 int     is_env_var(char *str)
 {
     int     i;
@@ -261,6 +260,7 @@ int     is_env_var(char *str)
     int     quote;
     int     var;
     int     clear;
+    char    *tmp;
 
     i = 0;
     j = 0;
@@ -273,8 +273,10 @@ int     is_env_var(char *str)
         {   
             if (quote != 1 && var != -1 && (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i + 1] == '\0'))
             {
-                printf("VAR: %s\n", parse_variable_name(str + var + 1, 0, i - var + 1));
-                str = replace_var_string();
+                tmp = parse_variable_name(str + var + 1, 0, i - var + 1);
+                printf("VAR: %s\n", tmp);
+                str = replace_var_string(str, var, tmp, &i, i - var);
+                printf("STR: %s\n", str);
                 var = -1;
             }
             if (str[i] == '\'' && !quote)
