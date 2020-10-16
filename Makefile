@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/15 09:45:22 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/15 11:09:32 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,14 @@ SRC = srcs/utils.c \
 		srcs/exec_commands.c \
 		srcs/commands_parse.c \
 		srcs/handle_path.c \
+		srcs/errors/errors.c \
 		srcs/builtins/cd_builtin.c \
 		srcs/builtins/echo_builtin.c \
 		srcs/builtins/env_builtin.c \
 		srcs/builtins/exit_builtin.c \
 		srcs/builtins/pwd_builtin.c \
 		srcs/builtins/unset_builtin.c \
-		srcs/builtins/export_builtin.c
+		srcs/builtins/export_builtin.c \
 
 LIBFT = ./libft
 
