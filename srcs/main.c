@@ -53,12 +53,9 @@ int		command_line(t_shell *shell)
 	return (status);
 }
 
-void	sig_handle_ctrl_c(int signal)
+void	sig_handle_ctrl_c()
 {
-	/* if (signal)
-		exit(EXIT_FAILURE); */
-		kill(0, SIGINT);
-		//signal ( SIGINT , sig_handle_ctrl_c);
+		signal(SIGINT, sig_handle_ctrl_c);
 }
 
 int     main(int argc, char **argv, char **envp)
@@ -69,7 +66,7 @@ int     main(int argc, char **argv, char **envp)
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);
-		signal(SIGINT, sig_handle_ctrl_c);
+		//signal(SIGINT, &sig_handle_ctrl_c);		
 		command_line(&shell);
 	}
     return (0);

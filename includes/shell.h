@@ -124,7 +124,7 @@ char				**ft_arrdup(char **arr);
 void				ft_print_env_arr(char **arr);
 int					ft_free_arr(char **arr);
 int					env_builtin(t_cmds *cmd, char **env);
-void				sig_handle_ctrl_c(int signal);
+void				sig_handle_ctrl_c();
 char				**ft_setenv(char *var, char *path, char **env);
 int					pwd_builtin();
 char				**ft_export_cmd(t_shell *shell, char *value);

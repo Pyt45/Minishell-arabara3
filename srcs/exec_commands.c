@@ -222,7 +222,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 			pid = fork();
 			if (pid == 0)
 			{
-
+				signal(SIGINT, sig_handle_ctrl_c);
 				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
 				for (i = 0; i < 2 * num_pipe; i++)
 					close(fds[i]);
@@ -271,7 +271,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 					exec_io_redi(cmds, ior[0], ior[1], shell);
 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
 					{
-						perror("cmd1");
+						perror(cmds->cmd);
 						//exit(EXIT_FAILURE);
 					}
 					close(ior[1]);
@@ -281,7 +281,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 				{
 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
 					{
-						printf("Error: %d | %s\n", errno, strerror(errno));
+						//printf("Error: %d | %s\n", errno, strerror(errno));
 						perror(cmds->cmd);
 						// ft_putstr(strerror(errno));
 						exit(EXIT_FAILURE);
@@ -294,6 +294,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 				perror("Error");
 				exit(EXIT_FAILURE);
 			} */
+			
 			if (cmds->end)
 				break;
 			else
