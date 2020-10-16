@@ -19,6 +19,17 @@ static void	ft_putnstr(char *str, int n)
 	}
 }
 
+int     is_quote(char c, int type)
+{
+    if (type == 1 && c == '\'')
+        return (1);
+    if (type == 2 && c == '\"')
+        return (1);
+    if (type == 0 && (c == '\'' || c == '\"'))
+        return (1);
+    return (0);
+}
+
 static int	parse_quotes(char **str)
 {
     int     s_with;
@@ -27,11 +38,11 @@ static int	parse_quotes(char **str)
     int     len;
 
     quote = 0;
-    quote = IS_S_QUOTE(*str[0]);
-    quote = IS_D_QUOTE(*str[0]) ? 2 : quote;
-    s_with = IS_QUOTE(*str[0]);
+    quote = is_quote(*str[0], 1);
+    quote = is_quote(*str[0], 2) ? 2 : quote;
+    s_with = is_quote(*str[0], 0);
 	len = (int)ft_strlen(*str);
-    e_with = IS_QUOTE((*str)[len - 1]);
+    e_with = is_quote((*str)[len - 1], 0);
     if (s_with)
         (*str)++;
     if (e_with)
@@ -55,7 +66,7 @@ char	*parse_variable(char *arg, char **env, int ret)
     i = 0;
     pos = 0;
     path = NULL;
-    while(arg[i] && !IS_QUOTE(arg[i]))
+    while(arg[i] && !is_quote(arg[i], 0))
     {
         if (arg[i] == '$' && arg[i + 1])
             pos = i + 1;

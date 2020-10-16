@@ -44,11 +44,11 @@
 // }
 
 
-int		move_to_dir(char *path)
+int		move_to_dir(char *path, t_shell *shell)
 {
-	if (!path)
+	if (!path && (path = get_home_dir(shell)) != NULL && chdir(path))
 		return (0);
-	if (!chdir(path))
+	if (chdir(path))
 		return (0);
 	return (1);
 }
@@ -59,36 +59,9 @@ int     cd_builtin(t_shell *shell, t_cmds *cmds)
 	char	*pwd;
 	int		ret;
 
-	pwd = getcwd(NULL, 0);
-    // if (cmds->args[1] != NULL)
-    // {
-	// 	path = cmds->args[1];
-	// 	if (!ft_strcmp(path, "~"))
-	// 	{
-	// 		if ((path = get_home_dir(shell)) != NULL && chdir(path) != 0)
-	// 			print_error(path, 2, 0);
-	// 	}
-	// 	else
-	// 	{
-	// 		if (path[0] == '~' && path[1] == '/')
-	// 		{
-	// 			path = ft_strcat(get_home_dir(shell), path + 1);
-	// 			if (path != NULL && chdir(path) != 0)
-	// 				print_error(path, 2, 0);
-	// 		}
-	// 		else
-	// 		{
-	// 			if (chdir(path) != 0)
-	// 				print_error(path, 2, 0);
-	// 		}
-	// 	}
-    // }
-	// else
-	// {
-	// 	if ((path = get_home_dir(shell)) != NULL && chdir(path) != 0)
-	// 		print_error(path, 2, 0);
-	// }
 	ret = 0;
+	path = NULL;
+	pwd = getcwd(NULL, 0);
 	if (cmds->args[1] != NULL)
 	{
 		path = cmds->args[1];
@@ -96,10 +69,10 @@ int     cd_builtin(t_shell *shell, t_cmds *cmds)
 			path = get_home_dir(shell);
 		else if (path[0] == '~' && path[1] == '/')
 			path = ft_strcat(get_home_dir(shell), path + 1);
-		ret = move_to_dir(path);
-		if (ret)
-			print_error(path, 2, 0);
 	}
+	ret = move_to_dir(path, shell);
+	if (ret == 0)
+		print_error(path, 2, 0);
 	shell->env = ft_setenv("OLDPWD", pwd, shell->env);
 	pwd = getcwd(NULL, 0);
 	shell->env = ft_setenv("PWD", pwd, shell->env);

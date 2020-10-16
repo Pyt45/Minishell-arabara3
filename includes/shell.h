@@ -74,10 +74,6 @@ typedef struct		s_history
 	struct s_history	*next;
 }					t_history;
 
-# define IS_S_QUOTE(x) (x == '\'')
-# define IS_D_QUOTE(x) (x == '\"')
-# define IS_QUOTE(x) (x == '"' || x == '\'')
-
 # define ARRW_LEFT 4479771
 # define ARRW_RIGHT 4414235
 # define ALT_LEFT 25115
