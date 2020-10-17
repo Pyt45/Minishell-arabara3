@@ -73,7 +73,7 @@ int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos);
     (*cmds)->args = get_args(tmp + pos, i - pos);
     // debug_cmd(cmds, i, pos, tmp[i]);
-    // cmds->p = 1;
+    (*cmds)->p = 1;
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
     (*cmds)->next = init_cmds(*cmds);
