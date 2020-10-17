@@ -1,2 +1,2 @@
 #!/bin/bash
-make && ./minishell
+make $1 && ./minishell
