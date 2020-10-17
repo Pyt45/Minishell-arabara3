@@ -1,6 +1,5 @@
 #include "../../includes/shell.h"
 
-
 int     unset_builtin(t_shell *shell, t_cmds *cmds)
 {
     int     i;
