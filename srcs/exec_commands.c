@@ -252,7 +252,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 	
 	//num_pipe = 1;
 	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
-	printf("%d\n", num_pipe);
+	// printf("%d\n", num_pipe);
 	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 	if ((cmds->next && !cmds->end) || !exec_commands(shell, cmds))
 	{
@@ -414,7 +414,6 @@ int		run_commands(t_shell *shell)
 
 	shell = parse_commands(shell);
 	cmds = shell->cmds;
-	// clear_quotes(cmds);
 	while (cmds)
 	{
 		//save_restor_fd(1,0);
