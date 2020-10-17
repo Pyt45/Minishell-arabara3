@@ -1,6 +1,18 @@
 
 #include "../includes/shell.h"
 
+void    debug_cmd(t_cmds *cmds, int i, int pos, char c){
+    int j;
+
+    printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
+    printf("CMD: %s|\n", cmds->cmd);
+    j = 0;
+    while (cmds->args[j]){
+        printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
+        j++;
+    }
+}
+
 t_cmds      *init_cmds(t_cmds   *prev)
 {
     t_cmds  *cmds;
@@ -74,6 +86,7 @@ int         parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
 {
     int j;
 
+    j = 0;
     if (tmp[i + 1] == '\0' && tmp[i] != ';')
         j = 1;
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
@@ -197,17 +210,7 @@ t_shell     *parse_commands(t_shell *shell)
     return (shell);
 }
 
-void    debug_cmd(t_cmds *cmds, int i, int pos, char c){
-    int j;
 
-    printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
-    printf("CMD: %s|\n", cmds->cmd);
-    j = 0;
-    while (cmds->args[j]){
-        printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-        j++;
-    }
-}
 
 // --------------- TEST -------------------
 
