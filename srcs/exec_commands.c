@@ -215,7 +215,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 {
 	int	ret;
 
-	ret = 0;
+	ret = 1;
 	if (!cmds->cmd)
 		return (0);
     if (!ft_strcmp(cmds->cmd, "env"))
@@ -231,11 +231,104 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     else if (!ft_strcmp(cmds->cmd, "unset"))
         ret = unset_builtin(shell, cmds);
     else if (!ft_strcmp(cmds->cmd, "echo"))
-       ret = echo_builtin(cmds, shell);
-	else
-		execve(get_bin_path(clear_quotes(cmds->cmd), shell->env), cmds->args, shell->env);
-	// printf("exec ret: %d \n", ret);
-    return (0);
+    	ret = echo_builtin(cmds, shell);
+	// else
+	// 	execve(get_bin_path(clear_quotes(cmds->cmd), shell->env), cmds->args, shell->env);
+    return (!ret);
+}
+
+
+t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp)
+{
+	pid_t	pid;
+	int 	status = 0;
+	char	*line;
+	char	*content;
+	int		r = 1;
+    int		i = 0;
+	int		*ior;
+	int		*fds;
+	int		j = 0;
+	
+	//num_pipe = 1;
+	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
+	printf("%d\n", num_pipe);
+	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+	if ((cmds->next && !cmds->end) || !exec_commands(shell, cmds))
+	{
+		fds = pipe_fds(num_pipe, fds);
+		j = 0;
+		while (cmds)
+		{
+			//save_restor_fd(1,0);
+			pid = fork();
+			if (pid == 0)
+			{
+				//signal(SIGINT, sig_handle_ctrl_c);
+				//signal(SIGQUIT, SIG_DFL);
+				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
+				for (i = 0; i < 2 * num_pipe; i++)
+					close(fds[i]);
+				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
+				{
+					ior[0] = 0;
+					ior[1] = fds[1];
+					exec_io_redi(cmds, ior[0], ior[1], shell);
+					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
+					{
+						print_error(cmds->cmd, errno, 1);
+						// exit(1);
+					}
+					close(ior[1]);
+					ior[1] = 1;
+				}
+				else if (cmds->args)
+				{
+					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
+					{
+						print_error(cmds->cmd, errno, 1);
+						exit(1);
+					}
+				}
+				exit(0);
+			}
+			/* else if (pid < 0)
+			{
+				perror("Error");
+				exit(EXIT_FAILURE);
+			} */
+			
+			if (cmds->end)
+				break;
+			else
+				cmds = cmds->next;
+			j += 2;
+			//save_restor_fd(0,1);
+		}
+		for (i = 0; i < 2 * num_pipe; i++)
+			close(fds[i]);
+		i = -1;
+		if (!num_pipe)
+			waitpid(pid, &status, 0);
+		else
+		{
+			while (++i < 2 * num_pipe)
+			{
+				wait(&status);
+			}
+		}
+		cmds->ret = status;
+		free(fds);
+	}
+    return (cmds);
+}
+
+void	close_pipes(int *fds, int num_pipe){
+	int	i;
+
+	i = 0;
+	while (i < 2 * num_pipe)
+		close(fds[i++]);
 }
 
 
@@ -254,9 +347,9 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 // 	//num_pipe = 1;
 // 	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
 // 	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
-// 	if ((cmds->next && !cmds->end) || !exec_commands(shell, cmds))
+// 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 // 	{
-// 		//fds = pipe_fds(num_pipe, fds);
+// 		fds = pipe_fds(num_pipe, fds);
 // 		j = 0;
 // 		while (cmds)
 // 		{
@@ -264,16 +357,14 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 // 			pid = fork();
 // 			if (pid == 0)
 // 			{
-
 // 				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
-// 				for (i = 0; i < 2 * num_pipe; i++)
-// 					close(fds[i]);
+// 				close_pipes(fds, num_pipe);
 // 				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 // 				{
 // 					ior[0] = 0;
 // 					ior[1] = fds[1];
 // 					exec_io_redi(cmds, ior[0], ior[1], shell);
-// 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
+// 					if (!exec_commands(shell, cmds))
 // 					{
 // 						print_error(cmds->cmd, errno, 1);
 // 						// exit(1);
@@ -281,13 +372,10 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 // 					close(ior[1]);
 // 					ior[1] = 1;
 // 				}
-// 				else if (cmds->args)
+// 				else if (cmds->args && exec_commands(shell, cmds))
 // 				{
-// 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
-// 					{
-// 						print_error(cmds->cmd, errno, 1);
-// 						exit(1);
-// 					}
+// 					print_error(cmds->cmd, errno, 1);
+// 					exit(1);
 // 				}
 // 				exit(0);
 // 			}
@@ -303,111 +391,22 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 // 			j += 2;
 // 			save_restor_fd(0,1);
 // 		}
-// 		for (i = 0; i < 2 * num_pipe; i++)
-// 			close(fds[i]);
+// 		close_pipes(fds, num_pipe);
 // 		i = -1;
 // 		if (!num_pipe)
 // 			waitpid(pid, &status, 0);
 // 		else
 // 		{
 // 			while (++i < 2 * num_pipe)
-// 			{
 // 				wait(&status);
-// 			}
 // 		}
 // 		cmds->ret = status;
 // 		free(fds);
+// 	} else {
+// 		cmds->ret = exec_commands(shell, cmds);
 // 	}
 //     return (cmds);
 // }
-
-void	close_pipes(int *fds, int num_pipe){
-	int	i;
-
-	i = 0;
-	while (i < 2 * num_pipe)
-		close(fds[i++]);
-}
-
-
-t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp)
-{
-	pid_t	pid;
-	int 	status = 0;
-	char	*line;
-	char	*content;
-	int		r = 1;
-    int		i = 0;
-	int		*ior;
-	int		*fds;
-	int		j = 0;
-	
-	//num_pipe = 1;
-	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
-	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
-	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
-	{
-		//fds = pipe_fds(num_pipe, fds);
-		j = 0;
-		while (cmds)
-		{
-			save_restor_fd(1,0);
-			pid = fork();
-			if (pid == 0)
-			{
-				signal(SIGINT, sig_handle_ctrl_c);
-				signal(SIGQUIT, SIG_DFL);
-				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
-				close_pipes(fds, num_pipe);
-				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
-				{
-					ior[0] = 0;
-					ior[1] = fds[1];
-					exec_io_redi(cmds, ior[0], ior[1], shell);
-					if (!exec_commands(shell, cmds))
-					{
-						print_error(cmds->cmd, errno, 1);
-						// exit(1);
-					}
-					close(ior[1]);
-					ior[1] = 1;
-				}
-				else if (cmds->args && !exec_commands(shell, cmds))
-				{
-					print_error(cmds->cmd, errno, 1);
-					exit(1);
-				}
-				exit(0);
-			}
-			/* else if (pid < 0)
-			{
-				perror("Error");
-				exit(EXIT_FAILURE);
-			} */
-			
-			if (cmds->end)
-				break;
-			else
-				cmds = cmds->next;
-			j += 2;
-			save_restor_fd(0,1);
-		}
-		close_pipes(fds, num_pipe);
-		i = -1;
-		if (!num_pipe)
-			waitpid(pid, &status, 0);
-		else
-		{
-			while (++i < 2 * num_pipe)
-				wait(&status);
-		}
-		cmds->ret = status;
-		free(fds);
-	} else {
-		cmds->ret = exec_commands(shell, cmds);
-	}
-    return (cmds);
-}
 
 int		run_commands(t_shell *shell)
 {

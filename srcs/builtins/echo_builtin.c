@@ -95,14 +95,9 @@ char    *parse_special_chars(char *str)
     {
 		if (is_quote(str[i], 0))
 			quote = 1;
-        if (str[i] == '\\')
+        if (str[i] == '\\' && !quote)
         {
             j = i;
-            if (quote)
-            {
-                str[j] = get_special_char(str[j + 1]);
-                j++;
-            }
             while (str[j])
             {
                 str[j] = str[j + 1];
