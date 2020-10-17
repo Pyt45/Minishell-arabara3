@@ -30,10 +30,6 @@ int     is_quote(char c, int type)
     return (0);
 }
 
-
-
-
-
 void    echo_print(char **str, int pos)
 {
     ft_putstr_fd(str[pos], 1);
@@ -69,11 +65,6 @@ char	*parse_variable(char *arg, char **env, int ret)
         return (ft_strjoin(arg, path));
     else
         return (arg);
-}
-
-char    *parse_variables(char *arg, char **env, int ret)
-{
-    
 }
 
 int     get_special_char(char c)
@@ -120,100 +111,122 @@ char    *parse_special_chars(char *str, int quote)
     return (str);
 }
 
-static int	parse_quotes(char **str)
-{
-    int     s_with;
-    int     e_with;
-    int     quote;
-    int     len;
+char    *parse_variable_name(char *str, int len, t_shell *shell){
+    char    *tmp;
+    char    *var;
+    int i;
 
-    quote = 0;
-    quote = is_quote(*str[0], 1);
-    quote = is_quote(*str[0], 2) ? 2 : quote;
-    s_with = is_quote(*str[0], 0);
-	len = (int)ft_strlen(*str);
-    e_with = is_quote((*str)[len - 1], 0);
-    printf("S: %d | E:%d \n", s_with, e_with);
-    if (s_with)
-        (*str)++;
-    if (e_with)
-        (*str)[len - 2] = '\0';
-    return (quote);
+    var = NULL;
+    tmp = (char *)malloc(sizeof(char) * len);
+    strlcpy(tmp, str, len);
+    if (tmp[0] == '?')
+    {
+        if (shell->ret == 0)
+            var = ft_strdup("0");
+        else
+            var = ft_itoa(shell->ret);
+    }
+    else if ((i = ft_getenv(tmp, shell->env)) >= 0)
+        var = shell->env[i] + ft_strlen(tmp) + 1;
+    free(tmp);
+    if (var)
+        return var;
+    return NULL;
 }
 
-// static int  parse_quotes(char *str){
-//     int     i;
-//     int     pos;
-//     int     quote;
-
-//     i = 0;
-//     quote = 0;
-//     pos = 0;
-//     while (str[i]){
-
-//         i++;
-//     }
-
-// }
-
-int     is_env_var(char *str)
+char    *replace_var_string(char *src, int i, char *var, int *pos, int len)
 {
-    int     i;
+    char    *tmp;
     int     j;
-    int     quote;
-    int     var;
-    int     clear;
+    int     tlen;
 
-    i = 0;
     j = 0;
-    var = -1;
-    quote = 0;
-    clear = 0;
-    if (ft_strchr(str, '$'))
-    {
-        while (str[i])
+    tlen = ft_strlen(src) + ft_strlen(var) - len;
+    tmp = (char *)malloc(sizeof(char) * tlen);
+    while (j < tlen){
+        if (j == i && var)
         {
-            if (quote == 1 && str[i] == '\'')
-                quote = 0;
-            else if (str[i] == '\'' && !quote)
-                quote = 1;
-
-            if (str[i] == '\"' && !quote)
-                quote = 2;
-            else if (str[i] == '\"' && quote == 2)
-                quote = 0;
-
-            // if (str[i] == '$' && quote != 1)
-            //     var = i;
-            // if (str[i] == '\"')
-            // {
-            //     quote = 2;
-            // }
-            // if (str[i] == '\'')
-            // {
-            //     quote == 1;
-            //     clear = 1;
-            // }
-            // if (j != 0 && var != 0){
-            //     // replace in string with variable
-            //     j = 0;
-            // }
+            while (*var) {
+                tmp[j] = *var;
+                var++;
+                j++;
+            }
+            src = src + len + 1;
+        } else {
+            if (j == i && !var)
+                src = src + len + 1;
+            tmp[j] = *src;
+            src++;
+            j++;
         }
     }
-    return (0);
+    tmp[j] = '\0';
+    *pos = i - len + ft_strlen(var);
+    return tmp;
 }
 
-int			echo_builtin(t_cmds *cmd, char **env, int ret)
+char    *clear_quote(char *str){
+    int     j;
+    int     i;
+
+    i = 0;
+    while (str[i]){
+        if (is_quote(str[i], 0)){
+            j = i;
+            while (str[j])
+            {
+                str[j] = str[j + 1];
+                j++;
+            }
+            i--;
+        }
+        i++;
+    }
+    return (str);
+}
+
+char     *parse_env_var(char *str, t_shell *shell)
+{
+    int     i;
+    int     quote;
+    int     var;
+    char    *tmp;
+
+    i = -1;
+    var = -1;
+    quote = 0;
+    while (str[++i])
+    {   
+        if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !str[i + 1]))
+        {
+            tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
+            str = replace_var_string(str, var, tmp, &i, i - var);
+            var = -1;
+        }
+        if (is_quote(str[i], 1) && !quote)
+            quote = 1;
+        else if (is_quote(str[i], 1) && quote == 1)
+            quote = 0;
+        if (is_quote(str[i], 2) && !quote)
+            quote = 2;
+        else if (is_quote(str[i], 2)&& quote == 2)
+            quote = 0;
+        if (quote != 1 && str[i] == '$')
+            var = i;
+    }
+    return (clear_quote(str));
+}
+
+int			echo_builtin(t_cmds *cmd, t_shell *shell)
 {
     int     i;
     int     n_flag;
-    int     is_quote;
 
     i = 0;
     n_flag = 0;
     if (!cmd->args[1])
     {
-        write(1, "\n", 1);
+        ft_putchar_fd('\n', 1);
         return (0);
     }
     else if (cmd->args[1][0] == '-' && cmd->args[1][1] == 'n' && cmd->args[1][2] == '\0')
@@ -223,104 +236,13 @@ int			echo_builtin(t_cmds *cmd, char **env, int ret)
     }
     while (cmd->args[++i])
     {
-        // is_quote = parse_quotes(&cmd->args[i]);
-        // // printf("quotes: %d | arg: %s\n", is_quote, cmd->args[i]);
-        // if (ft_strchr(cmd->args[i] ,'\\'))
-        //     cmd->args[i] = parse_special_chars(cmd->args[i], is_quote);
-        // if (is_quote != 1 && ft_strchr(cmd->args[i], '$'))
-        //     cmd->args[i] = parse_variable(cmd->args[i], env, ret);
-        if (is_env_var(cmd->args[i]))
-            cmd->args[i] = parse_variables(cmd->args[i], env, ret);
-        cmd->args[i] = clear_quotes(cmd->args[i]);
+        if (ft_strchr(cmd->args[i], '$'))
+            cmd->args[i] = parse_env_var(cmd->args[i], shell);
+        if (ft_strchr(cmd->args[i] ,'\\'))
+            cmd->args[i] = parse_special_chars(cmd->args[i], is_quote);
         echo_print(cmd->args, i);
         if (!cmd->args[i + 1] && !n_flag)
             ft_putchar_fd('\n', 1);
     }
     return (0);
 }
-
-
-
-/*
-
--nhello'$A'hello$A"$A"s$As
-
-
-char    *parse_variable_name(char *str, int pos, int len){
-    char    *var;
-
-    var = (char *)malloc(sizeof(char) * len);
-    strlcpy(var, str, len);
-    return var;
-}
-int     is_env_var(char *str)
-{
-    int     i;
-    int     j;
-    int     quote;
-    int     var;
-    int     clear;
-    char    *tmp;
-
-    i = 0;
-    j = 0;
-    var = -1;
-    quote = 0;
-    clear = 0;
-    if (strchr(str, '$'))
-    {
-        while (str[i])
-        {   
-            if (quote != 1 && var != -1 && (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i + 1] == '\0'))
-            {
-                tmp = parse_variable_name(str + var + 1, 0, i - var + 1);
-                printf("VAR: %s\n", tmp);
-                str = replace_var_string(str, var, tmp, &i, i - var);
-                printf("STR: %s\n", str);
-                var = -1;
-            }
-            if (str[i] == '\'' && !quote)
-                quote = 1;
-            else if (quote == 1 && str[i] == '\'')
-                quote = 0;
-
-            if (str[i] == '\"' && !quote)
-                quote = 2;
-            else if (str[i] == '\"' && quote == 2)
-            {
-                quote = 0;
-            }
-            
-            if (quote != 1 && str[i] == '$')
-                var = i;
-            // if (str[i] == '$' && quote != 1)
-            //     var = i;
-            // if (str[i] == '\"')
-            // {
-            //     quote = 2;
-            // }
-            // if (str[i] == '\'')
-            // {
-            //     quote == 1;
-            //     clear = 1;
-            // }
-            // if (j != 0 && var != 0){
-            //     // replace in string with variable
-            //     j = 0;
-            // }
-            printf("C: %c | Q: %d | V: %d | POS: %d \n", str[i], quote, var, 0);
-            i++;
-        }
-    }
-    return (0);
-}
-
-int main(void)
-{
-    is_env_var("hello\"$PWD'\"$PWDs");
-
-}
-
-
-
-*/
