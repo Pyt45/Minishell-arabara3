@@ -104,7 +104,7 @@ char	*get_home_dir(t_shell *shell)
 
 	i = 0;
 	if ((i = ft_getenv("HOME", shell->env)) >= 0)
-		return (shell->env[i] + 5);
+		return (ft_strdup(shell->env[i] + 5));
 	return (NULL);
 }
 

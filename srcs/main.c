@@ -55,7 +55,7 @@ int		command_line(t_shell *shell)
 
 void	sig_handle_ctrl_c()
 {
-		signal(SIGINT, sig_handle_ctrl_c);
+	signal(SIGINT, sig_handle_ctrl_c);
 }
 
 int     main(int argc, char **argv, char **envp)
@@ -63,6 +63,7 @@ int     main(int argc, char **argv, char **envp)
 	t_shell shell;
 
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);
