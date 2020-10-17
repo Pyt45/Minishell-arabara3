@@ -28,6 +28,7 @@ typedef struct		s_cmds
 	char			*cmd;
 	char			**args;
 	int				ret;
+	// int				quoted;  //for single 1 or double 2
 	struct s_cmds	*prev;
 	struct s_cmds	*next;
 }					t_cmds;
@@ -133,7 +134,7 @@ int					unset_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos,
 	char **arr, char **new_arr, int len);
-int					echo_builtin(t_cmds *cmd, char **env, int ret);
+int					echo_builtin(t_cmds *cmd, t_shell *shell);
 void				print_line_up(t_config *config);
 void				print_line_down(t_config *config);
 void				display_cursor(t_config *config);

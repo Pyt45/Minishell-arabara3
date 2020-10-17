@@ -1,0 +1,6 @@
+*.out
+*.a
+tests/*
+minishell
+*.o
+.DS_Store

@@ -1,6 +1,5 @@
 #include "../../includes/shell.h"
 
-
 int     unset_builtin(t_shell *shell, t_cmds *cmds)
 {
     int     i;
@@ -11,7 +10,7 @@ int     unset_builtin(t_shell *shell, t_cmds *cmds)
         shell->env = ft_unset_cmd(shell, cmds->args[i]);
         i++;
     }
-    return (1);
+    return (0);
 }
 
 char    **ft_unset_cmd(t_shell *shell, char *value)
