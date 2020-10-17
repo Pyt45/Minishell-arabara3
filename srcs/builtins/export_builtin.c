@@ -26,11 +26,6 @@ char	**ft_export_cmd(t_shell *shell, char *value)
 	if (ft_strchr(value, '='))
 	{
 		argv = ft_split(value, '=');
-	// else
-	// {
-	// 	value = ft_strjoin(value, ft_strdup("=''"));
-	// 	argv = ft_split(value, '=');
-	// }
 		if ((i = ft_getenv(argv[0], shell->env)) >= 0)
 		{
 			free(shell->env[i]);
