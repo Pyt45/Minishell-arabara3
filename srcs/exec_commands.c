@@ -254,8 +254,10 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
 	printf("%d\n", num_pipe);
 	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+	puts("-2 - hello\n");
 	if ((cmds->next && !cmds->end) || !exec_commands(shell, cmds))
 	{
+		puts("-1 - hello\n");
 		fds = pipe_fds(num_pipe, fds);
 		j = 0;
 		while (cmds)
@@ -274,6 +276,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 					ior[0] = 0;
 					ior[1] = fds[1];
 					exec_io_redi(cmds, ior[0], ior[1], shell);
+					puts("0 - hello\n");
 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
 					{
 						print_error(cmds->cmd, errno, 1);
@@ -284,11 +287,14 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 				}
 				else if (cmds->args)
 				{
+						puts("1 - hello\n");
+						printf("|%s|\n", cmds->args[0]);
 					if ((!exec_commands(shell, cmds) && (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)))
 					{
 						print_error(cmds->cmd, errno, 1);
 						exit(1);
 					}
+						puts("2 - hello\n");
 				}
 				exit(0);
 			}
