@@ -189,18 +189,18 @@ int		get_num_pipes(t_cmds *cmds)
 	return (i);
 }
 
-/* int		get_num_sp(t_cmds *cmds)
+int		get_num_rd(t_cmds *cmds)
 {
 	int	i;
 
 	i = 0;
-	while (cmds->s)
+	while (cmds->r)
 	{
 		i++;
 		cmds = cmds->next;
 	}
 	return (i);
-} */
+}
 
 int		is_builtin(char *cmd){
 	if (cmd && ft_strcmp(cmd, "env") && ft_strcmp(cmd, "cd") &&
@@ -356,12 +356,12 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 	int		j = 0;
 	
 	//num_pipe = 1;
-	//(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
-	//(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
+	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
 		fds = pipe_fds(num_pipe, fds);
-		(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+		//(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 		j = 0;
 		while (cmds)
 		{
@@ -429,7 +429,7 @@ int		run_commands(t_shell *shell)
 	while (cmds)
 	{
 		//save_restor_fd(1,0);
-		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds), 1);
+		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds), get_num_rd(cmds));
 		//save_restor_fd(0,1);
 		shell->ret = cmds->ret;
 		cmds = cmds->next;
