@@ -23,7 +23,7 @@ typedef struct		s_cmds
 	int				start;    //start command
 	int				end;      // end
 	int				p;         //pipes
-	int				s;		   //splits ??
+	int				r;		   //redirection
 	int				append;
 	char			*cmd;
 	char			**args;
