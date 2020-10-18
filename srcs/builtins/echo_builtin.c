@@ -169,19 +169,25 @@ char    *clear_quotes(char *str)
     int     j;
     int     i;
 	int		quote;
+	int		forbidden;
 
     i = 0;
 	quote = 0;
+	forbidden = 0;
     while (str[i]){
         if ((!quote && is_quote(str[i], 0)) || (quote && is_quote(str[i], 0) == quote)){
-			quote = is_quote(str[i], 0);
-            j = i;
-            while (str[j])
-            {
-                str[j] = str[j + 1];
-                j++;
-            }
-            i--;
+			if (!quote && str[i + 1] == ' ')
+				forbidden = 1;
+			quote = !quote ? is_quote(str[i], 0) : 0;
+			j = i;
+			while (str[j])
+			{
+				if (!forbidden)
+					str[j] = str[j + 1];
+				j++;
+			}
+			if (!forbidden)
+				i--;
         }
         i++;
     }

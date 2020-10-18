@@ -66,7 +66,7 @@ char    **get_args(char *str, int n)
             tmp[n - i] = '\0';
         while (!ft_isalpha(*tmp))
             tmp++;
-        return (ft_split(tmp, ' '));
+        return (ft_split_quote(tmp, ' '));
     }
     return (NULL);
 }
@@ -94,7 +94,7 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
         j = 1;
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
     (*cmds)->args = get_args(tmp + pos, i - pos + j);
-    // debug_cmd((*cmds), i, pos, tmp[i]);
+    debug_cmd((*cmds), i, pos, tmp[i]);
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
     (*cmds)->end = 1;
@@ -141,75 +141,24 @@ t_shell     *parse_commands(t_shell *shell)
     int         i;
     int         pos;
     char        *tmp;
-    int         j;
+	int			quote;
     
     pos = 0;
     i = 0;
+	quote = 0;
     tmp = shell->line;
     cmds = init_cmds(NULL);
     shell->cmds = cmds;
     while (tmp[i])
     {
-        j = 0;
-        if (tmp[i] == '|')
-        {
-            // cmds->cmd = get_cmd(tmp + pos, i - pos);
-            // cmds->args = get_args(tmp + pos, i - pos);
-            // // debug_cmd(cmds, i, pos, tmp[i]);
-
-            // // cmds->p = 1;
-            // if (!cmds->prev)
-            //     cmds->start = 1;
-            // cmds->next = init_cmds(cmds);
-            // //printf("%s\n", cmds->next->prev->cmd);
-            // cmds = cmds->next;
-            // pos = i + 1;
+		if (is_quote(tmp[i], 0))
+			quote = !quote ? 1 : 0;
+        if (tmp[i] == '|' && !quote)
             pos = parse_pipes(&cmds, i, pos, tmp);
-        }
-        else if (tmp[i] == ';' || tmp[i + 1] == '\0')
-        {
-            // if (tmp[i + 1] == '\0' && tmp[i] != ';')
-            //     j = 1;
-            // cmds->cmd = get_cmd(tmp + pos, i - pos + j);
-            // cmds->args = get_args(tmp + pos, i - pos + j);
-            // // debug_cmd(cmds, i, pos, tmp[i]);
-            // if (!cmds->prev)
-            //     cmds->start = 1;
-            // cmds->end = 1;
-            // if (tmp[i + 1] != '\0')
-            // {
-            //     cmds->next = init_cmds(cmds);
-            //     cmds = cmds->next;
-            // }
-            // pos = i + 1;
+        else if (!quote && (tmp[i] == ';' || tmp[i + 1] == '\0'))
             pos = parse_semicolons(&cmds, i, pos, tmp);
-        }
-        else if (tmp[i] == '>' || tmp[i] == '<')
-        {
-            // cmds->cmd = get_cmd(tmp + pos, i - pos);
-            // cmds->args = get_args(tmp + pos, i - pos);
-            // // debug_cmd(cmds, i, pos, tmp[i]);
-            // if (!cmds->prev)
-            //     cmds->start = 1;
-            // if (tmp[i] == '>')
-            //     cmds->append = 1;
-            // else if (tmp[i] == '<')
-            //     cmds->append = -1;
-            // if (tmp[i + 1] == '>')
-            // {
-            //     cmds->append++;
-            //     i++;
-            // }
-            // else if (tmp[i + 1] == '<')
-            // {
-            //     cmds->append--;
-            //     i++;
-            // }
-            // pos = i + 1;
-            // cmds->next = init_cmds(cmds);
-            // cmds = cmds->next;
+        else if (!quote && (tmp[i] == '>' || tmp[i] == '<'))
             pos = parse_redirections(&cmds, &i, pos, tmp);
-        }
         i++;
     }
     return (shell);

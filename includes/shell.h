@@ -163,5 +163,5 @@ void				newline_config(t_config *config);
 void				print_error(char *cmd, int err, int iscmd);
 char				*clear_quotes(char *str);
 int					is_quote(char c, int type);
-
+char				**ft_split_quote(char const *s, char c);
 #endif
