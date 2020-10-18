@@ -369,6 +369,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 			pid = fork();
 			if (pid == 0)
 			{
+				signal(SIGINT, SIG_DFL);
 				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
 				close_pipes(fds, num_pipe);
 				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
