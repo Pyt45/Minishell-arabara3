@@ -73,7 +73,7 @@ static char		**ft_make_splits(char **split, char *str, char x)
 	}
 	if (j != -1 && !(split[c] = clear_quotes(ft_substr(str, j, i - j))))
 		return (free_list_quote(split));
-	printf("***************TOTAL: %d %s\n", c, split[c]);
+	// printf("***************TOTAL: %d %s\n", c, split[c]);
 	return (split);
 }
 
@@ -86,7 +86,7 @@ char			**ft_split_quote(char const *s, char c)
 	if (!s)
 		return (0);
 	len = count_strings((char *)s, c);
-	printf("%d\n", len);
+	// printf("%d\n", len);
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)
 		return (0);
