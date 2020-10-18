@@ -25,7 +25,11 @@ static int		count_strings(char *str, char c)
 	while (str[i])
 	{
 		if (is_quote(str[i], 0))
+		{
+			if (quote)
+				j++;
 			quote = !quote ? 1 : 0;
+		}
 		else if (str[i] == c && !quote)
 		{
 			if (start == 1)
@@ -82,6 +86,7 @@ char			**ft_split_quote(char const *s, char c)
 	if (!s)
 		return (0);
 	len = count_strings((char *)s, c);
+	printf("%d\n", len);
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)
 		return (0);

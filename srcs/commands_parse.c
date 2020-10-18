@@ -163,21 +163,3 @@ t_shell     *parse_commands(t_shell *shell)
     }
     return (shell);
 }
-
-
-
-// --------------- TEST -------------------
-
-// int main()
-// {
-//     t_shell *shell;
-//     shell = malloc(sizeof(t_shell));
-
-//     // shell->line = ft_strdup("echo -n \"hello\" | f.txt haha >> c.txt | grep h");
-//     shell->line = ft_strdup("cat h.txt < f.txt;env |grep PATH|td -i;env|grep PWD");
-//     //shell = get_single_command(shell);
-//     //shell = control_command(shell);
-//     // shell = get_comma_commands(shell);
-//     shell = parse_commands(shell);
-//     // printf("%s\n", shell->cmds->cmd);
-// }
