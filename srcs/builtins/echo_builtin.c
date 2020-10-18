@@ -24,9 +24,9 @@ int     is_quote(char c, int type)
     if (type == 1 && c == '\'')
         return (1);
     if (type == 2 && c == '\"')
-        return (1);
+        return (2);
     if (type == 0 && (c == '\'' || c == '\"'))
-        return (1);
+        return (c == '\'' ? 1 : 2);
     return (0);
 }
 
@@ -107,7 +107,7 @@ char    *parse_special_chars(char *str)
         }
         i++;
     }
-    return (clear_quotes(str));
+    return (str);
 }
 
 char    *parse_variable_name(char *str, int len, t_shell *shell){
@@ -168,10 +168,13 @@ char    *clear_quotes(char *str)
 {
     int     j;
     int     i;
+	int		quote;
 
     i = 0;
+	quote = 0;
     while (str[i]){
-        if (is_quote(str[i], 0)){
+        if ((!quote && is_quote(str[i], 0)) || (quote && is_quote(str[i], 0) == quote)){
+			quote = is_quote(str[i], 0);
             j = i;
             while (str[j])
             {
@@ -214,7 +217,7 @@ char     *parse_env_var(char *str, t_shell *shell)
         if (quote != 1 && str[i] == '$')
             var = i;
     }
-    return (clear_quotes(str));
+    return (str);
 }
 
 int			echo_builtin(t_cmds *cmd, t_shell *shell)
