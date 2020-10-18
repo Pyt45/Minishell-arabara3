@@ -107,29 +107,31 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
     return (pos);
 }
 
-int        parse_redirections(t_cmds **cmds, int i, int pos,char *tmp){
-    (*cmds)->cmd = get_cmd(tmp + pos, i - pos);
-    (*cmds)->args = get_args(tmp + pos, i - pos);
-    // debug_cmd(cmds, i, pos, tmp[i]);
+int        parse_redirections(t_cmds **cmds, int *i, int pos,char *tmp){
+    (*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
+    (*cmds)->args = get_args(tmp + pos, *i - pos);
+    // debug_cmd(*cmds, *i, pos, tmp[*i]);
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
-    if (tmp[i] == '>')
+    if (tmp[*i] == '>')
         (*cmds)->append = 1;
-    else if (tmp[i] == '<')
+    else if (tmp[*i] == '<')
         (*cmds)->append = -1;
-    if (tmp[i + 1] == '>')
+    if (tmp[*i + 1] == '>')
     {
         (*cmds)->append++;
-        i++;
+        (*i)++;
     }
-    else if (tmp[i + 1] == '<')
+    else if (tmp[*i + 1] == '<')
     {
         (*cmds)->append--;
-        i++;
+        (*i)++;
     }
+	if ((*cmds)->append != 0)
+		(*cmds)->r = 1;
     (*cmds)->next = init_cmds((*cmds));
     (*cmds) = (*cmds)->next;
-    pos = i + 1;
+    pos = *i + 1;
     return (pos);
 }
 
@@ -206,7 +208,7 @@ t_shell     *parse_commands(t_shell *shell)
             // pos = i + 1;
             // cmds->next = init_cmds(cmds);
             // cmds = cmds->next;
-            pos = parse_redirections(&cmds, i, pos, tmp);
+            pos = parse_redirections(&cmds, &i, pos, tmp);
         }
         i++;
     }
