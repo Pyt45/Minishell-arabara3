@@ -55,12 +55,15 @@ char    **get_args(char *str, int n)
 
     i = 0;
     while ((!ft_isprint(*str) || *str == ' ') && *str != '\0')
+    {
         str++;
+        i++;
+    }
     if (*str)
     {
         tmp = ft_strdup(str);
-        if (n != 0)
-            tmp[n] = '\0';
+        if (n - i > 0)
+            tmp[n - i] = '\0';
         while (!ft_isalpha(*tmp))
             tmp++;
         return (ft_split(tmp, ' '));
@@ -72,7 +75,7 @@ int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
 
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos);
     (*cmds)->args = get_args(tmp + pos, i - pos);
-    // debug_cmd(cmds, i, pos, tmp[i]);
+    // debug_cmd(*cmds, i, pos, tmp[i]);
     (*cmds)->p = 1;
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
@@ -82,7 +85,7 @@ int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
     return (pos);
 }
 
-int         parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
+int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
 {
     int j;
 

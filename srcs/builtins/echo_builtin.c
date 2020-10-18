@@ -32,7 +32,7 @@ int     is_quote(char c, int type)
 
 void    echo_print(char **str, int pos)
 {
-    ft_putstr_fd(str[pos], 1);
+    ft_putstr_fd(clear_quotes(str[pos]), 1);
 	if (str[pos + 1])
 		ft_putchar_fd(' ', 1);
 }

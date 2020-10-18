@@ -28,6 +28,10 @@ void		free_next_history(t_history **history)
 
 t_config	*add_history(t_config *config)
 {
+	if (config->history->next){
+		while(config->history->next)
+			config->history = config->history->next;
+	}
 	config->history->data = ft_strdup(config->str);
 	if (config->history->next)
 		free_next_history(&config->history);
@@ -65,6 +69,7 @@ void		display_history(t_config *config, int dir)
 		config->len = ft_strlen(config->str);
 		config->c = config->len;
 		ft_putstr_fd(config->str, 0);
+		
 		display_cursor(config);
 	}
 }
