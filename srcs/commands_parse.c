@@ -84,11 +84,17 @@ int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
     // debug_cmd(*cmds, i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
-    (*cmds)->p = 1;
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
-    (*cmds)->next = init_cmds(*cmds);
-    (*cmds) = (*cmds)->next;
+	// this to manage syntax error and segfault (maybe remove the end of string check)
+	if (tmp[i + 1] != '\0')
+    {
+		(*cmds)->p = 1;
+        (*cmds)->next = init_cmds(*cmds);
+        (*cmds) = (*cmds)->next;
+    }
+	else
+		return (-1);
     pos = i + 1;
     return (pos);
 }

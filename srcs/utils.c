@@ -146,7 +146,6 @@ char	**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len)
 	{
 		if (i != pos)
 		{
-			printf("%d %s\n", pos, arr[pos]);
 			if (!(new_arr[j] = (char *)malloc(sizeof(char) * (ft_strlen(arr[i]) + 1))))
 				return (NULL);
 			ft_strcpy(new_arr[j], arr[i]);
