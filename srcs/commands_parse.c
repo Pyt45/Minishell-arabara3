@@ -7,10 +7,13 @@ void    debug_cmd(t_cmds *cmds, int i, int pos, char c){
     printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
     printf("CMD: %s|\n", cmds->cmd);
     j = 0;
-    while (cmds->args[j]){
-        printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-        j++;
-    }
+	if (cmds->args)
+		while (cmds->args[j]){
+			printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
+			j++;
+		}
+	else
+		puts("ARG: No arguments");
 }
 
 t_cmds      *init_cmds(t_cmds   *prev)
@@ -41,11 +44,13 @@ char    *get_cmd(char *str, int n)
         str++;
     if (n == 0)
         n = ft_strlen(str);
-    while (ft_isprint(str[i]) && str[i] != ' ' && i < n)
+    while (ft_isprint(str[i]) && str[i] != ' ' && str[i] != ';' && str[i] != '|' && i < n)
         i++;
     cmd = malloc(sizeof(char) * (++i));
     ft_strlcpy(cmd, str, i);
-    return (cmd);
+	if (*cmd)
+    	return (cmd);
+	return (NULL);
 }
 
 char    **get_args(char *str, int n)
@@ -62,11 +67,12 @@ char    **get_args(char *str, int n)
     if (*str)
     {
         tmp = ft_strdup(str);
-        if (n - i > 0)
+        if (n - i >= 0)
             tmp[n - i] = '\0';
-        while (!ft_isalpha(*tmp))
+        while (!ft_isalpha(*tmp) && *tmp)
             tmp++;
-        return (ft_split_quote(tmp, ' '));
+		if (*tmp)
+			return (ft_split_quote(tmp, ' '));
     }
     return (NULL);
 }
@@ -76,6 +82,8 @@ int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos);
     (*cmds)->args = get_args(tmp + pos, i - pos);
     // debug_cmd(*cmds, i, pos, tmp[i]);
+	if (!(*cmds)->args)
+		return (-1);
     (*cmds)->p = 1;
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
@@ -95,6 +103,8 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
     (*cmds)->args = get_args(tmp + pos, i - pos + j);
     // debug_cmd((*cmds), i, pos, tmp[i]);
+	if (!(*cmds)->args)
+		return (-1);
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
     (*cmds)->end = 1;
@@ -111,6 +121,8 @@ int        parse_redirections(t_cmds **cmds, int *i, int pos,char *tmp){
     (*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
     (*cmds)->args = get_args(tmp + pos, *i - pos);
     // debug_cmd(*cmds, *i, pos, tmp[*i]);
+	if (!(*cmds)->args ||!(*cmds)->cmd)
+		return (-1);
     if (!(*cmds)->prev)
         (*cmds)->start = 1;
     if (tmp[*i] == '>')
@@ -149,7 +161,7 @@ t_shell     *parse_commands(t_shell *shell)
     tmp = shell->line;
     cmds = init_cmds(NULL);
     shell->cmds = cmds;
-    while (tmp[i])
+    while (tmp[i] && pos != -1)
     {
 		if (is_quote(tmp[i], 0))
 			quote = !quote ? 1 : 0;
@@ -160,6 +172,8 @@ t_shell     *parse_commands(t_shell *shell)
         else if (!quote && (tmp[i] == '>' || tmp[i] == '<'))
             pos = parse_redirections(&cmds, &i, pos, tmp);
         i++;
+		if (pos == -1)
+			shell->ret = 1;
     }
     return (shell);
 }

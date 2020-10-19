@@ -34,6 +34,7 @@ int		command_line(t_shell *shell)
 	init_config_data(&shell->config);
 	while (status)
 	{
+		shell->ret = 0;
 		read(0, &shell->config.buff, sizeof(&shell->config.buff));
 		handle_keys(&shell->config);
 		if (ft_isprint(shell->config.buff))

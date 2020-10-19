@@ -228,7 +228,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	int	ret;
 
 	ret = 1;
-	if (!cmds->cmd)
+	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
     if (!ft_strcmp(cmds->cmd, "env"))
         ret = env_builtin(cmds, shell->env);
@@ -377,7 +377,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 					ior[0] = 0;
 					ior[1] = fds[1];
 					exec_io_redi(cmds, ior[0], ior[1], shell);
-					if (!exec_commands(shell, cmds))
+					if (cmds->args && !exec_commands(shell, cmds))
 					{
 						print_error(cmds->cmd, errno, 1);
 						// exit(1);
@@ -426,14 +426,18 @@ int		run_commands(t_shell *shell)
 	t_cmds	*cmds;
 
 	shell = parse_commands(shell);
-	cmds = shell->cmds;
-	while (cmds)
-	{
-		//save_restor_fd(1,0);
-		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds), get_num_rd(cmds));
-		// save_restor_fd(0,1);
-		shell->ret = cmds->ret;
-		cmds = cmds->next;
+	if (shell->ret)
+		print_error("syntax error", 0, 0);
+	else {
+		cmds = shell->cmds;
+		while (cmds)
+		{
+			//save_restor_fd(1,0);
+			cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds), get_num_rd(cmds));
+			// save_restor_fd(0,1);
+			shell->ret = cmds->ret;
+			cmds = cmds->next;
+		}
 	}
 	return (1);
 }
