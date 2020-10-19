@@ -28,7 +28,6 @@ typedef struct		s_cmds
 	char			*cmd;
 	char			**args;
 	int				ret;
-	// int				quoted;  //for single 1 or double 2
 	struct s_cmds	*prev;
 	struct s_cmds	*next;
 }					t_cmds;
@@ -55,6 +54,7 @@ typedef struct		s_config
 	long				buff;
 	int					c;
 	int					len;
+	int					cmd;
 	struct s_history	*history;
 	struct s_control	control;
 }					t_config;
@@ -164,4 +164,8 @@ void				print_error(char *cmd, int err, int iscmd);
 char				*clear_quotes(char *str);
 int					is_quote(char c, int type);
 char				**ft_split_quote(char const *s, char c);
+
+//debuging
+void	write_to_file(char *s, char *num, int end);
+
 #endif

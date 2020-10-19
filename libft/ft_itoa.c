@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:06:13 by zlayine           #+#    #+#             */
-/*   Updated: 2019/11/19 12:28:46 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/19 12:03:37 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char		*ft_itoa(int n)
 	i = 0;
 	len = ft_nblen(n);
 	s = (char *)malloc(sizeof(char) * (len + 1));
-	len--;
+	if (len)
+		len--;
 	if (!s)
 		return (0);
 	i = ft_check_neg(&n, s, &len);

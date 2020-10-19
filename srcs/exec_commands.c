@@ -356,7 +356,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 	int		j = 0;
 	
 	//num_pipe = 1;
-	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
+	//(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
 	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
@@ -365,7 +365,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 		j = 0;
 		while (cmds)
 		{
-			//save_restor_fd(1,0);
+			// save_restor_fd(1,0);
 			pid = fork();
 			if (pid == 0)
 			{
@@ -431,7 +431,7 @@ int		run_commands(t_shell *shell)
 	{
 		//save_restor_fd(1,0);
 		cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds), get_num_rd(cmds));
-		//save_restor_fd(0,1);
+		// save_restor_fd(0,1);
 		shell->ret = cmds->ret;
 		cmds = cmds->next;
 	}

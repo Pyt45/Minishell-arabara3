@@ -1,5 +1,20 @@
 #include "../../includes/shell.h"
 
+void	write_to_file(char *s, char *num, int end)
+{
+	FILE *f;
+	int fd;
+
+	f = fopen("debug.txt", "a");
+	fd = fileno(f);
+	ft_putstr_fd(s, fd);
+	if (num)
+		ft_putstr_fd(num, fd);
+	if (end)
+		ft_putstr_fd("\n-------\n", fd);
+	fclose(f);
+}
+
 void	display_cursor(t_config *config)
 {
 	if (config->x == 0 && config->y == 0)
@@ -10,6 +25,10 @@ void	display_cursor(t_config *config)
 	}
 	config->x = (config->o_x + config->c) % config->width;
 	config->y = ((config->o_x + config->c) / config->width) + config->o_y;
+	// write_to_file("OX: ", ft_itoa(config->o_x), 0);
+	// write_to_file(" | NX: ", ft_itoa(config->x), 0);
+	// write_to_file(" | OY: ", ft_itoa(config->o_y), 0);
+	// write_to_file(" | NY: ", ft_itoa(config->y), 1);
 	tputs(tgoto(config->cursor, config->x, config->y), 0, ft_putchars);
 	if (config->o_y + ((config->o_x + config->c) /
 		config->width) >= config->height)
@@ -57,12 +76,16 @@ void	get_cursor_pos(t_config *config)
 
 	i = 0;
 	ft_bzero(buff, sizeof(char) * 20);
-	dprintf(2, "\e[6n");
+	ft_putstr_fd("\e[6n", 2);
 	read(2, buff, sizeof(buff));
-	while (buff[i] < '0' || buff[i] > '9')
+	while (!ft_isdigit(buff[i]))
 		i++;
 	config->o_y = ft_atoi(buff + i) - 1;
-	while (buff[i] >= '0' && buff[i] <= '9')
+	while (ft_isdigit(buff[i]))
 		i++;
 	config->o_x = ft_atoi(buff + i + 1);
+	// write_to_file(" | X: ", ft_itoa(config->o_x), 0);
+	// write_to_file(" | Y: ", ft_itoa(config->o_y), 1);
+
 }
+

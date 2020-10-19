@@ -4,3 +4,5 @@ tests/*
 minishell
 *.o
 .DS_Store
+.vscode
+debug.txt

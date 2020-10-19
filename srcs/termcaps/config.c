@@ -23,6 +23,8 @@ void	init_config_data(t_config *config)
 	config->history->next = NULL;
 	config->width = tgetnum("co");
 	config->height = tgetnum("li");
+	config->o_x = 0;
+	config->o_y = 0;
 	get_cursor_pos(config);
 	config->x = config->o_x;
 	config->y = config->o_y;
