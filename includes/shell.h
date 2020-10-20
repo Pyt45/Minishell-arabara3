@@ -164,8 +164,9 @@ void				print_error(char *cmd, int err, int iscmd);
 char				*clear_quotes(char *str);
 int					is_quote(char c, int type);
 char				**ft_split_quote(char const *s, char c);
+char				*replace_string(char *str, t_shell *shell);
 
-//debuging
+// debuging
 void	write_to_file(char *s, char *num, int end);
 
 #endif

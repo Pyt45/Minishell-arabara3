@@ -211,16 +211,17 @@ int		is_builtin(char *cmd){
 	return (1);
 }
 
-char	**clear_arg_quotes(char **args){
+char	**clear_args(char **args, t_shell *shell){
 	int i;
 
 	i = 0;
 	while (args[i])
 	{
 		args[i] = clear_quotes(args[i]);
+		// args[i] = replace_string(args[i], shell);
 		i++;
 	}
-	return args;
+	return (args);
 }
 
 int     exec_commands(t_shell *shell, t_cmds *cmds)
@@ -230,6 +231,8 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	ret = 1;
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
+	cmds->cmd = clear_quotes(cmds->cmd);
+	cmds->args = clear_args(cmds->args, shell);
     if (!ft_strcmp(cmds->cmd, "env"))
         ret = env_builtin(cmds, shell->env);
 	else if (!ft_strcmp(cmds->cmd, "cd"))
@@ -245,7 +248,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     else if (!ft_strcmp(cmds->cmd, "echo"))
     	ret = echo_builtin(cmds, shell);
 	else
-		execve(get_bin_path(clear_quotes(cmds->cmd), shell->env), clear_arg_quotes(cmds->args), shell->env);
+		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
     return (ret);
 }
 

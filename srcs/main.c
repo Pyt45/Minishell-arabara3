@@ -30,7 +30,7 @@ int		command_line(t_shell *shell)
 
 	status = 1;
 	init_config(&shell->config);
-	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
+	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
 	init_config_data(&shell->config);
 	while (status)
 	{

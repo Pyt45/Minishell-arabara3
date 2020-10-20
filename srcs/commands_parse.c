@@ -165,6 +165,7 @@ t_shell     *parse_commands(t_shell *shell)
     i = 0;
 	quote = 0;
     tmp = shell->line;
+	tmp = replace_string(tmp, shell);
     cmds = init_cmds(NULL);
     shell->cmds = cmds;
     while (tmp[i] && pos != -1)

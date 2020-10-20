@@ -32,7 +32,7 @@ int     is_quote(char c, int type)
 
 void    echo_print(char **str, int pos)
 {
-    ft_putstr_fd(clear_quotes(str[pos]), 1);
+    ft_putstr_fd(str[pos], 1);
 	if (str[pos + 1])
 		ft_putchar_fd(' ', 1);
 }
@@ -138,9 +138,11 @@ char    *replace_var_string(char *src, int i, char *var, int *pos, int len)
     char    *tmp;
     int     j;
     int     tlen;
+	int		varlen;
 
     j = 0;
-    tlen = ft_strlen(src) + ft_strlen(var) - len;
+	varlen = ft_strlen(var);
+    tlen = ft_strlen(src) + varlen - len;
     tmp = (char *)malloc(sizeof(char) * tlen);
     while (j < tlen){
         if (j == i && var)
@@ -160,7 +162,7 @@ char    *replace_var_string(char *src, int i, char *var, int *pos, int len)
         }
     }
     tmp[j] = '\0';
-    *pos = i - len + ft_strlen(var);
+    *pos = i + varlen;
     return tmp;
 }
 
@@ -194,6 +196,8 @@ char    *clear_quotes(char *str)
     return (str);
 }
 
+
+
 char     *parse_env_var(char *str, t_shell *shell)
 {
     int     i;
@@ -204,26 +208,36 @@ char     *parse_env_var(char *str, t_shell *shell)
     i = -1;
     var = -1;
     quote = 0;
-    while (str[++i])
-    {   
-        if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !str[i + 1]))
-        {
-            tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
-            str = replace_var_string(str, var, tmp, &i, i - var);
-            var = -1;
-        }
-        if (is_quote(str[i], 1) && !quote)
-            quote = 1;
-        else if (is_quote(str[i], 1) && quote == 1)
-            quote = 0;
-        if (is_quote(str[i], 2) && !quote)
-            quote = 2;
-        else if (is_quote(str[i], 2)&& quote == 2)
-            quote = 0;
-        if (quote != 1 && str[i] == '$')
-            var = i;
-    }
+	while (str[++i])
+	{   
+		if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !str[i + 1] || str[i + 1] == ' ' || str[i + 1] == '$'))
+		{
+			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
+			str = replace_var_string(str, var, tmp, &i, i - var);
+			var = -1;
+		}
+		if (is_quote(str[i], 1) && !quote)
+			quote = 1;
+		else if (is_quote(str[i], 1) && quote == 1)
+			quote = 0;
+		if (is_quote(str[i], 2) && !quote)
+			quote = 2;
+		else if (is_quote(str[i], 2)&& quote == 2)
+			quote = 0;
+		if (quote != 1 && str[i] == '$')
+			var = i;
+	}
     return (str);
+}
+
+char	*replace_string(char *str, t_shell *shell)
+{
+	if (ft_strchr(str, '$'))
+	    str = parse_env_var(str, shell);
+	if (ft_strchr(str ,'\\'))
+		str = parse_special_chars(str);
+	// return (clear_quotes(str));
+	return (str);
 }
 
 int			echo_builtin(t_cmds *cmd, t_shell *shell)
@@ -245,10 +259,6 @@ int			echo_builtin(t_cmds *cmd, t_shell *shell)
     }
     while (cmd->args[++i])
     {
-        if (ft_strchr(cmd->args[i], '$'))
-            cmd->args[i] = parse_env_var(cmd->args[i], shell);
-        if (ft_strchr(cmd->args[i] ,'\\'))
-            cmd->args[i] = parse_special_chars(cmd->args[i]);
         echo_print(cmd->args, i);
         if (!cmd->args[i + 1] && !n_flag)
             ft_putchar_fd('\n', 1);
