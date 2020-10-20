@@ -1,5 +1,6 @@
 #include "../includes/shell.h"
 #include <signal.h>
+// #include <readline/readline.h>
 
 void	free_shell(t_shell *shell)
 {
@@ -24,53 +25,101 @@ void	free_shell(t_shell *shell)
 	shell->cmds = NULL;
 }
 
+// int		command_line(t_shell *shell)
+// {
+// 	int		status;
+
+// 	status = 1;
+// 	init_config(&shell->config);
+// 	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
+// 	init_config_data(&shell->config);
+// 	shell->ret = 0;
+// 	while (status)
+// 	{
+// 		read(0, &shell->config.buff, sizeof(&shell->config.buff));
+// 		handle_keys(&shell->config);
+// 		if (ft_isprint(shell->config.buff))
+//             print_char(&shell->config);
+// 		if (shell->config.buff == ENTER_BTN)
+//     	{
+// 			shell->line = shell->config.str;
+// 			newline_config(&shell->config);
+// 			shell->config.term.c_lflag |= (ICANON | ECHO);
+// 			tcsetattr(0, 0, &shell->config.term);
+// 			if (ft_strlen(shell->line))
+// 				status = run_commands(shell);
+// 			if (status)
+//         		re_init_shell(&shell->config);
+//     	}
+// 		//free_shell(shell);
+// 		shell->config.buff = 0;
+// 	}
+// 	return (status);
+// }
+
+char	*read_line(t_shell *shell)
+{
+	init_prompt(&shell->config);
+	while (read(0, &shell->config.buff, sizeof(&shell->config.buff)))
+	{
+		handle_keys(&shell->config);
+		write_to_file("read ", "ok", 1);
+		if (ft_isprint(shell->config.buff))
+            print_char(&shell->config);
+		if (shell->config.buff == ENTER_BTN)
+    	{
+			write_to_file("enter ", "ok", 1);
+			shell->line = shell->config.str;
+			newline_config(&shell->config);
+			// if (ft_strlen(shell->line))
+			break;
+    	}
+		shell->config.buff = 0;
+	}
+	return (shell->line);
+}
+
+
 int		command_line(t_shell *shell)
 {
 	int		status;
 
 	status = 1;
-	init_config(&shell->config);
-	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
-	init_config_data(&shell->config);
-	while (status)
-	{
-		shell->ret = 0;
-		read(0, &shell->config.buff, sizeof(&shell->config.buff));
-		handle_keys(&shell->config);
-		if (ft_isprint(shell->config.buff))
-            print_char(&shell->config);
-		if (shell->config.buff == ENTER_BTN)
-    	{
-			shell->line = shell->config.str;
-			// write_to_file("COMMAND: ", shell->line, 1);
-			newline_config(&shell->config);
-			if (ft_strlen(shell->line))
-				status = run_commands(shell);
-			if (status)
-			{
-			// 	write_to_file("BEFORE INIT => ", "", 0);
-			// 	write_to_file("OX: ", ft_itoa(shell->config.o_x), 0);
-			// 	write_to_file(" | NX: ", ft_itoa(shell->config.x), 0);
-			// 	write_to_file(" | OY: ", ft_itoa(shell->config.o_y), 0);
-			// 	write_to_file(" | NY: ", ft_itoa(shell->config.y), 1);
-
-        		re_init_shell(&shell->config);
-				// write_to_file("AFTER INIT => ", "", 0);
-				// write_to_file("OX: ", ft_itoa(shell->config.o_x), 0);
-				// write_to_file(" | NX: ", ft_itoa(shell->config.x), 0);
-				// write_to_file(" | OY: ", ft_itoa(shell->config.o_y), 0);
-				// write_to_file(" | NY: ", ft_itoa(shell->config.y), 1);
-			}
-    	}
-		//free_shell(shell);
-		shell->config.buff = 0;
-	}
+	// init_config(&shell->config);
+	// ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
+	// init_config_data(&shell->config);
+	// shell->ret = 0;
+	// while (status)
+	// {
+	// 	read(0, &shell->config.buff, sizeof(&shell->config.buff));
+	// 	handle_keys(&shell->config);
+	// 	if (ft_isprint(shell->config.buff))
+    //         print_char(&shell->config);
+	// 	if (shell->config.buff == ENTER_BTN)
+    // 	{
+	// 		shell->line = shell->config.str;
+	// 		newline_config(&shell->config);
+	// 		shell->config.term.c_lflag |= (ICANON | ECHO);
+	// 		tcsetattr(0, 0, &shell->config.term);
+	// 		if (ft_strlen(shell->line))
+	// 			status = run_commands(shell);
+	// 		if (status)
+    //     		re_init_shell(&shell->config);
+    // 	}
+	// 	//free_shell(shell);
+	// 	shell->config.buff = 0;
+	// }
+	shell->ret = 0;
+	while ((shell->line = read_line(shell)))
+		status = run_commands(shell);
 	return (status);
 }
 
-void	sig_handle_ctrl_c()
+
+void	sig_handle_ctrl_c(int sig)
 {
-	signal(SIGINT, sig_handle_ctrl_c);
+	sig = 0;
+	// signal(SIGINT, sig_handle_ctrl_c);
 }
 
 void	erase_file_debug()
@@ -90,8 +139,8 @@ int     main(int argc, char **argv, char **envp)
 	t_shell shell;
 
 	erase_file_debug();
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_handle_ctrl_c);
+	// signal(SIGQUIT, SIG_IGN);
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);

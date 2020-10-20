@@ -69,7 +69,6 @@ void		display_history(t_config *config, int dir)
 		config->len = ft_strlen(config->str);
 		config->c = config->len;
 		ft_putstr_fd(config->str, 0);
-		
 		display_cursor(config);
 	}
 }

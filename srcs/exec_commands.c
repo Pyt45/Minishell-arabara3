@@ -358,13 +358,12 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 	int		*fds;
 	int		j = 0;
 	
-	//num_pipe = 1;
-	//(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
+	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
 	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
 		fds = pipe_fds(num_pipe, fds);
-		//(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+		// (num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 		j = 0;
 		while (cmds)
 		{
@@ -372,7 +371,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 			pid = fork();
 			if (pid == 0)
 			{
-				signal(SIGINT, SIG_DFL);
+				// signal(SIGINT, SIG_DFL);
 				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
 				close_pipes(fds, num_pipe);
 				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
@@ -416,7 +415,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 			while (++i < 2 * num_pipe)
 				wait(&status);
 		}
-		cmds->ret = status;
+		cmds->ret = status - 126;
 		free(fds);
 	} else {
 		cmds->ret = exec_commands(shell, cmds);
@@ -428,8 +427,9 @@ int		run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
 
+	write_to_file("cmd ", "run", 1);
 	shell = parse_commands(shell);
-	if (shell->ret)
+	if (shell->parse_err)
 		print_error("syntax error", 0, 0);
 	else {
 		cmds = shell->cmds;

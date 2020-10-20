@@ -25,10 +25,6 @@ void	display_cursor(t_config *config)
 	}
 	config->x = (config->o_x + config->c) % config->width;
 	config->y = ((config->o_x + config->c) / config->width) + config->o_y;
-	// write_to_file("OX: ", ft_itoa(config->o_x), 0);
-	// write_to_file(" | NX: ", ft_itoa(config->x), 0);
-	// write_to_file(" | OY: ", ft_itoa(config->o_y), 0);
-	// write_to_file(" | NY: ", ft_itoa(config->y), 1);
 	tputs(tgoto(config->cursor, config->x, config->y), 0, ft_putchars);
 	if (config->o_y + ((config->o_x + config->c) /
 		config->width) >= config->height)

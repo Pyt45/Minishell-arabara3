@@ -180,7 +180,7 @@ t_shell     *parse_commands(t_shell *shell)
             pos = parse_redirections(&cmds, &i, pos, tmp);
         i++;
 		if (pos == -1)
-			shell->ret = 1;
+			shell->parse_err = 1;
     }
     return (shell);
 }

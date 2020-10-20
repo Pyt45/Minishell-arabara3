@@ -10,7 +10,7 @@ void	print_line_up(t_config *config)
 	{
 		i = 0;
 		c = 0;
-		ft_putstr_fd("minishell~>", 0);
+		ft_putstr_fd("minishell~>", 1);
 		tputs(tgoto(config->cursor, 12, config->y), 0, ft_putchars);
 	}
 	else
@@ -44,6 +44,7 @@ void	print_line_down(t_config *config)
 
 void	newline_config(t_config *config)
 {
+	ft_putstr_fd("\n", 1);
 	if (config->y == config->height - 1)
 	{
 		tputs(tgetstr("sf", 0), 0, ft_putchars);
@@ -52,4 +53,5 @@ void	newline_config(t_config *config)
 	else
 		config->y++;
 	tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchars);
+	end_terminal(config);
 }

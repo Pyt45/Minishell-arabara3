@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 13:25:01 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/14 13:25:52 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/20 14:23:52 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ void	print_char(t_config *config)
 		config->c++;
 		config->len = config->c;
 	}
+	write_to_file("str ", config->str, 1);
 	display_content(config);
 }

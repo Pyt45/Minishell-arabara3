@@ -64,6 +64,7 @@ typedef struct		s_shell
 	char			**env;
 	char			*line;
 	int				ret;
+	int				parse_err;
 	struct s_cmds	*cmds;
 	struct s_config	config;
 }					t_shell;
@@ -165,7 +166,7 @@ char				*clear_quotes(char *str);
 int					is_quote(char c, int type);
 char				**ft_split_quote(char const *s, char c);
 char				*replace_string(char *str, t_shell *shell);
-
+void				init_prompt(t_config *config);
 // debuging
 void	write_to_file(char *s, char *num, int end);
 
