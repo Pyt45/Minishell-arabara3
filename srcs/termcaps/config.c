@@ -26,7 +26,7 @@ void	init_prompt(t_config *config)
 	config->cursor = tgetstr("cm", NULL);
 	if (tcsetattr(0, 0, &config->term) == -1)
 		printf("this is an error");
-	ft_putstr_fd("\033[1;32mminishell~> \033[0m", 1);
+	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
 	get_cursor_pos(config);
 	config->x = config->o_x;
 	config->y = config->o_y;
@@ -35,6 +35,15 @@ void	init_prompt(t_config *config)
 
 void	init_config_data(t_config *config)
 {
+	char	*term;
+	int		ret;
+
+	term = getenv("TERM");
+	ret = tgetent(NULL, term);
+	if (ret < 1)
+		printf("this is an error");
+	if (tcgetattr(0, &config->term) == -1)
+		printf("this is an error");
 	// config->len = 0;
 	config->str = malloc(sizeof(char) * 512);
 	// ft_bzero(config->str, sizeof(char) * 512);
@@ -46,7 +55,7 @@ void	init_config_data(t_config *config)
 	config->height = tgetnum("li");
 	config->o_x = 0;
 	config->o_y = 0;
-	init_config(config);
+	// init_config(config);
 	// get_cursor_pos(config);
 	// config->x = config->o_x;
 	// config->y = config->o_y;
@@ -55,15 +64,6 @@ void	init_config_data(t_config *config)
 
 void	init_config(t_config *config)
 {
-	char	*term;
-	int		ret;
-
-	term = getenv("TERM");
-	ret = tgetent(NULL, term);
-	if (ret < 1)
-		printf("this is an error");
-	if (tcgetattr(0, &config->term) == -1)
-		printf("this is an error");
 	// config->term.c_lflag &= ~(ICANON | ECHO);
 	// config->cursor = tgetstr("cm", NULL);
 	// if (tcsetattr(0, 0, &config->term) == -1)
