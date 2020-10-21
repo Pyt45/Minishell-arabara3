@@ -165,7 +165,7 @@ char				*clear_quotes(char *str);
 int					is_quote(char c, int type);
 char				**ft_split_quote(char const *s, char c);
 char				*replace_string(char *str, t_shell *shell);
-void				init_prompt(t_config *config);
+void				init_prompt(t_config *config, int err);
 // debuging
 void	write_to_file(char *s, char *num, int end);
 

@@ -27,40 +27,38 @@ void	free_shell(t_shell *shell)
 
 void	validate_cursor(t_config *config)
 {
-	int curr_y;
 	int new_y;
+	int	new_x;
 	int		i;
 	char	buff[20];
 
 	i = 0;
-	curr_y = config->o_y;
 	ft_bzero(buff, sizeof(char) * 20);
 	ft_putstr_fd("\e[6n", 2);
 	read(2, buff, sizeof(buff));
 	while (!ft_isdigit(buff[i]))
 		i++;
 	new_y = ft_atoi(buff + i) - 1;
-	if (new_y > curr_y)
-	{
-		write_to_file("validation", "ok", 1);
-		while (ft_isdigit(buff[i]))
+	while (ft_isdigit(buff[i]))
 			i++;
-		config->o_x = ft_atoi(buff + i + 1);
+	new_x = ft_atoi(buff + i + 1);
+	if (new_y > config->y || (new_y == config->y && new_x == config->o_x && ( config->len < config->width - 1 || config->len > config->width)) || (config->o_x == new_x && config->len == config->width))
+	{
+		config->o_x = new_x;
 		config->o_y = new_y;
-		config->x = config->o_x + 1;
+		config->x = config->o_x;
 		config->y = config->o_y - 1;
 		config->c = 0;
 		config->len = 0;
 		ft_bzero(config->str, 512 * sizeof(char));
-		display_cursor(config);
-		// newline_config(config, config->x);
+		move_cursor(config, 3);
 	}
 }
 
 
 char	*read_line(t_shell *shell)
 {
-	init_prompt(&shell->config);
+	init_prompt(&shell->config, shell->ret);
 	while (read(0, &shell->config.buff, sizeof(&shell->config.buff)))
 	{
 		validate_cursor(&shell->config);

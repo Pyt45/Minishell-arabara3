@@ -415,7 +415,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 			while (++i < 2 * num_pipe)
 				wait(&status);
 		}
-		cmds->ret = status - 126;
+		cmds->ret = status;
 		free(fds);
 	} else {
 		cmds->ret = exec_commands(shell, cmds);

@@ -15,6 +15,11 @@ void	write_to_file(char *s, char *num, int end)
 	fclose(f);
 }
 
+void	reinit_cursor(t_config *config)
+{
+	
+}
+
 void	display_cursor(t_config *config)
 {
 	if (config->x == 0 && config->y == 0)
@@ -80,8 +85,11 @@ void	get_cursor_pos(t_config *config)
 	while (ft_isdigit(buff[i]))
 		i++;
 	config->o_x = ft_atoi(buff + i + 1);
-	// write_to_file(" | X: ", ft_itoa(config->o_x), 0);
-	// write_to_file(" | Y: ", ft_itoa(config->o_y), 1);
-
 }
 
+/*
+100
+150
+
+
+*/
