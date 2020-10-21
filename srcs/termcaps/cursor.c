@@ -15,11 +15,6 @@ void	write_to_file(char *s, char *num, int end)
 	fclose(f);
 }
 
-void	reinit_cursor(t_config *config)
-{
-	
-}
-
 void	display_cursor(t_config *config)
 {
 	if (config->x == 0 && config->y == 0)
@@ -78,7 +73,17 @@ void	get_cursor_pos(t_config *config)
 	i = 0;
 	ft_bzero(buff, sizeof(char) * 20);
 	ft_putstr_fd("\e[6n", 2);
-	read(2, buff, sizeof(buff));
+	while (buff[0] != '\e')
+	{
+		read(2, buff, sizeof(buff));
+		if (buff[0] != '\e')
+		{
+			if (config->tmp)
+				config->tmp = ft_strjoin(config->tmp, buff);
+			else
+				config->tmp = ft_strdup(buff);
+		}
+	}
 	while (!ft_isdigit(buff[i]))
 		i++;
 	config->o_y = ft_atoi(buff + i) - 1;
@@ -86,10 +91,3 @@ void	get_cursor_pos(t_config *config)
 		i++;
 	config->o_x = ft_atoi(buff + i + 1);
 }
-
-/*
-100
-150
-
-
-*/

@@ -55,6 +55,7 @@ typedef struct		s_config
 	int					c;
 	int					len;
 	int					cmd;
+	char				*tmp;
 	struct s_history	*history;
 	struct s_control	control;
 }					t_config;

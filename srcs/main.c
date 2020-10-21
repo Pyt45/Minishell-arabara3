@@ -25,36 +25,42 @@ void	free_shell(t_shell *shell)
 	shell->cmds = NULL;
 }
 
+void	reinit_cursor(t_config *config, int new_x, int new_y)
+{
+	config->o_x = new_x;
+	config->o_y = new_y;
+	config->x = config->o_x;
+	config->y = config->o_y - 1;
+	config->c = 0;
+	config->len = 0;
+	ft_bzero(config->str, 512 * sizeof(char));
+	move_cursor(config, 3);
+}
+
 void	validate_cursor(t_config *config)
 {
-	int new_y;
-	int	new_x;
+	int 	new_y;
+	int		new_x;
 	int		i;
 	char	buff[20];
 
 	i = 0;
 	ft_bzero(buff, sizeof(char) * 20);
 	ft_putstr_fd("\e[6n", 2);
-	read(2, buff, sizeof(buff));
+	while (buff[0] != '\e')
+		read(2, buff, sizeof(buff));
 	while (!ft_isdigit(buff[i]))
 		i++;
 	new_y = ft_atoi(buff + i) - 1;
 	while (ft_isdigit(buff[i]))
 			i++;
 	new_x = ft_atoi(buff + i + 1);
-	if (new_y > config->y || (new_y == config->y && new_x == config->o_x && ( config->len < config->width - 1 || config->len > config->width)) || (config->o_x == new_x && config->len == config->width))
-	{
-		config->o_x = new_x;
-		config->o_y = new_y;
-		config->x = config->o_x;
-		config->y = config->o_y - 1;
-		config->c = 0;
-		config->len = 0;
-		ft_bzero(config->str, 512 * sizeof(char));
-		move_cursor(config, 3);
-	}
+	if (new_y > config->y || (new_y == config->y && new_x ==
+		config->o_x && ( config->len < config->width - 1 ||
+		config->len > config->width)) || (config->o_x ==
+		new_x && config->len == config->width))
+		reinit_cursor(config, new_x, new_y);
 }
-
 
 char	*read_line(t_shell *shell)
 {
