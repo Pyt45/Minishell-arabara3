@@ -42,16 +42,17 @@ void	print_line_down(t_config *config)
 	}
 }
 
-void	newline_config(t_config *config)
+void	newline_config(t_config *config, int x)
 {
-	ft_putstr_fd("\n", 1);
 	if (config->y == config->height - 1)
 	{
 		tputs(tgetstr("sf", 0), 0, ft_putchars);
 		config->o_y--;
 	}
 	else
+	{
+		ft_putstr_fd("\n", 0);
 		config->y++;
-	tputs(tgoto(config->cursor, 0, config->y), 0, ft_putchars);
-	end_terminal(config);
+	}
+	tputs(tgoto(config->cursor, x, config->y), 0, ft_putchars);
 }

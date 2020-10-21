@@ -25,53 +25,53 @@ void	free_shell(t_shell *shell)
 	shell->cmds = NULL;
 }
 
-// int		command_line(t_shell *shell)
-// {
-// 	int		status;
+void	validate_cursor(t_config *config)
+{
+	int curr_y;
+	int new_y;
+	int		i;
+	char	buff[20];
 
-// 	status = 1;
-// 	init_config(&shell->config);
-// 	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
-// 	init_config_data(&shell->config);
-// 	shell->ret = 0;
-// 	while (status)
-// 	{
-// 		read(0, &shell->config.buff, sizeof(&shell->config.buff));
-// 		handle_keys(&shell->config);
-// 		if (ft_isprint(shell->config.buff))
-//             print_char(&shell->config);
-// 		if (shell->config.buff == ENTER_BTN)
-//     	{
-// 			shell->line = shell->config.str;
-// 			newline_config(&shell->config);
-// 			shell->config.term.c_lflag |= (ICANON | ECHO);
-// 			tcsetattr(0, 0, &shell->config.term);
-// 			if (ft_strlen(shell->line))
-// 				status = run_commands(shell);
-// 			if (status)
-//         		re_init_shell(&shell->config);
-//     	}
-// 		//free_shell(shell);
-// 		shell->config.buff = 0;
-// 	}
-// 	return (status);
-// }
+	i = 0;
+	curr_y = config->o_y;
+	ft_bzero(buff, sizeof(char) * 20);
+	ft_putstr_fd("\e[6n", 2);
+	read(2, buff, sizeof(buff));
+	while (!ft_isdigit(buff[i]))
+		i++;
+	new_y = ft_atoi(buff + i) - 1;
+	if (new_y > curr_y)
+	{
+		write_to_file("validation", "ok", 1);
+		while (ft_isdigit(buff[i]))
+			i++;
+		config->o_x = ft_atoi(buff + i + 1);
+		config->o_y = new_y;
+		config->x = config->o_x + 1;
+		config->y = config->o_y - 1;
+		config->c = 0;
+		config->len = 0;
+		ft_bzero(config->str, 512 * sizeof(char));
+		display_cursor(config);
+		// newline_config(config, config->x);
+	}
+}
+
 
 char	*read_line(t_shell *shell)
 {
 	init_prompt(&shell->config);
 	while (read(0, &shell->config.buff, sizeof(&shell->config.buff)))
 	{
+		validate_cursor(&shell->config);
 		handle_keys(&shell->config);
-		write_to_file("read ", "ok", 1);
 		if (ft_isprint(shell->config.buff))
             print_char(&shell->config);
 		if (shell->config.buff == ENTER_BTN)
     	{
-			write_to_file("enter ", "ok", 1);
 			shell->line = shell->config.str;
-			newline_config(&shell->config);
-			// if (ft_strlen(shell->line))
+			newline_config(&shell->config, 0);
+			end_terminal(&shell->config);
 			break;
     	}
 		shell->config.buff = 0;
@@ -79,47 +79,18 @@ char	*read_line(t_shell *shell)
 	return (shell->line);
 }
 
-
-int		command_line(t_shell *shell)
+void		command_line(t_shell *shell)
 {
-	int		status;
-
-	status = 1;
-	// init_config(&shell->config);
-	// ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
-	// init_config_data(&shell->config);
-	// shell->ret = 0;
-	// while (status)
-	// {
-	// 	read(0, &shell->config.buff, sizeof(&shell->config.buff));
-	// 	handle_keys(&shell->config);
-	// 	if (ft_isprint(shell->config.buff))
-    //         print_char(&shell->config);
-	// 	if (shell->config.buff == ENTER_BTN)
-    // 	{
-	// 		shell->line = shell->config.str;
-	// 		newline_config(&shell->config);
-	// 		shell->config.term.c_lflag |= (ICANON | ECHO);
-	// 		tcsetattr(0, 0, &shell->config.term);
-	// 		if (ft_strlen(shell->line))
-	// 			status = run_commands(shell);
-	// 		if (status)
-    //     		re_init_shell(&shell->config);
-    // 	}
-	// 	//free_shell(shell);
-	// 	shell->config.buff = 0;
-	// }
 	shell->ret = 0;
 	while ((shell->line = read_line(shell)))
-		status = run_commands(shell);
-	return (status);
+		run_commands(shell);
 }
-
 
 void	sig_handle_ctrl_c(int sig)
 {
 	sig = 0;
-	// signal(SIGINT, sig_handle_ctrl_c);
+	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
 }
 
 void	erase_file_debug()
@@ -140,11 +111,9 @@ int     main(int argc, char **argv, char **envp)
 
 	erase_file_debug();
 	signal(SIGINT, sig_handle_ctrl_c);
-	// signal(SIGQUIT, SIG_IGN);
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);
-		//signal(SIGINT, &sig_handle_ctrl_c);		
 		command_line(&shell);
 	}
     return (0);

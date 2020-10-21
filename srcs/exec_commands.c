@@ -427,7 +427,6 @@ int		run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
 
-	write_to_file("cmd ", "run", 1);
 	shell = parse_commands(shell);
 	if (shell->parse_err)
 		print_error("syntax error", 0, 0);
