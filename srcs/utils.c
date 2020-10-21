@@ -66,6 +66,7 @@ char    **ft_arrdup(char **arr)
     return (new_arr);
 }
 
+
 void    ft_print_env_arr(char **arr)
 {
     int     i;
@@ -238,3 +239,4 @@ double  ft_fatoi(const char *str)
 // {
 //     printf("%d\n", ft_access("/bin/find", 1));
 // }
+
