@@ -65,7 +65,7 @@ void	validate_cursor(t_config *config)
 char	*read_line(t_shell *shell)
 {
 	init_prompt(&shell->config, shell->ret);
-	while (read(0, &shell->config.buff, sizeof(&shell->config.buff)))
+	while ((*shell->config.str && shell->config.tmp) || shell->config.buff || read(0, &shell->config.buff, sizeof(&shell->config.buff)))
 	{
 		validate_cursor(&shell->config);
 		handle_keys(&shell->config);

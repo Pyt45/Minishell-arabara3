@@ -1,5 +1,28 @@
 #include "../../includes/shell.h"
 
+void	display_tmp_data(t_config *config)
+{
+	int i;
+
+	i = 0;
+	if (config->tmp)
+	{
+		while (config->tmp[i])
+		{
+			config->buff = config->tmp[i];
+			if (ft_isprint(config->buff))
+				print_char(config);
+			else if (config->buff == ENTER_BTN)
+				break;
+			i++;
+		}
+	}
+	if (config->buff != ENTER_BTN)
+		config->tmp = NULL;
+	else
+		config->tmp = config->tmp + i + 1;
+}
+
 void	init_prompt(t_config *config, int err)
 {
 	if (config->history)
@@ -20,6 +43,7 @@ void	init_prompt(t_config *config, int err)
 	config->x = config->o_x;
 	config->y = config->o_y;
 	display_cursor(config);
+	display_tmp_data(config);
 }
 
 void	init_config_data(t_config *config)
