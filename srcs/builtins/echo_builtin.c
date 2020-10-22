@@ -266,7 +266,6 @@ int			echo_builtin(t_cmds *cmd, t_shell *shell)
 
     i = 0;
     n = 0;
-
     if (!cmd->args[1])
     {
         ft_putchar_fd('\n', 1);
@@ -274,8 +273,9 @@ int			echo_builtin(t_cmds *cmd, t_shell *shell)
     }
     while (cmd->args[++i])
     {
-		while (!n && check_n_flag(cmd->args[i], &n))
-			i++;
+		if (!n)
+			while (check_n_flag(cmd->args[i], &n))
+				i++;
 		echo_print(cmd->args, i);
 		if (!cmd->args[i + 1] && !n)
 			ft_putchar_fd('\n', 1);
