@@ -53,10 +53,11 @@ void	init_config_data(t_config *config)
 
 	term = getenv("TERM");
 	ret = tgetent(NULL, term);
-	if (ret < 1)
-		printf("this is an error");
-	if (tcgetattr(0, &config->term) == -1)
-		printf("this is an error");
+	// if (ret < 1)
+	// 	printf("this is an error term 1");
+	tcgetattr(0, &config->term);
+	// if (tcgetattr(0, &config->term) == -1)
+	// 	printf("this is an error term 2");
 	config->str = malloc(sizeof(char) * 512);
 	config->history = malloc(sizeof(t_history));
 	config->history->prev = NULL;
@@ -71,6 +72,7 @@ void	init_config_data(t_config *config)
 void	end_terminal(t_config *config)
 {
 	config->term.c_lflag |= (ICANON | ECHO);
-	if (tcsetattr(0, 0, &config->term) == -1)
-		printf("this is an error");
+	tcsetattr(0, 0, &config->term);
+	// if (tcsetattr(0, 0, &config->term) == -1)
+	// 	printf("this is an error endterm");
 }
