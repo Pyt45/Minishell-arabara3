@@ -340,7 +340,8 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 //     return (cmds);
 // }
 
-void	close_pipes(int *fds, int num_pipe){
+void	close_pipes(int *fds, int num_pipe)
+{
 	int	i;
 
 	i = 0;
@@ -348,59 +349,97 @@ void	close_pipes(int *fds, int num_pipe){
 		close(fds[i++]);
 }
 
-t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp)
+static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
+		close_pipes(shell->fds, shell->num_pipe);
+		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
+		{
+			if (cmds->args && !exec_commands(shell, cmds))
+			{
+				print_error(cmds->cmd, errno, 1);
+				exit(1);
+			}
+		}
+		else if (cmds->args && exec_commands(shell, cmds))
+		{
+			print_error(cmds->cmd, errno, 1);
+			exit(1);
+		}
+		exit(0);
+	}
+	else if (pid < 0)
+	{
+		perror("Error");
+		exit(1);
+	}
+	return (pid);
+}
+
+static int wait_child(t_shell *shell, pid_t pid, int st)
+{
+	int		i;
+
+	i = -1;
+	if (!shell->num_pipe)
+		waitpid(pid, &st, 0);
+	else
+	{
+		while (++i < 2 * shell->num_pipe)
+			wait(&st);
+	}
+	return (st);
+}
+
+t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
 	int 	status = 0;
-	char	*line;
-	char	*content;
-	int		r = 1;
-    int		i = 0;
 	int		*ior;
-	int		*fds;
 	int		j = 0;
 	
-	(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
-	(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+	//(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
+	//(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
+	pipe_ior(shell->num_sp, ior);
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
-		fds = pipe_fds(num_pipe, fds);
+		shell->fds = pipe_fds(shell->num_pipe, shell->fds);
 		// (num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 		j = 0;
 		while (cmds)
 		{
 			// save_restor_fd(1,0);
-			pid = fork();
-			if (pid == 0)
-			{
-				// signal(SIGINT, SIG_DFL);
-				(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
-				close_pipes(fds, num_pipe);
-				if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
-				{
-					ior[0] = 0;
-					ior[1] = fds[1];
-					exec_io_redi(cmds, ior[0], ior[1], shell);
-					if (cmds->args && !exec_commands(shell, cmds))
-					{
-						print_error(cmds->cmd, errno, 1);
-						// exit(1);
-					}
-					close(ior[1]);
-					ior[1] = 1;
-				}
-				else if (cmds->args && exec_commands(shell, cmds))
-				{
-					print_error(cmds->cmd, errno, 1);
-					exit(1);
-				}
-				exit(0);
-			}
-			/* else if (pid < 0)
-			{
-				perror("Error");
-				exit(EXIT_FAILURE);
-			} */
+			// pid = fork();
+			// if (pid == 0)
+			// {
+			// 	(num_pipe) ? fds = create_fds(cmds, j, fds) : 0;
+			// 	close_pipes(fds, num_pipe);
+			// 	if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
+			// 	{
+			// 		//ior[0] = 0;
+			// 		//ior[1] = fds[1];
+			// 		//exec_io_redi(cmds, ior[0], ior[1], shell);
+			// 		if (cmds->args && !exec_commands(shell, cmds))
+			// 		{
+			// 			print_error(cmds->cmd, errno, 1);
+			// 			// exit(1);
+			// 		}
+			// 		//close(ior[1]);
+			// 		//ior[1] = 1;
+			// 	}
+			// 	else if (cmds->args && exec_commands(shell, cmds))
+			// 	{
+			// 		print_error(cmds->cmd, errno, 1);
+			// 		exit(1);
+			// 	}
+			// 	exit(0);
+			// }
+			pid = run_child(shell, cmds, j);
 			if (cmds->end)
 				break;
 			else
@@ -408,26 +447,21 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, 
 			j += 2;
 			//save_restor_fd(0,1);
 		}
-		close_pipes(fds, num_pipe);
-		i = -1;
-		if (!num_pipe)
-			waitpid(pid, &status, 0);
-		else
-		{
-			while (++i < 2 * num_pipe)
-				wait(&status);
-		}
+		close_pipes(shell->fds, shell->num_pipe);
+		status = wait_child(shell, pid, status);
 		cmds->ret = status;
-		free(fds);
-	} else {
-		cmds->ret = exec_commands(shell, cmds);
+		free(shell->fds);
 	}
+	else
+		cmds->ret = exec_commands(shell, cmds);
     return (cmds);
 }
 
 int		run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
+	shell->num_sp = 0;
+	shell->num_pipe = 0;
 
 	shell = parse_commands(shell);
 	if (shell->parse_err)
@@ -437,7 +471,9 @@ int		run_commands(t_shell *shell)
 		while (cmds)
 		{
 			//save_restor_fd(1,0);
-			cmds = excute_command_by_order(shell, cmds, get_num_pipes(cmds), get_num_rd(cmds));
+			shell->num_pipe = get_num_pipes(cmds);
+			shell->num_sp = get_num_rd(cmds);
+			cmds = excute_command_by_order(shell, cmds);
 			// save_restor_fd(0,1);
 			shell->ret = cmds->ret;
 			cmds = cmds->next;

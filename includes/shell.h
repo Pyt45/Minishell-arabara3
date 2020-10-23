@@ -68,6 +68,9 @@ typedef struct		s_shell
 	int				parse_err;
 	struct s_cmds	*cmds;
 	struct s_config	config;
+	int				*fds;
+	int				num_pipe;
+	int				num_sp;
 }					t_shell;
 
 typedef struct		s_history
@@ -107,8 +110,7 @@ char				*try_path(char *filename, char *dir);
 char				*get_bin_path(char *filename, char **env);
 t_shell				*control_command(t_shell *shell);
 t_shell				*get_single_command(t_shell *shell);
-t_cmds				*excute_command_by_order(t_shell *shell,
-	t_cmds *cmds, int num_pipe, int num_sp);
+t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds);
 int					exec_commands(t_shell *shell, t_cmds *cmds);
 int					run_commands(t_shell *shell);
 int					cd_builtin(t_shell *shell, t_cmds *cmds);
