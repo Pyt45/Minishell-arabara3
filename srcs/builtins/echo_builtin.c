@@ -210,7 +210,7 @@ char     *parse_env_var(char *str, t_shell *shell)
     quote = 0;
 	while (str[++i])
 	{   
-		if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !str[i + 1] || str[i + 1] == ' ' || str[i + 1] == '$'))
+		if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !ft_isalnum(str[i + 1]) || !str[i + 1] || str[i + 1] == ' ' || str[i + 1] == '$'))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
 			str = replace_var_string(str, var, tmp, &i, i - var);
@@ -240,28 +240,45 @@ char	*replace_string(char *str, t_shell *shell)
 	return (str);
 }
 
+int		check_n_flag(char *str, int *n)
+{
+	int i;
+	int	is_flag;
+
+	i = 0;
+	is_flag = 0;
+	if (str[0] == '-' && str[1] == 'n' && (str[2] == 'n' || !str[2]))
+    {
+        *n = 2;
+		is_flag = 1;
+		while (str[*n] == 'n')
+        	*n = *n + 1;
+		if (str[*n])
+			is_flag = 0;
+    }
+	return (is_flag);
+}
+
 int			echo_builtin(t_cmds *cmd, t_shell *shell)
 {
     int     i;
-    int     n_flag;
+    int     n;
 
     i = 0;
-    n_flag = 0;
+    n = 0;
     if (!cmd->args[1])
     {
         ft_putchar_fd('\n', 1);
         return (0);
     }
-    else if (cmd->args[1][0] == '-' && cmd->args[1][1] == 'n' && cmd->args[1][2] == '\0')
-    {
-        n_flag = 1;
-        i++;
-    }
     while (cmd->args[++i])
     {
-        echo_print(cmd->args, i);
-        if (!cmd->args[i + 1] && !n_flag)
-            ft_putchar_fd('\n', 1);
+		if (!n)
+			while (check_n_flag(cmd->args[i], &n))
+				i++;
+		echo_print(cmd->args, i);
+		if (!cmd->args[i + 1] && !n)
+			ft_putchar_fd('\n', 1);
     }
     return (0);
 }
