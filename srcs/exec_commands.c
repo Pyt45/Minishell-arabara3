@@ -139,11 +139,8 @@ int		open_input(char *args, int append, int ifd)
 		ifd = pipefd[0];
 	}
 	else if ((fd = open(args, O_RDONLY)) >= 0)
-	{
-		//puts("here\n");
 		ifd = fd;
-	}
-	dup2(ifd, 1);
+	dup2(ifd, 0);
 	return (ifd);
 }
 
@@ -351,6 +348,7 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 {
 	pid_t	pid;
 
+	
 	pid = fork();
 	if (pid == 0)
 	{
@@ -358,6 +356,9 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
+			//printf("%d\n", shell->fds[1]);
+			exec_io_redi(cmds, 0, shell->fds[1], shell);
+			//printf("%d\n", shell->fds[1]);
 			if (cmds->args && !exec_commands(shell, cmds))
 			{
 				print_error(cmds->cmd, errno, 1);
@@ -403,7 +404,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 	
 	//(num_pipe) ? fds = pipe_fds(num_pipe, fds) : 0;
 	//(num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
-	pipe_ior(shell->num_sp, ior);
+	//pipe_ior(shell->num_sp, ior);
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
 		shell->fds = pipe_fds(shell->num_pipe, shell->fds);
@@ -411,7 +412,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		j = 0;
 		while (cmds)
 		{
-			// save_restor_fd(1,0);
+			save_restor_fd(1,0);
 			// pid = fork();
 			// if (pid == 0)
 			// {
@@ -443,7 +444,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			else
 				cmds = cmds->next;
 			j += 2;
-			//save_restor_fd(0,1);
+			save_restor_fd(0,1);
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
