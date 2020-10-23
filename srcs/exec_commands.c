@@ -218,7 +218,6 @@ char	**clear_args(char **args, t_shell *shell){
 	while (args[i])
 	{
 		// args[i] = clear_quotes(args[i]);
-		puts(args[i]);
 		if (ft_strchr(args[i] ,'\\'))
 			args[i] = parse_special_chars(args[i]);
 		// args[i] = replace_string(args[i], shell);

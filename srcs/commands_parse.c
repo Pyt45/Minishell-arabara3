@@ -108,7 +108,7 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
         j = 1;
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
     (*cmds)->args = get_args(tmp + pos, i - pos + j);
-    debug_cmd((*cmds), i, pos, tmp[i]);
+    // debug_cmd((*cmds), i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
     if (!(*cmds)->prev)

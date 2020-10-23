@@ -116,6 +116,11 @@ char    *parse_variable_name(char *str, int len, t_shell *shell){
     int i;
 
     var = NULL;
+	if (*str == '{')
+	{
+		len--;
+		str++;
+	}
     tmp = (char *)malloc(sizeof(char) * len);
     strlcpy(tmp, str, len);
     if (tmp[0] == '?')
@@ -126,7 +131,7 @@ char    *parse_variable_name(char *str, int len, t_shell *shell){
             var = ft_itoa(shell->ret);
     }
     else if ((i = ft_getenv(tmp, shell->env)) >= 0)
-        var = shell->env[i] + ft_strlen(tmp) + 1;
+		var = shell->env[i] + ft_strlen(tmp) + 1;
     free(tmp);
     if (var)
         return var;
@@ -142,9 +147,13 @@ char    *replace_var_string(char *src, int i, char *var, int *pos, int len)
 
     j = 0;
 	varlen = ft_strlen(var);
+	len = src[i] == '{' ? len + 2 : len; 
+	i = src[i] == '{' ? i - 1 : i;
     tlen = ft_strlen(src) + varlen - len;
     tmp = (char *)malloc(sizeof(char) * tlen);
     while (j < tlen){
+		if (j == i)
+            src = src + len + 1;
         if (j == i && var)
         {
             while (*var) {
@@ -152,10 +161,10 @@ char    *replace_var_string(char *src, int i, char *var, int *pos, int len)
                 var++;
                 j++;
             }
-            src = src + len + 1;
+            // src = src + len + 1;
         } else {
-            if (j == i && !var)
-                src = src + len + 1;
+            // if (j == i && !var)
+                // src = src + len + 1;
             tmp[j] = *src;
             src++;
             j++;
@@ -187,11 +196,11 @@ char    *clear_quotes(char *str)
 			while (str[j])
 			{
 				// if (!forbidden)
-					str[j] = str[j + 1];
+				str[j] = str[j + 1];
 				j++;
 			}
 			// if (!forbidden)
-				i--;
+			i--;
         }
         i++;
     }
@@ -210,7 +219,7 @@ char     *parse_env_var(char *str, t_shell *shell)
     quote = 0;
 	while (str[++i])
 	{   
-		if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !ft_isalnum(str[i + 1]) || !str[i + 1] || str[i + 1] == ' ' || str[i + 1] == '$'))
+		if (quote != 1 && var != -1 && (is_quote(str[i + 1], 0) || !ft_isalnum(str[i + 1]) || !str[i + 1] || str[i + 1] == ' ' || str[i + 1] == '$' || str[i + 1] == '}'))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
 			str = replace_var_string(str, var, tmp, &i, i - var);
@@ -225,7 +234,11 @@ char     *parse_env_var(char *str, t_shell *shell)
 		else if (is_quote(str[i], 2)&& quote == 2)
 			quote = 0;
 		if (quote != 1 && str[i] == '$')
+		{
+			if (str[i + 1] == '{')
+				i++;
 			var = i;
+		}
 	}
     return (str);
 }
