@@ -11,7 +11,7 @@ char			**free_list_quote(char **split)
 	return (NULL);
 }
 
-static int		count_strings(char *str, char c)
+static int		count_strings(char *str)
 {
 	int i;
 	int j;
@@ -30,7 +30,7 @@ static int		count_strings(char *str, char c)
 				j++;
 			quote = !quote ? 1 : 0;
 		}
-		else if (str[i] == c && !quote)
+		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
 		{
 			if (start == 1)
 			{
@@ -38,7 +38,7 @@ static int		count_strings(char *str, char c)
 				start = 0;
 			}
 		}
-		else if (str[i] != c)
+		else if (str[i] != ' ')
 			start = 1;
 		i++;
 	}
@@ -62,7 +62,7 @@ static char		**ft_make_splits(char **split, char *str, char x)
 	{
 		if (is_quote(str[i], 0))
 			quote = !quote ? 1 : 0;
-		if (str[i] == x && !quote && j != -1)
+		if (str[i] == x && !quote && j != -1 && str[i - 1] != '\\')
 		{
 			if (!(split[c++] = clear_quotes(ft_substr(str, j, i - j))))
 				return (free_list_quote(split));
@@ -73,7 +73,6 @@ static char		**ft_make_splits(char **split, char *str, char x)
 	}
 	if (j != -1 && !(split[c] = clear_quotes(ft_substr(str, j, i - j))))
 		return (free_list_quote(split));
-	// printf("***************TOTAL: %d %s\n", c, split[c]);
 	return (split);
 }
 
@@ -85,8 +84,7 @@ char			**ft_split_quote(char const *s, char c)
 	len = 0;
 	if (!s)
 		return (0);
-	len = count_strings((char *)s, c);
-	// printf("%d\n", len);
+	len = count_strings((char *)s);
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)
 		return (0);

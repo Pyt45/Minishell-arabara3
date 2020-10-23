@@ -179,24 +179,24 @@ char    *clear_quotes(char *str)
     while (str[i]){
         if ((!quote && is_quote(str[i], 0)) || (quote && is_quote(str[i], 0) == quote)){
 			if (!quote && str[i + 1] == ' ')
+			{
 				forbidden = 1;
+			}
 			quote = !quote ? is_quote(str[i], 0) : 0;
 			j = i;
 			while (str[j])
 			{
-				if (!forbidden)
+				// if (!forbidden)
 					str[j] = str[j + 1];
 				j++;
 			}
-			if (!forbidden)
+			// if (!forbidden)
 				i--;
         }
         i++;
     }
     return (str);
 }
-
-
 
 char     *parse_env_var(char *str, t_shell *shell)
 {
@@ -234,8 +234,8 @@ char	*replace_string(char *str, t_shell *shell)
 {
 	if (ft_strchr(str, '$'))
 	    str = parse_env_var(str, shell);
-	if (ft_strchr(str ,'\\'))
-		str = parse_special_chars(str);
+	// if (ft_strchr(str ,'\\'))
+	// 	str = parse_special_chars(str);
 	// return (clear_quotes(str));
 	return (str);
 }

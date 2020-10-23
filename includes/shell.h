@@ -169,6 +169,9 @@ char				*replace_string(char *str, t_shell *shell);
 void				init_prompt(t_config *config, int err);
 void				reinit_cursor(t_config *config, int new_x, int new_y);
 void				validate_cursor(t_config *config);
+char    			*parse_special_chars(char *str);
+
+
 // debuging
 void	write_to_file(char *s, char *num, int end);
 

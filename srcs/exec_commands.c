@@ -217,7 +217,10 @@ char	**clear_args(char **args, t_shell *shell){
 	i = 0;
 	while (args[i])
 	{
-		args[i] = clear_quotes(args[i]);
+		// args[i] = clear_quotes(args[i]);
+		puts(args[i]);
+		if (ft_strchr(args[i] ,'\\'))
+			args[i] = parse_special_chars(args[i]);
 		// args[i] = replace_string(args[i], shell);
 		i++;
 	}
@@ -232,7 +235,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	// cmds->cmd = clear_quotes(cmds->cmd);
-	// cmds->args = clear_args(cmds->args, shell);
+	cmds->args = clear_args(cmds->args, shell);
     if (!ft_strcmp(cmds->cmd, "env"))
         ret = env_builtin(cmds, shell->env);
 	else if (!ft_strcmp(cmds->cmd, "cd"))

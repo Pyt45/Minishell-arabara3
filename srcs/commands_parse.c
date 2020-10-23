@@ -108,7 +108,7 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
         j = 1;
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
     (*cmds)->args = get_args(tmp + pos, i - pos + j);
-    // debug_cmd((*cmds), i, pos, tmp[i]);
+    debug_cmd((*cmds), i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
     if (!(*cmds)->prev)
@@ -162,13 +162,12 @@ t_shell     *parse_commands(t_shell *shell)
 	int			quote;
     
     pos = 0;
-    i = 0;
+    i = -1;
 	quote = 0;
-    tmp = shell->line;
-	tmp = replace_string(tmp, shell);
+	tmp = replace_string(shell->line, shell);
     cmds = init_cmds(NULL);
     shell->cmds = cmds;
-    while (tmp[i] && pos != -1)
+    while (tmp[++i] && pos != -1)
     {
 		if (is_quote(tmp[i], 0))
 			quote = !quote ? 1 : 0;
@@ -178,7 +177,7 @@ t_shell     *parse_commands(t_shell *shell)
             pos = parse_semicolons(&cmds, i, pos, tmp);
         else if (!quote && (tmp[i] == '>' || tmp[i] == '<'))
             pos = parse_redirections(&cmds, &i, pos, tmp);
-        i++;
+        // i++;
 		if (pos == -1)
 			shell->parse_err = 1;
     }
