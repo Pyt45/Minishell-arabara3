@@ -152,19 +152,15 @@ char    *replace_var_string(char *src, int i, char *var, int *pos, int len)
     tlen = ft_strlen(src) + varlen - len;
     tmp = (char *)malloc(sizeof(char) * tlen);
     while (j < tlen){
-		if (j == i)
-            src = src + len + 1;
-        if (j == i && var)
+        if (j == i)
         {
-            while (*var) {
+			src = src + len + 1;
+            while (var && *var) {
                 tmp[j] = *var;
                 var++;
                 j++;
             }
-            // src = src + len + 1;
         } else {
-            // if (j == i && !var)
-                // src = src + len + 1;
             tmp[j] = *src;
             src++;
             j++;
