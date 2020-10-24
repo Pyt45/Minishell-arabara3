@@ -18,7 +18,10 @@ void	display_tmp_data(t_config *config)
 		}
 	}
 	if (config->buff != ENTER_BTN)
+	{
 		config->tmp = NULL;
+		config->buff = 0;
+	}
 	else
 		config->tmp = config->tmp + i + 1;
 }
