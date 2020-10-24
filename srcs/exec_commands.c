@@ -237,7 +237,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	ret = 1;
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
-	// cmds->cmd = clear_quotes(cmds->cmd);
+	cmds->cmd = clear_quotes(cmds->cmd);
 	cmds->args = clear_args(cmds->args, shell);
     if (!ft_strcmp(cmds->cmd, "env"))
         ret = env_builtin(cmds, shell->env);
@@ -469,7 +469,7 @@ int		run_commands(t_shell *shell)
 	t_cmds	*cmds;
 	shell->num_sp = 0;
 	shell->num_pipe = 0;
-
+	shell->parse_err = 0;
 	shell = parse_commands(shell);
 	if (shell->parse_err)
 		print_error("syntax error", 0, 0);
@@ -486,6 +486,5 @@ int		run_commands(t_shell *shell)
 			cmds = cmds->next;
 		}
 	}
-	shell->parse_err = 0;
 	return (1);
 }
