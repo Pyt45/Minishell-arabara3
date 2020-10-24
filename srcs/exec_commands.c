@@ -143,7 +143,7 @@ int		open_input(char *args, int append, int ifd)
 		//puts("here\n");
 		ifd = fd;
 	}
-	dup2(ifd, 1);
+	dup2(ifd, 0);
 	return (ifd);
 }
 
@@ -179,12 +179,14 @@ void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
 int		get_num_pipes(t_cmds *cmds)
 {
 	int	i;
+	t_cmds *tmp;
 
 	i = 0;
-	while (cmds->p)
+	tmp = cmds;
+	while (tmp->p)
 	{
 		i++;
-		cmds = cmds->next;
+		tmp = tmp->next;
 	}
 	return (i);
 }
@@ -192,12 +194,14 @@ int		get_num_pipes(t_cmds *cmds)
 int		get_num_rd(t_cmds *cmds)
 {
 	int	i;
+	t_cmds *tmp;
 
 	i = 0;
-	while (cmds->r)
+	tmp = cmds;
+	while (tmp->r)
 	{
 		i++;
-		cmds = cmds->next;
+		tmp = tmp->next;
 	}
 	return (i);
 }
@@ -249,8 +253,10 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
         ret = unset_builtin(shell, cmds);
     else if (!ft_strcmp(cmds->cmd, "echo"))
     	ret = echo_builtin(cmds, shell);
-	else
+	else if(!cmds->prev || cmds->prev->append == 0)
 		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
+	else
+		ret = 0;
     return (ret);
 }
 
@@ -360,7 +366,8 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
-			if (cmds->args && !exec_commands(shell, cmds))
+			exec_io_redi(cmds, 0, shell->fds[1], shell);
+			if (cmds->args && exec_commands(shell, cmds))
 			{
 				print_error(cmds->cmd, errno, 1);
 				exit(1);
@@ -479,5 +486,6 @@ int		run_commands(t_shell *shell)
 			cmds = cmds->next;
 		}
 	}
+	shell->parse_err = 0;
 	return (1);
 }

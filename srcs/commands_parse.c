@@ -126,7 +126,7 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
 int        parse_redirections(t_cmds **cmds, int *i, int pos,char *tmp){
     (*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
     (*cmds)->args = get_args(tmp + pos, *i - pos);
-    // debug_cmd(*cmds, *i, pos, tmp[*i]);
+    debug_cmd(*cmds, *i, pos, tmp[*i]);
 	if (!(*cmds)->args ||!(*cmds)->cmd)
 		return (-1);
     if (!(*cmds)->prev)
