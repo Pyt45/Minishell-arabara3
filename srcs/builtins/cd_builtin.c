@@ -65,13 +65,11 @@ int     cd_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds->args[1] != NULL)
 	{
 		path = cmds->args[1];
-		write_to_file("BEF PATH ", path, 1);
 		if (!ft_strcmp(path, "~"))
 			path = get_home_dir(shell);
 		else if (path[0] == '~' && path[1] == '/')
 			path = ft_strcat(get_home_dir(shell), path + 1);
 	}
-	write_to_file("PATH ", path, 1);
 	ret = move_to_dir(path, shell);
 	if (ret == 0)
 		print_error(path, 2, 0);

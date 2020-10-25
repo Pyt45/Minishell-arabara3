@@ -151,17 +151,17 @@ int		open_input(char *args, int append, int ifd)
 
 void		do_redirect(t_cmds *cmd, int fd[2])
 {
-	if (cmd->append == -2) // <<
+	if (cmd->append == -2) // << not working now
 		fd[0] = open_input(cmd->args[1], 1, fd[0]);
-	else if (cmd->append == 2) // >>
+	else if (cmd->append == 2) // >> working
 	{
 		fd[1] = open_output(cmd, 1, fd[1]);
 		//printf("%s %s\n", cmd->args[1], cmd->next->args[0]);
 	}
-	if (cmd->append == 1) // >
+	if (cmd->append == 1) // > working
 		fd[1] = open_output(cmd, 0, fd[1]);
-	else if (cmd->append == -1) // <
-		fd[1] = open_input(cmd->next->args[0], 0, fd[1]);
+	else if (cmd->append == -1) // < need fix
+		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
 }
 
 void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
@@ -181,12 +181,14 @@ void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
 int		get_num_pipes(t_cmds *cmds)
 {
 	int	i;
+	t_cmds *tmp;
 
 	i = 0;
-	while (cmds->p)
+	tmp = cmds;
+	while (tmp->p)
 	{
 		i++;
-		cmds = cmds->next;
+		tmp = tmp->next;
 	}
 	return (i);
 }
@@ -194,12 +196,14 @@ int		get_num_pipes(t_cmds *cmds)
 int		get_num_rd(t_cmds *cmds)
 {
 	int	i;
+	t_cmds *tmp;
 
 	i = 0;
-	while (cmds->r)
+	tmp = cmds;
+	while (tmp->r)
 	{
 		i++;
-		cmds = cmds->next;
+		tmp = tmp->next;
 	}
 	return (i);
 }
@@ -219,7 +223,9 @@ char	**clear_args(char **args, t_shell *shell){
 	i = 0;
 	while (args[i])
 	{
-		args[i] = clear_quotes(args[i]);
+		// args[i] = clear_quotes(args[i]);
+		if (ft_strchr(args[i] ,'\\'))
+			args[i] = parse_special_chars(args[i]);
 		// args[i] = replace_string(args[i], shell);
 		i++;
 	}
@@ -233,9 +239,9 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	ret = 1;
 	//printf("cmds = %s\nargs = %s\n", cmds->cmd, cmds->args[0]);
 	if (!cmds->cmd || !cmds->cmd[0])
-		return (1);
-	//cmds->cmd = clear_quotes(cmds->cmd);
-	//cmds->args = clear_args(cmds->args, shell);
+		return (0);
+	cmds->cmd = clear_quotes(cmds->cmd);
+	cmds->args = clear_args(cmds->args, shell);
     if (!ft_strcmp(cmds->cmd, "env"))
         ret = env_builtin(cmds, shell->env);
 	else if (!ft_strcmp(cmds->cmd, "cd"))
@@ -250,12 +256,10 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
         ret = unset_builtin(shell, cmds);
     else if (!ft_strcmp(cmds->cmd, "echo"))
     	ret = echo_builtin(cmds, shell);
+	else if(!cmds->prev || cmds->prev->append == 0)
+		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
 	else
-	{
-		puts("2 - here");
-		if (execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env) < 0)
-			ret = 1;
-	}
+		ret = 0;
     return (ret);
 }
 
@@ -274,6 +278,8 @@ void	close_pipes(int *fds, int num_pipe)
 static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 {
 	pid_t	pid;
+	int		in;
+	in = 0;
 	//char	*file = cmds->next->args[0];
 	//cmds->next->args[0] = NULL;
 	
@@ -284,15 +290,14 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
-			shell->fds[0] = 0;
-			exec_io_redi(cmds, shell->fds[0], shell->fds[1], shell);
+			exec_io_redi(cmds, in, shell->fds[1], shell);
 			if (cmds->args && exec_commands(shell, cmds))
 			{
 				print_error(cmds->cmd, errno, 1);
 				exit(1);
 			}
 			close(shell->fds[1]);
-			shell->fds[1] = 1;
+			in = shell->fds[0];
 		}
 		else if (cmds->args && exec_commands(shell, cmds))
 		{
@@ -390,7 +395,7 @@ int		run_commands(t_shell *shell)
 	t_cmds	*cmds;
 	shell->num_sp = 0;
 	shell->num_pipe = 0;
-
+	shell->parse_err = 0;
 	shell = parse_commands(shell);
 	if (shell->parse_err)
 		print_error("syntax error", 0, 0);
