@@ -76,8 +76,11 @@ void    ft_print_env_arr(char **arr)
     {
         while (arr[i] != NULL)
 		{
-            ft_putstr_fd(arr[i], 1);
-			ft_putstr_fd("\n", 1);
+			if (ft_strchr(arr[i], '='))
+			{
+				ft_putstr_fd(arr[i], 1);
+				ft_putstr_fd("\n", 1);
+			}
         	i++;
 		}
     }
@@ -130,10 +133,10 @@ char    **ft_add_to_arr(char *value, char **arr)
             return (NULL);
         new_arr[0] = value;
         new_arr[1] = NULL;
+    	return (new_arr);
     }
     else
         return (ft_get_arr(value, arr));
-    return (new_arr);
 }
 
 char	**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len)
