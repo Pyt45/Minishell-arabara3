@@ -12,6 +12,7 @@ static char	**ft_sort_export(char **env)
 	i = 0;
 	if (env)
 	{
+		env = ft_arrdup(env);
 		while (i < ft_arr_len(env))
 		{
 			j = i + 1;
@@ -79,6 +80,7 @@ static void    ft_print_export(char **arr)
 int     export_builtin(t_shell *shell, t_cmds *cmds)
 {
 	int		i;
+	char	**env_sort;
 	char	**new_env;
 
 	i = 1;
@@ -92,7 +94,8 @@ int     export_builtin(t_shell *shell, t_cmds *cmds)
 	}
 	else
 	{
-		new_env = ft_sort_export(shell->env);
+		env_sort = ft_arrdup(shell->env);
+		new_env = ft_sort_export(env_sort);
 		ft_print_export(new_env);
 	}
 	return (0);
