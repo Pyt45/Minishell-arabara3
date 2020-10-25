@@ -142,10 +142,11 @@ int		open_input(char *args, int append, int ifd)
 	}
 	else
 	{
+		puts("56456456");
 		if ((fd = open(args, O_RDONLY)) >= 0)
 			ifd = fd;
 	}
-	dup2(ifd, 0);
+	dup2(ifd, 1);
 	return (ifd);
 }
 
