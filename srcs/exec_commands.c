@@ -149,8 +149,12 @@ int		open_input(char *args, int append, int ifd)
 	}
 	else
 	{
-		if ((fd = open(args, O_RDONLY)) >= 0)
-			ifd = fd;
+		if ((fd = open(args, O_RDONLY)) < 0)
+		{
+			print_error(args, errno, 0);
+			return (ifd);
+		}
+		ifd = fd;
 	}
 	dup2(ifd, 0);
 	return (ifd);
@@ -181,6 +185,8 @@ void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
 
 	do_redirect(cmd, new_fd);
 	if (new_fd[0] != ifd)
+		close(new_fd[0]);
+	else
 		close(new_fd[0]);
 	if (new_fd[1] != ofd)
 		close(new_fd[1]);
