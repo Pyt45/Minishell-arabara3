@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/26 14:03:53 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/26 14:07:41 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,6 @@ fclean: clean
 	@rm -rf $(MINI_LIB_BONUS)
 	@rm -rf $(NAME)
 
-re: fclean all	
+re: fclean all
 
 # @gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
