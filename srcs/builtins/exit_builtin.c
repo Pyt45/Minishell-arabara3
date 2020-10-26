@@ -8,8 +8,10 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	tstatus = 0;
 	if (cmds->args[1] != NULL)
         status = ft_atoi(cmds->args[1]);
-    end_terminal(&shell->config);
-    exit(status);
+    // end_terminal(&shell->config);
+    // exit(status);
+	// shell->exit = 1;
+	// shell->exit_status = status;
     //ft_free_arr(shell->env);
     return (0);
 }

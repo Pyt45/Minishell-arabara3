@@ -25,6 +25,27 @@ void	free_shell(t_shell *shell)
 	shell->cmds = NULL;
 }
 
+int		exit_builtin(t_shell *shell, t_cmds *cmds)
+{
+    double  tstatus;
+    int     status;
+
+	tstatus = 0;
+	if (cmds->args[1] != NULL)
+        status = ft_atoi(cmds->args[1]);
+    end_terminal(&shell->config);
+    exit(status);
+    //ft_free_arr(shell->env);
+    return (0);
+}
+
+void		init_shell(t_shell *shell)
+{
+	shell->line = NULL;
+	shell->parse_err = 0;
+	shell->ret = 0;
+}
+
 void	reinit_cursor(t_config *config, int new_x, int new_y)
 {
 	config->o_x = new_x;
@@ -80,6 +101,8 @@ char	*read_line(t_shell *shell)
     	}
 		shell->config.buff = 0;
 	}
+	// if (shell->exit)
+	// 	exit(shell->exit_status);
 	return (shell->line);
 }
 
@@ -117,6 +140,7 @@ int     main(int argc, char **argv, char **envp)
 	signal(SIGINT, sig_handle_ctrl_c);
 	if (argc && argv)
 	{
+		init_shell(&shell);
 		shell.env = ft_arrdup(envp);
 		command_line(&shell);
 	}

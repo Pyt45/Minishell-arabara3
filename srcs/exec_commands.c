@@ -146,8 +146,12 @@ int		open_input(char *args, int append, int ifd)
 	}
 	else
 	{
-		if ((fd = open(args, O_RDONLY)) >= 0)
-			ifd = fd;
+		if ((fd = open(args, O_RDONLY)) < 0)
+		{
+			print_error(args, errno, 0);
+			exit(1);
+		}
+		ifd = fd;
 	}
 	dup2(ifd, 0);
 	return (ifd);

@@ -25,62 +25,24 @@ void	free_shell(t_shell *shell)
 	shell->cmds = NULL;
 }
 
-void	reinit_cursor(t_config *config, int new_x, int new_y)
+void		init_shell(t_shell *shell)
 {
-	config->o_x = new_x;
-	config->o_y = new_y;
-	config->x = config->o_x;
-	config->y = config->o_y - 1;
-	config->c = 0;
-	config->len = 0;
-	ft_bzero(config->str, 512 * sizeof(char));
-	move_cursor(config, 3);
+	shell->line = NULL;
+	shell->parse_err = 0;
+	shell->ret = 0;
 }
 
-void	validate_cursor(t_config *config)
+int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
-	int 	new_y;
-	int		new_x;
-	int		i;
-	char	buff[20];
+    double  tstatus;
+    int     status;
 
-	i = 0;
-	ft_bzero(buff, sizeof(char) * 20);
-	ft_putstr_fd("\e[6n", 2);
-	while (buff[0] != '\e')
-		read(2, buff, sizeof(buff));
-	while (!ft_isdigit(buff[i]))
-		i++;
-	new_y = ft_atoi(buff + i) - 1;
-	while (ft_isdigit(buff[i]))
-			i++;
-	new_x = ft_atoi(buff + i + 1);
-	if (new_y > config->y || (new_y == config->y && new_x ==
-		config->o_x && ( config->len < config->width - 1 ||
-		config->len > config->width)) || (config->o_x ==
-		new_x && config->len == config->width))
-		reinit_cursor(config, new_x, new_y);
-}
-
-char	*read_line(t_shell *shell)
-{
-	init_prompt(&shell->config, shell->ret);
-	while ((*shell->config.str && shell->config.tmp) || shell->config.buff || read(0, &shell->config.buff, sizeof(&shell->config.buff)))
-	{
-		validate_cursor(&shell->config);
-		handle_keys(&shell->config);
-		if (ft_isprint(shell->config.buff))
-            print_char(&shell->config);
-		if (shell->config.buff == ENTER_BTN)
-    	{
-			shell->line = shell->config.str;
-			newline_config(&shell->config, 0);
-			end_terminal(&shell->config);
-			break;
-    	}
-		shell->config.buff = 0;
-	}
-	return (shell->line);
+	tstatus = 0;
+	if (cmds->args[1] != NULL)
+        status = ft_atoi(cmds->args[1]);
+    exit(status);
+    //ft_free_arr(shell->env);
+    return (0);
 }
 
 int			command_line(t_shell *shell)
@@ -90,10 +52,12 @@ int			command_line(t_shell *shell)
 
 	while (status)
 	{
-		ft_putstr_fd("minishell~>", 1);
+		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 		r = get_next_line(0, &shell->line);
 		if (ft_strlen(shell->line))
 			status = run_commands(shell);
+		// if (shell->exit)
+			// exit(shell->exit_status);
 	}
 	return (status);
 }
@@ -102,7 +66,7 @@ void	sig_handle_ctrl_c(int sig)
 {
 	sig = 0;
 	ft_putstr_fd("\n", 1);
-	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
+	ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 }
 
 void	erase_file_debug()
@@ -124,6 +88,7 @@ int     main(int argc, char **argv, char **envp)
 	signal(SIGINT, sig_handle_ctrl_c);
 	if (argc && argv)
 	{
+		init_shell(&shell);
 		shell.env = ft_arrdup(envp);
 		while (command_line(&shell))
 			;
