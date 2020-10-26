@@ -108,6 +108,7 @@ void	erase_file_debug()
 	fclose(f);
 }
 
+
 int     main(int argc, char **argv, char **envp)
 {
 	t_shell shell;

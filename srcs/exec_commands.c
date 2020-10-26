@@ -289,7 +289,7 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	{
 		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
 		close_pipes(shell->fds, shell->num_pipe);
-		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
+		if (cmds->append != 0 || (cmds->prev && cmds->prev->append && cmds->prev->append > 0))
 		{
 			exec_io_redi(cmds, in, shell->fds[1], shell);
 			if (cmds->args && exec_commands(shell, cmds))
