@@ -110,8 +110,6 @@ int			open_output(t_cmds *cmd, int append, int ofd)
 		flag = flag | O_APPEND;
 	else
 		flag = flag | O_TRUNC;
-	
-	write_to_file("ARG ", cmd->next->args[0], 1);
 	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
 	{
 		print_error(cmd->next->args[0], errno, 0);
@@ -159,7 +157,7 @@ int		open_input(char *args, int append, int ifd)
 	return (ifd);
 }
 
-void		do_redirect(t_cmds *cmd, int fd[2])
+void		do_redirect(t_cmds *cmd, int *fd)
 {
 	if (cmd->append == -2) // << not working now
 		fd[0] = open_input(cmd->args[1], 1, fd[0]);
@@ -171,9 +169,7 @@ void		do_redirect(t_cmds *cmd, int fd[2])
 	if (cmd->append == 1) // > working || need to fix echo a > txt b || cat > file
 		fd[1] = open_output(cmd, 0, fd[1]);
 	else if (cmd->append == -1) // < need fix
-	{
 		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
-	}
 }
 
 void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
@@ -421,7 +417,6 @@ int		run_commands(t_shell *shell)
 	}
 	return (1);
 }
-
 
 // t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp)
 // {
