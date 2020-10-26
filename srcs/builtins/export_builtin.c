@@ -104,8 +104,6 @@ int     export_builtin(t_shell *shell, t_cmds *cmds)
 char	**ft_export_cmd(t_shell *shell, char *value)
 {	
 	int		i;
-	int		len;
-	char	*record;
 	char	**argv;
 
 	i = 0;

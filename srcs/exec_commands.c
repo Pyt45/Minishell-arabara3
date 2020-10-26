@@ -110,8 +110,15 @@ int			open_output(t_cmds *cmd, int append, int ofd)
 		flag = flag | O_APPEND;
 	else
 		flag = flag | O_TRUNC;
-	if ((fd = open(cmd->next->args[0], flag, flag_mode)) >= 0)
-		ofd = fd;
+	
+	write_to_file("ARG ", cmd->next->args[0], 1);
+	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
+	{
+		//print_error(NULL, errno, 0);
+		write_to_file("ERROR ", "", 1);
+		return (-1);
+	}
+	ofd = fd;
 	dup2(ofd, 1);
 	return (ofd);
 }
@@ -142,11 +149,10 @@ int		open_input(char *args, int append, int ifd)
 	}
 	else
 	{
-		puts("56456456");
 		if ((fd = open(args, O_RDONLY)) >= 0)
 			ifd = fd;
 	}
-	dup2(ifd, 1);
+	dup2(ifd, 0);
 	return (ifd);
 }
 
@@ -242,7 +248,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
-	cmds->args = clear_args(cmds->args, shell);
+	// cmds->args = clear_args(cmds->args, shell);
     if (!ft_strcmp(cmds->cmd, "env"))
         ret = env_builtin(cmds, shell->env);
 	else if (!ft_strcmp(cmds->cmd, "cd"))
@@ -264,9 +270,6 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     return (ret);
 }
 
-
-
-
 void	close_pipes(int *fds, int num_pipe)
 {
 	int	i;
@@ -281,9 +284,7 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	pid_t	pid;
 	int		in;
 	in = 0;
-	//char	*file = cmds->next->args[0];
-	//cmds->next->args[0] = NULL;
-	
+
 	pid = fork();
 	if (pid == 0)
 	{
@@ -398,7 +399,7 @@ int		run_commands(t_shell *shell)
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
 	shell = parse_commands(shell);
-	if (shell->parse_err)
+	if (shell->parse_err == -1)
 		print_error("syntax error", 0, 0);
 	else {
 		cmds = shell->cmds;
