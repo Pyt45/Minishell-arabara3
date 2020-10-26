@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/26 13:30:47 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/26 14:03:53 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,12 +63,12 @@ $(LIBFT_LIB):
 $(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc -lncurses $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
-	
+	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
 
 $(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
 	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
-	
+	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
 
 %.o: %.c
 	@gcc -c $< -o $@ -I $(INC)
