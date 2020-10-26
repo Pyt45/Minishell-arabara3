@@ -1,81 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_parsing.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
+/*   Updated: 2020/10/26 19:05:41 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "../includes/shell.h"
-
-void    debug_cmd(t_cmds *cmds, int i, int pos, char c){
-    int j;
-
-    printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
-    printf("CMD: %s|\n", cmds->cmd);
-    j = 0;
-	if (cmds->args)
-		while (cmds->args[j]){
-			printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-			j++;
-		}
-	else
-		puts("ARG: No arguments");
-}
-
-t_cmds      *init_cmds(t_cmds   *prev)
-{
-    t_cmds  *cmds;
-
-    cmds = malloc(sizeof(t_cmds));
-    cmds->start = 0;
-    cmds->end = 0;
-    cmds->p = 0;
-    cmds->r = 0;
-    cmds->append = 0;
-    cmds->ret = 0;
-    cmds->prev = NULL;
-    if (prev)
-        cmds->prev = prev;
-    cmds->next = NULL;
-    return (cmds);
-}
-
-char    *get_cmd(char *str, int n)
-{
-    int     i;
-    char    *cmd;
-
-    i = 0;
-    while ((!ft_isprint(*str) || *str == ' ') && *str != '\0')
-        str++;
-    if (n == 0)
-        n = ft_strlen(str);
-    while (ft_isprint(str[i]) && str[i] != ' ' && str[i] != ';' && str[i] != '|' && i < n)
-        i++;
-    cmd = malloc(sizeof(char) * (++i));
-    ft_strlcpy(cmd, str, i);
-	if (*cmd)
-    	return (cmd);
-	return (NULL);
-}
-
-char    **get_args(char *str, int n)
-{
-    int     i;
-    char    *tmp;
-
-    i = 0;
-    while ((!ft_isprint(*str) || *str == ' ') && *str != '\0')
-    {
-        str++;
-        i++;
-    }
-    if (*str)
-    {
-        tmp = ft_strdup(str);
-        if (n - i >= 0)
-            tmp[n - i] = '\0';
-        // while (!ft_isalpha(*tmp) && *tmp)
-        //     tmp++;
-		if (*tmp)
-			return (ft_split_quote(tmp, ' '));
-    }
-    return (NULL);
-}
+#include "../../includes/shell.h"
 
 int        parse_pipes(t_cmds **cmds, int i, int pos,char *tmp){
 
@@ -108,7 +43,7 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
         j = 1;
     (*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
     (*cmds)->args = get_args(tmp + pos, i - pos + j);
-    // debug_cmd((*cmds), i, pos, tmp[i]);
+    debug_cmd((*cmds), i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
     if (!(*cmds)->prev)
@@ -121,28 +56,6 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
     }
     pos = i + 1;
     return (pos);
-}
-
-void	manage_redirections(t_cmds **cmds, int *i, char *tmp)
-{
-	if (!(*cmds)->prev)
-        (*cmds)->start = 1;
-    if (tmp[*i] == '>')
-        (*cmds)->append = 1;
-    else if (tmp[*i] == '<')
-        (*cmds)->append = -1;
-    if (tmp[*i + 1] == '>')
-    {
-        (*cmds)->append++;
-        (*i)++;
-    }
-    else if (tmp[*i + 1] == '<')
-    {
-        (*cmds)->append--;
-        (*i)++;
-    }
-	if ((*cmds)->append != 0)
-		(*cmds)->r = 1;
 }
 
 int        parse_redirections(t_cmds **cmds, int *i, int pos,char *tmp){
@@ -198,3 +111,4 @@ t_shell     *parse_commands(t_shell *shell)
 		shell->parse_err = -1;
     return (shell);
 }
+

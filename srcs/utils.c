@@ -203,39 +203,7 @@ int     get_error_num(int err)
     return (1);
 }
 
-double  ft_fatoi(const char *str)
-{
-    int		i;
-	double	n;
-	int		sign;
-    int     point;
 
-	i = 0;
-	n = 0;
-    point = 0;
-	sign = 1;
-	while (str[i] == '\t' || str[i] == ' ' || str[i] == '\n' ||
-		str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] != '\0' && (ft_isdigit(str[i]) || (str[i] == '.' && point == 0)))
-	{
-        if (ft_isdigit(str[i]))
-		    n = n * 10 + (str[i] - 48);
-        else
-            point = i;
-		i++;
-	}
-    if (point)
-        n = n / ft_pow(10, i - point);
-	n = n * sign;
-	return (n);
-}
 //      ---------------- TEST   ------------------
 
 // int main()

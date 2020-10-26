@@ -171,9 +171,19 @@ void				init_prompt(t_config *config, int err);
 void				reinit_cursor(t_config *config, int new_x, int new_y);
 void				validate_cursor(t_config *config);
 char    			*parse_special_chars(char *str);
+void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
+t_cmds				*init_cmds(t_cmds   *prev);
+char     			*parse_env_var(char *str, t_shell *shell);
+void				quotes_checker(int *quote, int c);
+int					var_checker_pass(char c);
+int					quote_activer(int quote, char c);
+
+
+
 
 
 // debuging
 void	write_to_file(char *s, char *num, int end);
+void				debug_cmd(t_cmds *cmds, int i, int pos, char c);
 
 #endif
