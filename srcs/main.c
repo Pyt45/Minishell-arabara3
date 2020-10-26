@@ -83,11 +83,19 @@ char	*read_line(t_shell *shell)
 	return (shell->line);
 }
 
-void		command_line(t_shell *shell)
+int			command_line(t_shell *shell)
 {
-	shell->ret = 0;
-	while ((shell->line = read_line(shell)))
-		run_commands(shell);
+	int		r;
+	int		status;
+
+	while (status)
+	{
+		ft_putstr_fd("minishell~>", 1);
+		r = get_next_line(0, &shell->line);
+		if (ft_strlen(shell->line))
+			status = run_commands(shell);
+	}
+	return (status);
 }
 
 void	sig_handle_ctrl_c(int sig)
@@ -117,7 +125,8 @@ int     main(int argc, char **argv, char **envp)
 	if (argc && argv)
 	{
 		shell.env = ft_arrdup(envp);
-		command_line(&shell);
+		while (command_line(&shell))
+			;
 	}
     return (0);
 }

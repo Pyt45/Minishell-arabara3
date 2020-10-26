@@ -114,7 +114,6 @@ t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds);
 int					exec_commands(t_shell *shell, t_cmds *cmds);
 int					run_commands(t_shell *shell);
 int					cd_builtin(t_shell *shell, t_cmds *cmds);
-void				command_line(t_shell *shell);
 int					exit_builtin(t_shell *shell, t_cmds *cmds);
 char				*get_home_dir(t_shell *shell);
 char				*get_old_dir(t_shell *shell);

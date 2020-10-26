@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/26 11:39:55 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/26 12:39:22 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ LIBFT_LIB = $(LIBFT)/libft.a
 
 MINI_LIB = minishell.a
 
+MINI_LIB_BONUS = minishell_bonus.a
+
 OBJ = $(SRC:.c=.o)
 
 INC = includes
@@ -47,21 +49,25 @@ MAIN = srcs/main.c
 
 MAIN_BONUS = srcs/main_bonus.c
 
-all: $(NAME)
+NORMAL = $(MINI_LIB)
+
+BONUS = $(MINI_LIB_BONUS)
+
+all: $(NORMAL)
 
 bonus: $(BONUS)
 
 $(LIBFT_LIB):
 	@make -C $(LIBFT)
 
-$(NAME): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
+$(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc -lncurses $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
 	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
 
-$(BONUS): $(NAME) $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
-	@ar rcs $(MINI_LIB) $(OBJ)
-	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
+$(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
+	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
+	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
 	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
 
 %.o: %.c

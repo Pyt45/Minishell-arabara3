@@ -110,12 +110,9 @@ int			open_output(t_cmds *cmd, int append, int ofd)
 		flag = flag | O_APPEND;
 	else
 		flag = flag | O_TRUNC;
-	
-	write_to_file("ARG ", cmd->next->args[0], 1);
 	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
 	{
 		//print_error(NULL, errno, 0);
-		write_to_file("ERROR ", "", 1);
 		return (-1);
 	}
 	ofd = fd;
@@ -165,7 +162,7 @@ void		do_redirect(t_cmds *cmd, int fd[2])
 		fd[1] = open_output(cmd, 1, fd[1]);
 		//printf("%s %s\n", cmd->args[1], cmd->next->args[0]);
 	}
-	if (cmd->append == 1) // > working
+	if (cmd->append == 1) // > working || need to fix echo a > txt b || cat > file
 		fd[1] = open_output(cmd, 0, fd[1]);
 	else if (cmd->append == -1) // < need fix
 		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
@@ -244,6 +241,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	int	ret;
 
 	ret = 1;
+	//printf("cmds = %s\nargs = %s\n", cmds->cmd, cmds->args[0]);
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
@@ -289,7 +287,7 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	{
 		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
 		close_pipes(shell->fds, shell->num_pipe);
-		if (cmds->append != 0 || (cmds->prev && cmds->prev->append && cmds->prev->append > 0))
+		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
 			exec_io_redi(cmds, in, shell->fds[1], shell);
 			if (cmds->args && exec_commands(shell, cmds))
@@ -415,7 +413,6 @@ int		run_commands(t_shell *shell)
 	}
 	return (1);
 }
-
 
 // t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds, int num_pipe, int num_sp)
 // {
