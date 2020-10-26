@@ -160,16 +160,16 @@ int        parse_redirections(t_cmds **cmds, int *i, int pos,char *tmp){
     return (pos);
 }
 
-// int		check_parse_errors(t_cmds *cmds)
-// {
-// 	int err;
-
-// 	err = 0;
-
-
-
-// 	return (err);
-// }
+int		manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp)
+{
+	if (tmp[*i] == '|')
+		pos = parse_pipes(cmds, *i, pos, tmp);
+	else if (tmp[*i] == '>' || tmp[*i] == '<')
+		pos = parse_redirections(cmds, i, pos, tmp);
+	else if (tmp[*i] == ';' || tmp[*i + 1] == '\0')
+		pos = parse_semicolons(cmds, *i, pos, tmp);
+	return (pos);
+}
 
 t_shell     *parse_commands(t_shell *shell)
 {
@@ -188,14 +188,13 @@ t_shell     *parse_commands(t_shell *shell)
     while (tmp[++i] && pos != -1)
     {
 		if (is_quote(tmp[i], 0))
-			quote = !quote ? 1 : 0;
-        if (tmp[i] == '|' && !quote)
-            pos = parse_pipes(&cmds, i, pos, tmp);
-		else if (!quote && (tmp[i] == '>' || tmp[i] == '<'))
-			pos = parse_redirections(&cmds, &i, pos, tmp);
-        else if (!quote && (tmp[i] == ';' || tmp[i + 1] == '\0'))
-            pos = parse_semicolons(&cmds, i, pos, tmp);
+			quote = !quote ? is_quote(tmp[i], 0) :
+				quote == is_quote(tmp[i], 0) ? 0 : quote;
+		if (!quote)
+			pos = manage_parsing(&cmds, &i, pos, tmp);
 		shell->parse_err = pos;
     }
+	if (quote)
+		shell->parse_err = -1;
     return (shell);
 }

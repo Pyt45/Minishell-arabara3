@@ -7,7 +7,7 @@ void	free_shell(t_shell *shell)
 	int i;
 	t_cmds *tmp;
 	// free all the data and re-init
-	// free(shell->line);
+	shell->line = NULL;
 	if (shell->cmds && shell->cmds->cmd)
 	{
 		while(shell->cmds)
@@ -38,7 +38,6 @@ void	free_config(t_config *config)
 
 	history = config->history;
 	ft_del(config->str);
-	// ft_del(config->cursor);
 	ft_del(config->tmp); // this is not fully freed
 	while (history->prev)
 		history = history->prev;
@@ -126,11 +125,11 @@ char	*read_line(t_shell *shell)
 			shell->line = shell->config.str;
 			newline_config(&shell->config, 0);
 			end_terminal(&shell->config);
+			shell->config.buff = 0;
 			break;
     	}
 		shell->config.buff = 0;
 	}
-	
 	return (shell->line);
 }
 
@@ -139,7 +138,8 @@ void		command_line(t_shell *shell)
 	shell->ret = 0;
 	while ((shell->line = read_line(shell)))
 	{
-		run_commands(shell);
+		if (ft_strlen(shell->line))
+			run_commands(shell);
 		free_shell(shell);
 	}
 }

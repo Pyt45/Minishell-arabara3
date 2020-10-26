@@ -385,10 +385,10 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
-		cmds->ret = status;
+		cmds->ret = status > 200 ? status - 127 : status ;
 		free(shell->fds);
 	}
-	else
+	else if (cmds->cmd)
 		cmds->ret = exec_commands(shell, cmds);
     return (cmds);
 }
