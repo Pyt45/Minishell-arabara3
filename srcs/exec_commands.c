@@ -142,11 +142,10 @@ int		open_input(char *args, int append, int ifd)
 	}
 	else
 	{
-		puts("56456456");
-		if ((fd = open(args, O_RDONLY)) >= 0)
+		if ((ifd = open(args, O_RDONLY)) >= 0)
 			ifd = fd;
 	}
-	dup2(ifd, 1);
+	dup2(ifd, 0);
 	return (ifd);
 }
 
@@ -162,7 +161,10 @@ void		do_redirect(t_cmds *cmd, int fd[2])
 	if (cmd->append == 1) // > working
 		fd[1] = open_output(cmd, 0, fd[1]);
 	else if (cmd->append == -1) // < need fix
+	{
 		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
+		//close(fd[0]);
+	}
 }
 
 void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
@@ -281,8 +283,6 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	pid_t	pid;
 	int		in;
 	in = 0;
-	//char	*file = cmds->next->args[0];
-	//cmds->next->args[0] = NULL;
 	
 	pid = fork();
 	if (pid == 0)
