@@ -244,7 +244,6 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	int	ret;
 
 	ret = 1;
-	//printf("cmds = %s\nargs = %s\n", cmds->cmd, cmds->args[0]);
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);

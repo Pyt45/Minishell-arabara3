@@ -77,6 +77,25 @@ static void    ft_print_export(char **arr)
     }
 }
 
+int		ft_export_cmd(t_shell *shell, char *value)
+{	
+	int		i;
+	char	**argv;
+
+	i = 0;
+	argv = ft_split(value, '=');
+	if (value[0] == '=')
+		return (0);
+	if (argv[1] && (i = ft_getenv(argv[0], shell->env)) >= 0)
+	{
+		free(shell->env[i]);
+		shell->env[i] = value;
+	}
+	else
+		shell->env = ft_add_to_arr(value, shell->env);
+	return (1);
+}
+
 int     export_builtin(t_shell *shell, t_cmds *cmds)
 {
 	int		i;
@@ -88,7 +107,8 @@ int     export_builtin(t_shell *shell, t_cmds *cmds)
 	{
 		while (cmds->args[i])
 		{
-			shell->env = ft_export_cmd(shell, cmds->args[i]);
+			if (!ft_export_cmd(shell, cmds->args[i]))
+				print_error("invalid identifier", errno, 0);
 			i++;
 		}
 	}
@@ -99,21 +119,4 @@ int     export_builtin(t_shell *shell, t_cmds *cmds)
 		ft_print_export(new_env);
 	}
 	return (0);
-}
-
-char	**ft_export_cmd(t_shell *shell, char *value)
-{	
-	int		i;
-	char	**argv;
-
-	i = 0;
-	argv = ft_split(value, '=');
-	if (argv[1] && (i = ft_getenv(argv[0], shell->env)) >= 0)
-	{
-		free(shell->env[i]);
-		shell->env[i] = value;
-	}
-	else
-		return (ft_add_to_arr(value, shell->env));
-	return (shell->env);
 }

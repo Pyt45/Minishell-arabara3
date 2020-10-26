@@ -128,7 +128,7 @@ int					env_builtin(t_cmds *cmd, char **env);
 void				sig_handle_ctrl_c();
 char				**ft_setenv(char *var, char *path, char **env);
 int					pwd_builtin();
-char				**ft_export_cmd(t_shell *shell, char *value);
+int					ft_export_cmd(t_shell *shell, char *value);
 int					export_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_add_to_arr(char *value, char **arr);
 char				**ft_get_arr(char *value, char **arr);
