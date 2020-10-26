@@ -114,9 +114,8 @@ int			open_output(t_cmds *cmd, int append, int ofd)
 	write_to_file("ARG ", cmd->next->args[0], 1);
 	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
 	{
-		//print_error(NULL, errno, 0);
-		write_to_file("ERROR ", "", 1);
-		return (-1);
+		print_error(cmd->next->args[0], errno, 0);
+		exit(1);
 	}
 	ofd = fd;
 	dup2(ofd, 1);
@@ -152,7 +151,7 @@ int		open_input(char *args, int append, int ifd)
 		if ((fd = open(args, O_RDONLY)) < 0)
 		{
 			print_error(args, errno, 0);
-			return (ifd);
+			exit(1);
 		}
 		ifd = fd;
 	}
@@ -169,11 +168,12 @@ void		do_redirect(t_cmds *cmd, int fd[2])
 		fd[1] = open_output(cmd, 1, fd[1]);
 		//printf("%s %s\n", cmd->args[1], cmd->next->args[0]);
 	}
-	write_to_file("CMD ", cmd->cmd, 1);
 	if (cmd->append == 1) // > working || need to fix echo a > txt b || cat > file
 		fd[1] = open_output(cmd, 0, fd[1]);
 	else if (cmd->append == -1) // < need fix
+	{
 		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
+	}
 }
 
 void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
@@ -185,8 +185,6 @@ void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
 
 	do_redirect(cmd, new_fd);
 	if (new_fd[0] != ifd)
-		close(new_fd[0]);
-	else
 		close(new_fd[0]);
 	if (new_fd[1] != ofd)
 		close(new_fd[1]);
