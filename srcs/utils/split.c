@@ -26,10 +26,14 @@ static int		count_strings(char *str)
 	{
 		if (is_quote(str[i], 0))
 		{
-			// idk what this is for
-			// if (start)
-			// 	j++;
 			quote = quote_activer(quote, str[i]);
+			if (start && !quote)
+			{
+				j++;
+				start = 0;
+			}
+			else if (quote && !start)
+				start = 1;
 		}
 		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
 		{
@@ -86,7 +90,7 @@ char			**ft_split_quote(char const *s, char c)
 	if (!s)
 		return (0);
 	len = count_strings((char *)s);
-	// write_to_file(" LEN", ft_itoa(len), 1);
+	// write_to_file(" LEN ", ft_itoa(len), 1);
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)
 		return (0);

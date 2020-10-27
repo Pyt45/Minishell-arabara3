@@ -63,6 +63,7 @@ void	init_config_data(t_config *config)
 	// 	printf("this is an error term 2");
 	config->str = malloc(sizeof(char) * 512);
 	config->history = malloc(sizeof(t_history));
+	config->history->data = NULL;
 	config->history->prev = NULL;
 	config->history->next = NULL;
 	config->width = tgetnum("co");

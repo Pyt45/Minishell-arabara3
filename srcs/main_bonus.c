@@ -78,8 +78,8 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds->args[1] != NULL)
         status = ft_atoi(cmds->args[1]);
     end_terminal(&shell->config);
-	free_config(&shell->config);
 	free_shell(shell);
+	free_config(&shell->config);
     exit(status);
     //ft_free_arr(shell->env);
     return (0);
@@ -134,6 +134,30 @@ void	validate_cursor(t_config *config)
 		reinit_cursor(config, new_x, new_y);
 }
 
+char	*clear_str(char *str)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ')
+		{
+			j = i;
+			while (str[j])
+			{
+				str[j] = str[j + 1];
+				j++;
+			}
+			i--;
+		}
+		i++;
+	}
+	return (str);
+}
+
 char	*read_line(t_shell *shell)
 {
 	init_prompt(&shell->config, shell->ret);
@@ -145,6 +169,7 @@ char	*read_line(t_shell *shell)
             print_char(&shell->config);
 		if (shell->config.buff == ENTER_BTN)
     	{
+			shell->config.str = clear_str(shell->config.str);
 			shell->line = shell->config.str;
 			newline_config(&shell->config, 0);
 			end_terminal(&shell->config);

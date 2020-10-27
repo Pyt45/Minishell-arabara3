@@ -32,11 +32,14 @@ t_config	*add_history(t_config *config)
 		while(config->history->next)
 			config->history = config->history->next;
 	}
-	config->history->data = ft_strdup(config->str);
-	if (config->history->next)
-		free_next_history(&config->history);
-	config->history->next = new_history(config->history);
-	config->history = config->history->next;
+	if (ft_strlen(config->str))
+	{
+		config->history->data = ft_strdup(config->str);
+		if (config->history->next)
+			free_next_history(&config->history);
+		config->history->next = new_history(config->history);
+		config->history = config->history->next;
+	}
 	return (config);
 }
 
