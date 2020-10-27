@@ -2,11 +2,6 @@
     "files.associations": {
 		"algorithm": "c",
 		"sstream": "c",
-		"bitset": "c",
-		"cmath": "c",
-		"complex": "c",
-		"ios": "c",
-		"locale": "c",
-		"string_view": "c"
+		"string": "c"
 	}
 }
