@@ -1,34 +1,6 @@
 
 #include "../includes/shell.h"
 
-char    *ft_strcat(char *dest, char *src)
-{
-    int     i;
-    int     len;
-    i = 0;
-    len = ft_strlen(dest);
-    while (dest[i] != '\0')
-    {
-        dest[i + len] = src[i];
-        i++;
-    }
-    dest[i + len] = '\0';
-    return (dest);
-}
-
-char    *ft_strcpy(char *s1, char *s2)
-{
-    int     i;
-
-    i = 0;
-    while (s2[i] != '\0')
-    {
-        s1[i] = s2[i];
-        i++;
-    }
-    s1[i] = '\0';
-    return (s1);
-}
 
 int     ft_arr_len(char **arr)
 {

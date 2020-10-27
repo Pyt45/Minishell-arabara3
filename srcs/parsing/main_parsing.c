@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/26 19:05:41 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/27 09:30:44 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int        parse_semicolons(t_cmds **cmds, int i, int pos,char *tmp)
 int        parse_redirections(t_cmds **cmds, int *i, int pos,char *tmp){
     (*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
     (*cmds)->args = get_args(tmp + pos, *i - pos);
-    // debug_cmd(*cmds, *i, pos, tmp[*i]);
+    debug_cmd(*cmds, *i, pos, tmp[*i]);
 	if (!(*cmds)->args ||!(*cmds)->cmd)
 		return (-1);
 	manage_redirections(cmds, i, tmp);
