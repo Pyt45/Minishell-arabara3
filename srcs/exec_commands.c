@@ -370,8 +370,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		j = 0;
 		while (cmds)
 		{
-			if (cmds->end && cmds->prev && cmds->prev->append < 0)
-				break;
+			
 			dup2(fdin, 0);
 			close(fdin);
 			if (cmds->end)
@@ -403,6 +402,9 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 				}
 				exit(0);
 			}
+			if (cmds->end)
+				break;
+			else
 				cmds = cmds->next;
 			j += 2;
 		}
