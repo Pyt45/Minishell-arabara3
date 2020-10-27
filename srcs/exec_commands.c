@@ -385,10 +385,10 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
-		cmds->ret = status;
+		cmds->ret = status > 200 ? status - 127 : status ;
 		free(shell->fds);
 	}
-	else
+	else if (cmds->cmd)
 		cmds->ret = exec_commands(shell, cmds);
     return (cmds);
 }
@@ -399,7 +399,9 @@ int		run_commands(t_shell *shell)
 	shell->num_sp = 0;
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
+	write_to_file("Parsing", "", 0);
 	shell = parse_commands(shell);
+	write_to_file(" ENDED", "", 1);
 	if (shell->parse_err == -1)
 		print_error("syntax error", 0, 0);
 	else {
@@ -407,12 +409,15 @@ int		run_commands(t_shell *shell)
 		while (cmds)
 		{
 			//save_restor_fd(1,0);
+			write_to_file("EXEC", "", 0);
 			shell->num_pipe = get_num_pipes(cmds);
 			shell->num_sp = get_num_rd(cmds);
 			cmds = excute_command_by_order(shell, cmds);
 			//save_restor_fd(0,1);
 			shell->ret = cmds->ret;
 			cmds = cmds->next;
+			write_to_file(" ENDED", "", 1);
+
 		}
 	}
 	return (1);

@@ -5,24 +5,67 @@
 void	free_shell(t_shell *shell)
 {
 	int i;
+	int debug = 0;
 	t_cmds *tmp;
 	// free all the data and re-init
-	free(shell->line);
-	while(shell->cmds)
+	shell->line = NULL;
+	if (debug)
+		write_to_file("FREEING", "", 1);
+	if (shell->cmds && shell->cmds->cmd)
 	{
-		i = 0;
-		while (shell->cmds->args[i])
+		if (debug)
+			write_to_file(" 1 ", "", 0);
+		while(shell->cmds)
 		{
-			ft_del(*(shell->cmds->args));
-			i++;
+			if (debug)
+				write_to_file(" 1x ", "", 0);
+			i = 0;
+			if (shell->cmds->args)
+			{
+				if (debug)
+					write_to_file(" 2 ", "", 0);
+				while (shell->cmds->args[i])
+				{
+					ft_del(shell->cmds->args[i]);
+					i++;
+				}
+				ft_del(shell->cmds->args);
+				if (debug)
+					write_to_file(" 3 ", "", 0);
+			}
+			ft_del(shell->cmds->cmd);
+			if (debug)
+				write_to_file(" 4 ", "", 0);
+			tmp = shell->cmds->next;
+			ft_del(shell->cmds);
+			if (debug)
+				write_to_file(" 5 ", "", 0);
+			shell->cmds = tmp;
 		}
-		ft_del(shell->cmds->args);
-		ft_del(shell->cmds->cmd);
-		tmp = shell->cmds->next;
-		ft_del(shell->cmds);
-		shell->cmds = tmp;
 	}
+	if (debug)
+		write_to_file(" END ", "", 1);
 	shell->cmds = NULL;
+}
+
+void	free_config(t_config *config)
+{
+	t_history	*history;
+	t_history	*tmp;
+
+	history = config->history;
+	ft_del(config->str);
+	ft_del(config->tmp); // this is not fully freed
+	while (history->prev)
+		history = history->prev;
+	while (history->next)
+	{
+		ft_del(history->data);
+		tmp = history->next;
+		free(history);
+		history = tmp;
+	}
+	config->history = NULL;
 }
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
@@ -34,6 +77,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds->args[1] != NULL)
         status = ft_atoi(cmds->args[1]);
     end_terminal(&shell->config);
+	free_config(&shell->config);
     exit(status);
     //ft_free_arr(shell->env);
     return (0);
@@ -44,6 +88,7 @@ void		init_shell(t_shell *shell)
 	shell->line = NULL;
 	shell->parse_err = 0;
 	shell->ret = 0;
+	shell->cmds = NULL;
 }
 
 void	reinit_cursor(t_config *config, int new_x, int new_y)
@@ -97,12 +142,11 @@ char	*read_line(t_shell *shell)
 			shell->line = shell->config.str;
 			newline_config(&shell->config, 0);
 			end_terminal(&shell->config);
+			shell->config.buff = 0;
 			break;
     	}
 		shell->config.buff = 0;
 	}
-	// if (shell->exit)
-	// 	exit(shell->exit_status);
 	return (shell->line);
 }
 
@@ -110,7 +154,11 @@ void		command_line(t_shell *shell)
 {
 	shell->ret = 0;
 	while ((shell->line = read_line(shell)))
-		run_commands(shell);
+	{
+		if (ft_strlen(shell->line))
+			run_commands(shell);
+		free_shell(shell);
+	}
 }
 
 void	sig_handle_ctrl_c(int sig)
@@ -130,7 +178,6 @@ void	erase_file_debug()
 	ft_putstr_fd("", fd);
 	fclose(f);
 }
-
 
 int     main(int argc, char **argv, char **envp)
 {

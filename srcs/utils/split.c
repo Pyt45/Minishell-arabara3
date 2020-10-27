@@ -10,7 +10,7 @@ char			**free_list_quote(char **split)
 	free(split);
 	return (NULL);
 }
-
+// "sd"
 static int		count_strings(char *str)
 {
 	int i;
@@ -26,9 +26,10 @@ static int		count_strings(char *str)
 	{
 		if (is_quote(str[i], 0))
 		{
-			if (quote)
-				j++;
-			quote = !quote ? 1 : 0;
+			// idk what this is for
+			// if (start)
+			// 	j++;
+			quote = quote_activer(quote, str[i]);
 		}
 		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
 		{
@@ -61,7 +62,7 @@ static char		**ft_make_splits(char **split, char *str, char x)
 	while (str[++i])
 	{
 		if (is_quote(str[i], 0))
-			quote = !quote ? 1 : 0;
+			quote = quote_activer(quote, str[i]);
 		if (str[i] == x && !quote && j != -1 && str[i - 1] != '\\')
 		{
 			if (!(split[c++] = clear_quotes(ft_substr(str, j, i - j))))

@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/26 13:30:47 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/26 18:28:48 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ SRC = srcs/utils.c \
 		srcs/termcaps/history.c \
 		srcs/termcaps/utils.c \
 		srcs/exec_commands.c \
-		srcs/commands_parse.c \
 		srcs/handle_path.c \
 		srcs/errors/errors.c \
 		srcs/builtins/cd_builtin.c \
@@ -31,7 +30,12 @@ SRC = srcs/utils.c \
 		srcs/builtins/pwd_builtin.c \
 		srcs/builtins/unset_builtin.c \
 		srcs/builtins/export_builtin.c \
-		srcs/utils/split.c 
+		srcs/utils/split.c \
+		srcs/parsing/main_parsing.c \
+		srcs/parsing/helpers.c \
+		srcs/parsing/var_manager.c \
+		srcs/parsing/utils.c
+		
 
 LIBFT = ./libft
 
@@ -63,12 +67,12 @@ $(LIBFT_LIB):
 $(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc -lncurses $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
-	
+	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
 
 $(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
 	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
-	
+	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
 
 %.o: %.c
 	@gcc -c $< -o $@ -I $(INC)
@@ -83,6 +87,6 @@ fclean: clean
 	@rm -rf $(MINI_LIB_BONUS)
 	@rm -rf $(NAME)
 
-re: fclean all	
+re: fclean all
 
 # @gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
