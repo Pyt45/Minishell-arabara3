@@ -89,5 +89,5 @@ void	get_cursor_pos(t_config *config)
 	config->o_y = ft_atoi(buff + i) - 1;
 	while (ft_isdigit(buff[i]))
 		i++;
-	config->o_x = ft_atoi(buff + i + 1);
+	config->o_x = ft_atoi(buff + i + 1) - 1;
 }
