@@ -356,6 +356,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		shell->fds = pipe_fds(shell->num_pipe, shell->fds);
 		// (num_sp) ? fds = pipe_ior(num_sp, fds) : 0;
 		j = 0;
+
 		while (cmds)
 		{
 			//save_restor_fd(1,0);
@@ -390,7 +391,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			else
 				cmds = cmds->next;
 			j += 2;
-			save_restor_fd(0,1);
+			// save_restor_fd(0,1);
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);

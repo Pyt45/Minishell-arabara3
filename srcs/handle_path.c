@@ -5,13 +5,11 @@ int     ft_getenv(char *name, char **env)
 {
     char    *search;
     int     i;
-	int		x;
     int     len;
 
     len = ft_strlen(name) + 2;
     if (!(search = (char *)malloc(sizeof(char) * len)))
         return (-1);
-	x = 1;
     ft_strcpy(search, name);
     ft_strcat(search, "=");
     i = 0;
@@ -19,13 +17,12 @@ int     ft_getenv(char *name, char **env)
     {
         if (ft_strncmp(env[i], search, ft_strlen(name)) == 0)
         {
-            (x) ? free(search) : 0;
-			x = 0;
+    		ft_del(search);
             return (i);
         }
         i++;
     }
-    (x) ? (free(search)) : 0;
+    ft_del(search);
     return (-1);
 }
 
@@ -33,25 +30,15 @@ char	*try_path(char *filename, char *dir)
 {
 	char	*path;
 	int		len;
-	int		x;
 
 	len = ft_strlen(filename) + ft_strlen(dir) + 2;
 	if (!(path = (char *)malloc(sizeof(char) * len)))
 		return (NULL);
-	write_to_file("CMD: ", filename, 1);
-	x = 1;
 	ft_strcpy(path, dir);
 	ft_strcat(path, "/");
 	ft_strcat(path, filename);
 	if (ft_access(path, 1) == 1)
 		return (path);
-	// this is an error check it and must be freed
-	if (x)
-	{
-		free(path);
-		x = 0;
-	}
-	write_to_file("CMD1: ", path, 1);
 	return (NULL);
 }
 
@@ -86,13 +73,11 @@ char	**ft_setenv(char *var, char *path, char **env)
 {
 	int		i;
 	int		len;
-	int		x;
 	char	*record;
 	
 	len = ft_strlen(var) + ft_strlen(path) + 2;
 	if (!(record = (char *)malloc(sizeof(char) * len)))
 		return (NULL);
-	x = 1;
 	ft_strcpy(record, var);
 	ft_strcat(record, "=");
 	ft_strcat(record, path);
@@ -104,11 +89,7 @@ char	**ft_setenv(char *var, char *path, char **env)
 	}
 	else
 		return (ft_add_to_arr(record, env));
-	if (x)
-	{
-		free(record);
-		x = 0;
-	}
+	ft_del(record);
 	return (env);	
 }
 
