@@ -177,13 +177,13 @@ char     			*parse_env_var(char *str, t_shell *shell);
 void				quotes_checker(int *quote, int c);
 int					var_checker_pass(char c);
 int					quote_activer(int quote, char c);
-
-
-
-
+void				free_shell(t_shell *shell);
+void				init_shell(t_shell *shell);
+void				free_config(t_config *config);
 
 // debuging
-void	write_to_file(char *s, char *num, int end);
+void				write_to_file(char *s, char *num, int end);
 void				debug_cmd(t_cmds *cmds, int i, int pos, char c);
+void				erase_file_debug();
 
 #endif

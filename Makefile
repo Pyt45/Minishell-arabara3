@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/26 18:28:48 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/27 12:27:14 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ SRC = srcs/utils.c \
 		srcs/builtins/unset_builtin.c \
 		srcs/builtins/export_builtin.c \
 		srcs/utils/split.c \
+		srcs/utils/debug.c \
+		srcs/utils/free.c \
 		srcs/parsing/main_parsing.c \
 		srcs/parsing/helpers.c \
 		srcs/parsing/var_manager.c \

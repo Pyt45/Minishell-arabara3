@@ -6,27 +6,27 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/27 09:29:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/27 12:28:12 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-void    debug_cmd(t_cmds *cmds, int i, int pos, char c)
-{
-    int j;
+// void    debug_cmd(t_cmds *cmds, int i, int pos, char c)
+// {
+//     int j;
 
-    printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
-    printf("CMD: %s|\n", cmds->cmd);
-    j = 0;
-	if (cmds->args)
-		while (cmds->args[j]){
-			printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-			j++;
-		}
-	else
-		puts("ARG: No arguments");
-}
+//     printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
+//     printf("CMD: %s|\n", cmds->cmd);
+//     j = 0;
+// 	if (cmds->args)
+// 		while (cmds->args[j]){
+// 			printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
+// 			j++;
+// 		}
+// 	else
+// 		puts("ARG: No arguments");
+// }
 
 t_cmds      *init_cmds(t_cmds   *prev)
 {

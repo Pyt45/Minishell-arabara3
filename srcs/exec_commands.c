@@ -265,7 +265,12 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     else if (!ft_strcmp(cmds->cmd, "echo"))
     	ret = echo_builtin(cmds, shell);
 	else if(!cmds->prev || cmds->prev->append == 0)
-		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
+	{
+		if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
+			execve(cmds->cmd, cmds->args, shell->env);
+		else
+			execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
+	}
 	else
 		ret = 0;
     return (ret);

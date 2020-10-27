@@ -2,35 +2,35 @@
 #include <signal.h>
 // #include <readline/readline.h>
 
-void	free_shell(t_shell *shell)
-{
-	int i;
-	t_cmds *tmp;
-	// free all the data and re-init
-	//free(shell->line);
-	while(shell->cmds)
-	{
-		i = 0;
-		while (shell->cmds->args[i])
-		{
-			ft_del(*(shell->cmds->args));
-			i++;
-		}
-		ft_del(shell->cmds->args);
-		ft_del(shell->cmds->cmd);
-		tmp = shell->cmds->next;
-		ft_del(shell->cmds);
-		shell->cmds = tmp;
-	}
-	shell->cmds = NULL;
-}
+// void	free_shell(t_shell *shell)
+// {
+// 	int i;
+// 	t_cmds *tmp;
+// 	// free all the data and re-init
+// 	//free(shell->line);
+// 	while(shell->cmds)
+// 	{
+// 		i = 0;
+// 		while (shell->cmds->args[i])
+// 		{
+// 			ft_del(*(shell->cmds->args));
+// 			i++;
+// 		}
+// 		ft_del(shell->cmds->args);
+// 		ft_del(shell->cmds->cmd);
+// 		tmp = shell->cmds->next;
+// 		ft_del(shell->cmds);
+// 		shell->cmds = tmp;
+// 	}
+// 	shell->cmds = NULL;
+// }
 
-void		init_shell(t_shell *shell)
-{
-	shell->line = NULL;
-	shell->parse_err = 0;
-	shell->ret = 0;
-}
+// void		init_shell(t_shell *shell)
+// {
+// 	shell->line = NULL;
+// 	shell->parse_err = 0;
+// 	shell->ret = 0;
+// }
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
@@ -67,17 +67,6 @@ void	sig_handle_ctrl_c(int sig)
 	sig = 0;
 	ft_putstr_fd("\n", 1);
 	ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
-}
-
-void	erase_file_debug()
-{
-	FILE *f;
-	int fd;
-
-	f = fopen("debug.txt", "w");
-	fd = fileno(f);
-	ft_putstr_fd("", fd);
-	fclose(f);
 }
 
 int     main(int argc, char **argv, char **envp)

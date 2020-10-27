@@ -1,19 +1,19 @@
 #include "../../includes/shell.h"
 
-void	write_to_file(char *s, char *num, int end)
-{
-	FILE *f;
-	int fd;
+// void	write_to_file(char *s, char *num, int end)
+// {
+// 	FILE *f;
+// 	int fd;
 
-	f = fopen("debug.txt", "a");
-	fd = fileno(f);
-	ft_putstr_fd(s, fd);
-	if (num)
-		ft_putstr_fd(num, fd);
-	if (end)
-		ft_putstr_fd("\n-------\n", fd);
-	fclose(f);
-}
+// 	f = fopen("debug.txt", "a");
+// 	fd = fileno(f);
+// 	ft_putstr_fd(s, fd);
+// 	if (num)
+// 		ft_putstr_fd(num, fd);
+// 	if (end)
+// 		ft_putstr_fd("\n-------\n", fd);
+// 	fclose(f);
+// }
 
 void	display_cursor(t_config *config)
 {
