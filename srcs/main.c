@@ -64,9 +64,11 @@ int			command_line(t_shell *shell)
 
 void	sig_handle_ctrl_c(int sig)
 {
-	sig = 0;
-	ft_putstr_fd("\n", 1);
-	ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+	if (sig == SIGINT)
+	{	
+		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+	}
 }
 
 int     main(int argc, char **argv, char **envp)

@@ -112,8 +112,8 @@ int			open_output(t_cmds *cmd, int append, int ofd)
 		flag = flag | O_TRUNC;
 	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
 	{
-		//print_error(NULL, errno, 0);
-		return (-1);
+		print_error(cmd->next->args[0], errno, 0);
+		exit(1);
 	}
 	ofd = fd;
 	dup2(ofd, 1);
@@ -157,7 +157,7 @@ int		open_input(char *args, int append, int ifd)
 	return (ifd);
 }
 
-void		do_redirect(t_cmds *cmd, int fd[2])
+void		do_redirect(t_cmds *cmd, int *fd)
 {
 	if (cmd->append == -2) // << not working now
 		fd[0] = open_input(cmd->args[1], 1, fd[0]);
@@ -289,7 +289,8 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 {
 	pid_t	pid;
 	int		in;
-	in = 0;
+	int		ior[2];
+	ior[1] = 0;
 
 	pid = fork();
 	if (pid == 0)
@@ -298,14 +299,17 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
-			exec_io_redi(cmds, in, shell->fds[1], shell);
+			ior[0] = 0;
+			ior[1] = shell->fds[1];
+			exec_io_redi(cmds, ior[0], ior[1], shell);
 			if (cmds->args && exec_commands(shell, cmds))
 			{
 				print_error(cmds->cmd, errno, 1);
 				exit(1);
 			}
-			close(shell->fds[1]);
-			in = shell->fds[0];
+			if (ior[1] != shell->fds[1])
+				close(ior[1]);
+			ior[1] = 1;
 		}
 		else if (cmds->args && exec_commands(shell, cmds))
 		{
@@ -386,7 +390,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			else
 				cmds = cmds->next;
 			j += 2;
-			//save_restor_fd(0,1);
+			save_restor_fd(0,1);
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
