@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/26 19:29:43 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/27 09:36:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char    *clear_quotes(char *str)
 
     i = 0;
 	quote = 0;
+	str = parse_special_chars(str);
     while (str[i]){
         if ((!quote && is_quote(str[i], 0)) || (quote && is_quote(str[i], 0) == quote)){
 			quote = !quote ? is_quote(str[i], 0) : 0;
@@ -53,7 +54,7 @@ char    *clear_quotes(char *str)
         }
         i++;
     }
-    return (parse_special_chars(str));
+    return (str);
 }
 
 char    *parse_special_chars(char *str)

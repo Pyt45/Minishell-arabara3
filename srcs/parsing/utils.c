@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/26 19:38:49 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/27 09:29:12 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char    **get_args(char *str, int n)
     char    *tmp;
 
     i = 0;
-    while ((!ft_isprint(*str) || *str == ' ') && *str != '\0')
+    while ((!ft_isprint(*str) || *str == ' ') && *str)
     {
         str++;
         i++;

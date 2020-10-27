@@ -27,6 +27,8 @@ void	free_shell(t_shell *shell)
 				while (shell->cmds->args[i])
 				{
 					ft_del(shell->cmds->args[i]);
+					if (debug)
+						write_to_file(" 2x ", "", 0);
 					i++;
 				}
 				ft_del(shell->cmds->args);
@@ -78,6 +80,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
         status = ft_atoi(cmds->args[1]);
     end_terminal(&shell->config);
 	free_config(&shell->config);
+	free_shell(shell);
     exit(status);
     //ft_free_arr(shell->env);
     return (0);
@@ -114,7 +117,11 @@ void	validate_cursor(t_config *config)
 	ft_bzero(buff, sizeof(char) * 20);
 	ft_putstr_fd("\e[6n", 2);
 	while (buff[0] != '\e')
+	{
 		read(2, buff, sizeof(buff));
+		if (buff[0] != '\e')
+			ft_putstr_fd("\e[6n", 2);
+	}
 	while (!ft_isdigit(buff[i]))
 		i++;
 	new_y = ft_atoi(buff + i) - 1;

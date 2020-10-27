@@ -284,7 +284,8 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 {
 	pid_t	pid;
 	int		in;
-	in = 0;
+	int		ior[2];
+	ior[1] = 0;
 
 	pid = fork();
 	if (pid == 0)
@@ -293,14 +294,17 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
-			exec_io_redi(cmds, in, shell->fds[1], shell);
+			ior[0] = 0;
+			ior[1] = shell->fds[1];
+			exec_io_redi(cmds, ior[0], ior[1], shell);
 			if (cmds->args && exec_commands(shell, cmds))
 			{
 				print_error(cmds->cmd, errno, 1);
 				exit(1);
 			}
-			close(shell->fds[1]);
-			in = shell->fds[0];
+			if (ior[1] != shell->fds[1])
+				close(ior[1]);
+			ior[1] = 1;
 		}
 		else if (cmds->args && exec_commands(shell, cmds))
 		{
@@ -380,10 +384,8 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 				break;
 			else
 				cmds = cmds->next;
-			/* if (!cmds->end)
-				cmds = cmds->next; */
 			j += 2;
-			//save_restor_fd(0,1);
+			save_restor_fd(0,1);
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
@@ -398,6 +400,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 int		run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
+
 	shell->num_sp = 0;
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
