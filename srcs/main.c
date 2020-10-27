@@ -56,8 +56,6 @@ int			command_line(t_shell *shell)
 		r = get_next_line(0, &shell->line);
 		if (ft_strlen(shell->line))
 			status = run_commands(shell);
-		// if (shell->exit)
-			// exit(shell->exit_status);
 	}
 	return (status);
 }
