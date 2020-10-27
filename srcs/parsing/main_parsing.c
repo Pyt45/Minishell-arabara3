@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/26 19:05:41 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/27 09:28:07 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ t_shell     *parse_commands(t_shell *shell)
     while (tmp[++i] && pos != -1)
     {
 		if (is_quote(tmp[i], 0))
-			quote = !quote ? is_quote(tmp[i], 0) :
-				quote == is_quote(tmp[i], 0) ? 0 : quote;
+			quote = quote_activer(quote, tmp[i]);
 		if (!quote)
 			pos = manage_parsing(&cmds, &i, pos, tmp);
 		shell->parse_err = pos;

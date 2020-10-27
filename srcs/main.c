@@ -7,7 +7,7 @@ void	free_shell(t_shell *shell)
 	int i;
 	t_cmds *tmp;
 	// free all the data and re-init
-	free(shell->line);
+	//free(shell->line);
 	while(shell->cmds)
 	{
 		i = 0;
