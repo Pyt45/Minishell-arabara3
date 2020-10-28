@@ -89,7 +89,8 @@ char	**ft_setenv(char *var, char *path, char **env)
 	}
 	else
 		return (ft_add_to_arr(record, env));
-	ft_del(record);
+	// do not remove //
+	//ft_del(record);
 	return (env);	
 }
 

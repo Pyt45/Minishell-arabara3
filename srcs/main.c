@@ -32,18 +32,18 @@
 // 	shell->ret = 0;
 // }
 
-int		exit_builtin(t_shell *shell, t_cmds *cmds)
-{
-    double  tstatus;
-    int     status;
+// int		exit_builtin(t_shell *shell, t_cmds *cmds)
+// {
+//     double  tstatus;
+//     int     status;
 
-	tstatus = 0;
-	if (cmds->args[1] != NULL)
-        status = ft_atoi(cmds->args[1]);
-    // ft_free_arr(shell->env);
-    exit(status);
-    return (0);
-}
+// 	tstatus = 0;
+// 	if (cmds->args[1] != NULL)
+//         status = ft_atoi(cmds->args[1]);
+//     // ft_free_arr(shell->env);
+//     exit(status);
+//     return (0);
+// }
 
 int			command_line(t_shell *shell)
 {
