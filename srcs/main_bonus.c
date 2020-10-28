@@ -143,6 +143,7 @@ char	*clear_str(char *str)
 	j = 0;
 	while (str[i])
 	{
+		
 		if (str[i] == ' ')
 		{
 			j = i;
@@ -153,6 +154,8 @@ char	*clear_str(char *str)
 			}
 			i--;
 		}
+		else
+		 	break;
 		i++;
 	}
 	return (str);
