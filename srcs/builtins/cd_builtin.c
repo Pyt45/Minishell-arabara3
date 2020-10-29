@@ -21,7 +21,7 @@ char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 	else if (!ft_strcmp(path, "-"))
 	{
 		path = get_old_dir(shell);
-		is_print = 1;
+		*is_print = 1;
 	}
 	return (path);
 }
