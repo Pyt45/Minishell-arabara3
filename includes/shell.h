@@ -162,7 +162,7 @@ void				init_config_data(t_config *config);
 void				end_terminal(t_config *config);
 int					ft_putchars(int c);
 void				newline_config(t_config *config, int x);
-void				print_error(char *cmd, int err, int iscmd);
+int					print_error(char *cmd, int err, int iscmd);
 char				*clear_quotes(char *str);
 int					is_quote(char c, int type);
 char				**ft_split_quote(char const *s, char c);

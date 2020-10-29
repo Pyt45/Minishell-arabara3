@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/29 19:13:29 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/29 19:28:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,18 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 	int		i;
 	char	**env_sort;
 	char	**new_env;
+	int		err;
 
 	i = 1;
+	err = 0;
 	if (cmds->args[1] != NULL)
 	{
 		while (cmds->args[i])
 		{
-			if (!ft_export_cmd(shell, cmds->args[i]))
-				print_error("invalid identifier", errno, 0);
+			if (ft_isdigit(cmds->args[i][0]) ||
+				ft_strcmp(cmds->args[i], ' ') ||
+				!ft_export_cmd(shell, cmds->args[i]))
+				err = print_error("invalid identifier", errno, 0);
 			i++;
 		}
 	}
@@ -123,5 +127,5 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 		new_env = ft_sort_export(env_sort);
 		ft_print_export(new_env);
 	}
-	return (0);
+	return (err);
 }
