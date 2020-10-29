@@ -1,42 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_builtin.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
+/*   Updated: 2020/10/29 19:13:29 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-
-static char	**ft_sort_export(char **env)
+static char		**ft_sort_export(char **env)
 {
-	int 	i;
+	int		i;
 	int		j;
 	int		k;
 	char	*tmp;
+	int		len;
 
-	i = 0;
-	if (env)
+	i = -1;
+	len = ft_arr_len(env);
+	while (i < len)
 	{
-		env = ft_arrdup(env);
-		while (i < ft_arr_len(env))
+		j = i;
+		while (++j < len)
 		{
-			j = i + 1;
-			while (j < ft_arr_len(env))
+			k = 0;
+			while (env[i][k] == env[j][k])
+				k++;
+			if (env[i][k] > env[j][k])
 			{
-				k = 0;
-				while (env[i][k] == env[j][k])
-					k++;
-				if (env[i][k] > env[j][k])
-				{
-					tmp = env[i];
-					env[i] = env[j];
-					env[j] = tmp;
-				}
-				j++;
+				tmp = env[i];
+				env[i] = env[j];
+				env[j] = tmp;
 			}
-			i++;
 		}
 	}
 	return (env);
 }
 
-
-static char	*ft_get_first(const char *s, int c)
+static char		*ft_get_first(const char *s, int c)
 {
 	char	r;
 	int		i;
@@ -54,17 +59,17 @@ static char	*ft_get_first(const char *s, int c)
 	return (0);
 }
 
-static void    ft_print_export(char **arr)
+static void		ft_print_export(char **arr)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    if (arr)
-    {
-        while (arr[i] != NULL)
+	i = 0;
+	if (arr)
+	{
+		while (arr[i] != NULL)
 		{
 			ft_putstr_fd("decalre -x ", 1);
-            ft_putstr_fd(ft_get_first(arr[i], '='), 1);
+			ft_putstr_fd(ft_get_first(arr[i], '='), 1);
 			if (ft_strchr(arr[i], '='))
 			{
 				ft_putchar_fd('"', 1);
@@ -72,13 +77,13 @@ static void    ft_print_export(char **arr)
 				ft_putchar_fd('"', 1);
 			}
 			ft_putstr_fd("\n", 1);
-        	i++;
+			i++;
 		}
-    }
+	}
 }
 
-int		ft_export_cmd(t_shell *shell, char *value)
-{	
+int				ft_export_cmd(t_shell *shell, char *value)
+{
 	int		i;
 	char	**argv;
 
@@ -96,7 +101,7 @@ int		ft_export_cmd(t_shell *shell, char *value)
 	return (1);
 }
 
-int     export_builtin(t_shell *shell, t_cmds *cmds)
+int				export_builtin(t_shell *shell, t_cmds *cmds)
 {
 	int		i;
 	char	**env_sort;
