@@ -1,97 +1,33 @@
 #include "../includes/shell.h"
-#include <signal.h>
-
-// void	free_shell(t_shell *shell)
-// {
-// 	int i;
-// 	int debug = 0;
-// 	t_cmds *tmp;
-// 	// free all the data and re-init
-// 	shell->line = NULL;
-// 	if (debug)
-// 		write_to_file("FREEING", "", 1);
-// 	if (shell->cmds && shell->cmds->cmd)
-// 	{
-// 		if (debug)
-// 			write_to_file(" 1 ", "", 0);
-// 		while(shell->cmds)
-// 		{
-// 			if (debug)
-// 				write_to_file(" 1x ", "", 0);
-// 			i = 0;
-// 			if (shell->cmds->args)
-// 			{
-// 				if (debug)
-// 					write_to_file(" 2 ", "", 0);
-// 				while (shell->cmds->args[i])
-// 				{
-// 					ft_del(shell->cmds->args[i]);
-// 					if (debug)
-// 						write_to_file(" 2x ", "", 0);
-// 					i++;
-// 				}
-// 				ft_del(shell->cmds->args);
-// 				if (debug)
-// 					write_to_file(" 3 ", "", 0);
-// 			}
-// 			ft_del(shell->cmds->cmd);
-// 			if (debug)
-// 				write_to_file(" 4 ", "", 0);
-// 			tmp = shell->cmds->next;
-// 			ft_del(shell->cmds);
-// 			if (debug)
-// 				write_to_file(" 5 ", "", 0);
-// 			shell->cmds = tmp;
-// 		}
-// 	}
-// 	if (debug)
-// 		write_to_file(" END ", "", 1);
-// 	shell->cmds = NULL;
-// }
-
-// void	free_config(t_config *config)
-// {
-// 	t_history	*history;
-// 	t_history	*tmp;
-
-// 	history = config->history;
-// 	ft_del(config->str);
-// 	ft_del(config->tmp); // this is not fully freed
-// 	while (history->prev)
-// 		history = history->prev;
-// 	while (history->next)
-// 	{
-// 		ft_del(history->data);
-// 		tmp = history->next;
-// 		free(history);
-// 		history = tmp;
-// 	}
-// 	config->history = NULL;
-// }
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
     double  tstatus;
     int     status;
+	int     i;
 
 	tstatus = 0;
-	if (cmds->args[1] != NULL)
+	i = -1;
+	if (cmds->args[1])
+    {
+        while (cmds->args[1][i++])
+            if (ft_isalpha((int)(cmds->args[1][i])))
+            {
+                tstatus = 1;
+                break;
+            }
         status = ft_atoi(cmds->args[1]);
+    }
     end_terminal(&shell->config);
 	free_shell(shell);
 	free_config(&shell->config);
+    ft_free_arr(shell->env);
+    ft_putstr_fd("exit\n", 1);
+	if (tstatus && !status)
+		print_error("exit", 33, 0);
     exit(status);
-    //ft_free_arr(shell->env);
     return (0);
 }
-
-// void		init_shell(t_shell *shell)
-// {
-// 	shell->line = NULL;
-// 	shell->parse_err = 0;
-// 	shell->ret = 0;
-// 	shell->cmds = NULL;
-// }
 
 void	reinit_cursor(t_config *config, int new_x, int new_y)
 {

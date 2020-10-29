@@ -1,49 +1,31 @@
 #include "../includes/shell.h"
-#include <signal.h>
-// #include <readline/readline.h>
 
-// void	free_shell(t_shell *shell)
-// {
-// 	int i;
-// 	t_cmds *tmp;
-// 	// free all the data and re-init
-// 	//free(shell->line);
-// 	while(shell->cmds)
-// 	{
-// 		i = 0;
-// 		while (shell->cmds->args[i])
-// 		{
-// 			ft_del(*(shell->cmds->args));
-// 			i++;
-// 		}
-// 		ft_del(shell->cmds->args);
-// 		ft_del(shell->cmds->cmd);
-// 		tmp = shell->cmds->next;
-// 		ft_del(shell->cmds);
-// 		shell->cmds = tmp;
-// 	}
-// 	shell->cmds = NULL;
-// }
+int		exit_builtin(t_shell *shell, t_cmds *cmds)
+{
+    double  tstatus;
+    int     status;
+	int     i;
 
-// void		init_shell(t_shell *shell)
-// {
-// 	shell->line = NULL;
-// 	shell->parse_err = 0;
-// 	shell->ret = 0;
-// }
-
-// int		exit_builtin(t_shell *shell, t_cmds *cmds)
-// {
-//     double  tstatus;
-//     int     status;
-
-// 	tstatus = 0;
-// 	if (cmds->args[1] != NULL)
-//         status = ft_atoi(cmds->args[1]);
-//     // ft_free_arr(shell->env);
-//     exit(status);
-//     return (0);
-// }
+	tstatus = 0;
+	i = -1;
+	if (cmds->args[1])
+    {
+        while (cmds->args[1][i++])
+            if (ft_isalpha((int)(cmds->args[1][i])))
+            {
+                tstatus = 1;
+                break;
+            }
+        status = ft_atoi(cmds->args[1]);
+    }
+	free_shell(shell);
+    ft_free_arr(shell->env);
+    ft_putstr_fd("exit\n", 1);
+	if (tstatus && !status)
+		print_error("exit", 33, 0);
+    exit(status);
+    return (0);
+}
 
 int			command_line(t_shell *shell)
 {

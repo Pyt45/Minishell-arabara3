@@ -1,7 +1,5 @@
 #include "../../includes/shell.h"
 
-
-
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
     double  tstatus;

@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/27 12:27:14 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/29 18:57:20 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ SRC = srcs/utils.c \
 		srcs/builtins/cd_builtin.c \
 		srcs/builtins/echo_builtin.c \
 		srcs/builtins/env_builtin.c \
-		srcs/builtins/exit_builtin.c \
 		srcs/builtins/pwd_builtin.c \
 		srcs/builtins/unset_builtin.c \
 		srcs/builtins/export_builtin.c \
