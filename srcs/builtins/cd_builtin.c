@@ -1,5 +1,16 @@
-#include "../../includes/shell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd_builtin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
+/*   Updated: 2020/10/29 18:41:48 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../includes/shell.h"
 
 int		move_to_dir(char *path, t_shell *shell, int *is_print)
 {
@@ -26,7 +37,7 @@ char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 	return (path);
 }
 
-int     cd_builtin(t_shell *shell, t_cmds *cmds)
+int		cd_builtin(t_shell *shell, t_cmds *cmds)
 {
 	char	*path;
 	char	*pwd;
