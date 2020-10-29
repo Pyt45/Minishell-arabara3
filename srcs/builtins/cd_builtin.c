@@ -86,6 +86,5 @@ int     cd_builtin(t_shell *shell, t_cmds *cmds)
 	shell->env = ft_setenv("OLDPWD", pwd, shell->env);
 	pwd = getcwd(NULL, 0);
 	shell->env = ft_setenv("PWD", pwd, shell->env);
-	shell->ret = !ret;
-	return (ret);
+	return (!ret);
 }

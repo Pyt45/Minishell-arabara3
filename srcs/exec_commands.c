@@ -245,7 +245,6 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	int	ret;
 
 	ret = 1;
-	//printf("cmds = %s\nargs = %s\n", cmds->cmd, cmds->args[0]);
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
@@ -365,7 +364,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
-		cmds->ret = status > 200 ? status - 127 : status ;
+		cmds->ret = status > 200 ? status - 129 : status ;
 		free(shell->fds);
 	}
 	else if (cmds->cmd)
