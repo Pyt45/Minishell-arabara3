@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/27 09:36:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/29 18:43:00 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,15 @@ char    *parse_special_chars(char *str)
 int			quote_activer(int quote, char c)
 {
 	return !quote ? is_quote(c, 0) : quote == is_quote(c, 0) ? 0 : quote;
+}
+
+int     is_quote(char c, int type)
+{
+    if (type == 1 && c == '\'')
+        return (1);
+    if (type == 2 && c == '\"')
+        return (2);
+    if (type == 0 && (c == '\'' || c == '\"'))
+        return (c == '\'' ? 1 : 2);
+    return (0);
 }
