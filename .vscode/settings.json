@@ -2,6 +2,8 @@
     "files.associations": {
 		"algorithm": "c",
 		"sstream": "c",
-		"string": "c"
+		"string": "c",
+		"__locale": "c",
+		"ios": "c"
 	}
 }
