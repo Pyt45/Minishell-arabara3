@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset_builtin.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/29 19:14:56 by zlayine           #+#    #+#             */
+/*   Updated: 2020/10/29 19:15:42 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
-int     unset_builtin(t_shell *shell, t_cmds *cmds)
+int		unset_builtin(t_shell *shell, t_cmds *cmds)
 {
-    int     i;
+	int	i;
 
-    i = 1;
-    while (cmds->args[i] != NULL)
-    {
-        shell->env = ft_unset_cmd(shell, cmds->args[i]);
-        i++;
-    }
-    return (0);
+	i = 1;
+	while (cmds->args[i] != NULL)
+	{
+		shell->env = ft_unset_cmd(shell, cmds->args[i]);
+		i++;
+	}
+	return (0);
 }
 
-char    **ft_unset_cmd(t_shell *shell, char *value)
+char	**ft_unset_cmd(t_shell *shell, char *value)
 {
 	int		i;
 
