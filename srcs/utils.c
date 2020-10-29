@@ -1,7 +1,6 @@
 
 #include "../includes/shell.h"
 
-
 int     ft_arr_len(char **arr)
 {
     int     i;
@@ -36,26 +35,6 @@ char    **ft_arrdup(char **arr)
     }
     new_arr[i] = NULL;
     return (new_arr);
-}
-
-
-void    ft_print_env_arr(char **arr)
-{
-    int     i;
-
-    i = 0;
-    if (arr)
-    {
-        while (arr[i] != NULL)
-		{
-			if (ft_strchr(arr[i], '='))
-			{
-				ft_putstr_fd(arr[i], 1);
-				ft_putstr_fd("\n", 1);
-			}
-        	i++;
-		}
-    }
 }
 
 int		ft_free_arr(char **arr)
@@ -148,31 +127,6 @@ char    **ft_remove_from_arr(int pos, char **arr)
 		ft_free_arr(arr);
 	}
 	return (new_arr);
-}
-
-// MODES: 1:X 2:W 4:R
-int     ft_access(char *path, int mode)
-{
-    struct stat fileStat;
-
-    if(stat(path, &fileStat) < 0)
-        return (0);
-    if (mode == 1)
-        return (fileStat.st_mode & S_IXUSR ? 1 : 0);
-    else if (mode == 2)
-        return (fileStat.st_mode & S_IWUSR ? 1 : 0);
-    else if (mode == 4)
-        return (fileStat.st_mode & S_IRUSR ? 1 : 0);
-    return (0);
-}
-
-int     get_error_num(int err)
-{
-    if (err == 13)
-        return (126);
-    if (err == 2)
-        return (127);
-    return (1);
 }
 
 // int     get_special_char(char c)

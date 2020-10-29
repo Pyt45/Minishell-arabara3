@@ -1,29 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_path.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/29 19:35:31 by zlayine           #+#    #+#             */
+/*   Updated: 2020/10/29 19:38:23 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/shell.h"
 
-int     ft_getenv(char *name, char **env)
+int		ft_getenv(char *name, char **env)
 {
-    char    *search;
-    int     i;
-    int     len;
+	char	*search;
+	int		i;
+	int		len;
 
-    len = ft_strlen(name) + 2;
-    if (!(search = (char *)malloc(sizeof(char) * len)))
-        return (-1);
-    ft_strcpy(search, name);
-    ft_strcat(search, "=");
-    i = 0;
-    while (env[i] != NULL)
-    {
-        if (ft_strncmp(env[i], search, ft_strlen(name)) == 0)
-        {
-    		ft_del(search);
-            return (i);
-        }
-        i++;
-    }
-    ft_del(search);
-    return (-1);
+	len = ft_strlen(name) + 2;
+	if (!(search = (char *)malloc(sizeof(char) * len)))
+		return (-1);
+	ft_strcpy(search, name);
+	ft_strcat(search, "=");
+	i = 0;
+	while (env[i] != NULL)
+	{
+		if (ft_strncmp(env[i], search, ft_strlen(name)) == 0)
+		{
+			ft_del(search);
+			return (i);
+		}
+		i++;
+	}
+	ft_del(search);
+	return (-1);
 }
 
 char	*try_path(char *filename, char *dir)
@@ -42,14 +53,14 @@ char	*try_path(char *filename, char *dir)
 	return (NULL);
 }
 
-char    *get_bin_path(char *filename, char **env)
+char	*get_bin_path(char *filename, char **env)
 {
-    char    *path;
-    int     i;
-    char    **a_path;
-    char    *b_path;
-    
-    path = NULL;
+	char	*path;
+	int		i;
+	char	**a_path;
+	char	*b_path;
+
+	path = NULL;
 	i = 0;
 	if ((i = ft_getenv("PATH", env)) >= 0)
 		path = env[i] + 5;
@@ -69,47 +80,17 @@ char    *get_bin_path(char *filename, char **env)
 	return (filename);
 }
 
-char	**ft_setenv(char *var, char *path, char **env)
+int     ft_access(char *path, int mode)
 {
-	int		i;
-	int		len;
-	char	*record;
-	
-	len = ft_strlen(var) + ft_strlen(path) + 2;
-	if (!(record = (char *)malloc(sizeof(char) * len)))
-		return (NULL);
-	ft_strcpy(record, var);
-	ft_strcat(record, "=");
-	ft_strcat(record, path);
-	if ((i = ft_getenv(var, env)) >= 0)
-	{
-		free(env[i]);
-		env[i] = record;
-		//printf("%s\n", env[i]);
-	}
-	else
-		return (ft_add_to_arr(record, env));
-	// do not remove //
-	//ft_del(record);
-	return (env);	
-}
+    struct stat fileStat;
 
-char	*get_home_dir(t_shell *shell)
-{
-	int		i;
-
-	i = 0;
-	if ((i = ft_getenv("HOME", shell->env)) >= 0)
-		return (ft_strdup(shell->env[i] + 5));
-	return (NULL);
-}
-
-char	*get_old_dir(t_shell *shell)
-{
-	int		i;
-
-	i = 0;
-	if ((i = ft_getenv("OLDPWD", shell->env)) >= 0)
-		return (shell->env[i] + 7);
-	return (NULL);
+    if(stat(path, &fileStat) < 0)
+        return (0);
+    if (mode == 1)
+        return (fileStat.st_mode & S_IXUSR ? 1 : 0);
+    else if (mode == 2)
+        return (fileStat.st_mode & S_IWUSR ? 1 : 0);
+    else if (mode == 4)
+        return (fileStat.st_mode & S_IRUSR ? 1 : 0);
+    return (0);
 }

@@ -6,27 +6,11 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/27 19:38:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/29 19:40:47 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
-
-// void    debug_cmd(t_cmds *cmds, int i, int pos, char c)
-// {
-//     int j;
-
-//     printf("CHAR: %c | POS:%d | I=%d\n", c, pos, i);
-//     printf("CMD: %s|\n", cmds->cmd);
-//     j = 0;
-// 	if (cmds->args)
-// 		while (cmds->args[j]){
-// 			printf("ARG %d: %s|\n--------------------------\n", j, cmds->args[j]);
-// 			j++;
-// 		}
-// 	else
-// 		puts("ARG: No arguments");
-// }
 
 t_cmds      *init_cmds(t_cmds   *prev)
 {
