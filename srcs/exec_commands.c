@@ -354,7 +354,7 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		j = 0;
 		while (cmds)
 		{
-			if (cmds->end && cmds->prev->append)
+			if (cmds->end && cmds->prev && cmds->prev->append)
 				break;
 			pid = run_child(shell, cmds, j);
 			if (cmds->end)
