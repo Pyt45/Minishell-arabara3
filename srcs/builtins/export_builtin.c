@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 09:08:07 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/10/30 10:13:33 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 		while (cmds->args[i])
 		{
 			if (ft_isdigit(cmds->args[i][0]) ||
-				ft_strcmp(cmds->args[i], " ") ||
+				ft_strchr(cmds->args[i], ' ') ||
 				!ft_export_cmd(shell, cmds->args[i]))
 				err = print_error("invalid identifier", errno, 0);
 			i++;
