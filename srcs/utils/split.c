@@ -10,7 +10,8 @@ char			**free_list_quote(char **split)
 	free(split);
 	return (NULL);
 }
-// "sd"
+
+
 static int		count_strings(char *str)
 {
 	int i;

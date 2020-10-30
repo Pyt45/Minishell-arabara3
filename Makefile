@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
+#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/30 09:10:54 by aaqlzim          ###   ########.fr        #
+#    Updated: 2020/10/30 17:02:35 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC = srcs/utils.c \
 		srcs/utils/split.c \
 		srcs/utils/debug.c \
 		srcs/utils/free.c \
+		srcs/utils/array_helpers.c \
 		srcs/parsing/main_parsing.c \
 		srcs/parsing/helpers.c \
 		srcs/parsing/var_manager.c \

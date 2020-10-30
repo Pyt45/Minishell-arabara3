@@ -97,8 +97,6 @@ int		*pipe_ior(int num_sp, int *ior)
 	return (ior);
 }
 
-
-
 void	read_from_stdin(int fd)
 {
 	char	buff[1024];
@@ -132,7 +130,6 @@ int		open_input(char *args, int append, int ifd)
 		}
 		ifd = fd;
 	}
-	// dup2(ifd, 0);
 	return (ifd);
 }
 
@@ -156,18 +153,32 @@ int			open_output(t_cmds *cmd, int append)
 	return (fd);
 }
 
+void		append_arguments(t_cmds *tmp, t_cmds *cmd)
+{
+	int i;
+
+	if (ft_arr_len(tmp->args) > 1 && !tmp->start)
+	{
+		write_to_file("LEN ", ft_itoa(ft_arr_len(tmp->args)), 1);
+		i = 1;
+		while (tmp->args[i])
+		{
+			cmd->args = ft_get_arr(tmp->args[i], cmd->args);
+			i++;
+		}
+	}
+}
 
 void		do_redirect(t_cmds *cmd, int *fd)
 {
 	t_cmds	*tmp;
 
-	// ls -l | wc > out // working
-	// cat < out > out1 // need to be fixed
 	tmp = cmd;
 	while (tmp->append)
 	{
 		if (tmp->append > 0)
 		{
+			append_arguments(tmp->next, cmd);
 			if (fd[1])
 				close(fd[1]);
 			fd[1] = open_output(tmp, tmp->append - 1);

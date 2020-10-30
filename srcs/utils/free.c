@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/27 19:45:33 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 17:02:02 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,22 @@ void	free_config(t_config *config)
 		history = tmp;
 	}
 	config->history = NULL;
+}
+
+int		ft_free_arr(char **arr)
+{
+	int		i;
+
+	i = 0;
+	if (!arr)
+		return (1);
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	(arr) ? (free(arr)) : 0;
+	return (1);
 }
 
 void		init_shell(t_shell *shell)
