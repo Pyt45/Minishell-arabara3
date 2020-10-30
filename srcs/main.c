@@ -34,7 +34,7 @@ int			command_line(t_shell *shell)
 
 	while (status)
 	{
-		if (shell->ret != 2)
+		if (shell->ret != 130)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 		r = get_next_line(0, &shell->line);
 		if (ft_strlen(shell->line))

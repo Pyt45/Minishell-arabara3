@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:14:56 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 14:43:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 17:43:20 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int		unset_builtin(t_shell *shell, t_cmds *cmds)
 
 	i = 1;
 	err = 0;
-	while (cmds->args[i] != NULL)
+	while (cmds->args[i])
 	{
-		if (ft_isdigit(cmds->args[i][0]) || ft_strchr(cmds->args[i], ' '))
+		if (!valid_arg_name(cmds->args[i]))
 			err = print_error("invalid identifier", errno, 0);
 		shell->env = ft_unset_cmd(shell, cmds->args[i]);
 		i++;

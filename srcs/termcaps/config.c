@@ -40,10 +40,10 @@ void	init_prompt(t_config *config, int err)
 	config->cursor = tgetstr("cm", NULL);
 	if (tcsetattr(0, 0, &config->term) == -1)
 		printf("this is an error");
-	if (err != 2)
+	if (err != 130)
 		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
 	get_cursor_pos(config);
-	config->x = config->o_x;
+	config->x = config->o_x - 1;
 	config->y = config->o_y;
 	display_cursor(config);
 	display_tmp_data(config);

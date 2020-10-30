@@ -155,11 +155,15 @@ int			open_output(t_cmds *cmd, int append)
 
 void		append_arguments(t_cmds *tmp, t_cmds *cmd)
 {
+	
+}
+
+void		redirect_forward(t_cmds *tmp, t_cmds *cmd, int *fd)
+{
 	int i;
 
 	if (ft_arr_len(tmp->args) > 1 && !tmp->start)
 	{
-		write_to_file("LEN ", ft_itoa(ft_arr_len(tmp->args)), 1);
 		i = 1;
 		while (tmp->args[i])
 		{
@@ -167,6 +171,22 @@ void		append_arguments(t_cmds *tmp, t_cmds *cmd)
 			i++;
 		}
 	}
+	if (fd[1])
+		close(fd[1]);
+	fd[1] = open_output(tmp, tmp->append - 1);
+}
+
+void		redirect_backward(t_cmds *tmp, int *fd)
+{
+	int		i;
+	char	*file;
+
+	i = -1;
+	if (fd[0])
+		close(fd[0]);
+	while(tmp->next->args[++i])
+		file = tmp->next->args[i];
+	fd[0] = open_input(file, 0, fd[0]);
 }
 
 void		do_redirect(t_cmds *cmd, int *fd)
@@ -177,18 +197,9 @@ void		do_redirect(t_cmds *cmd, int *fd)
 	while (tmp->append)
 	{
 		if (tmp->append > 0)
-		{
-			append_arguments(tmp->next, cmd);
-			if (fd[1])
-				close(fd[1]);
-			fd[1] = open_output(tmp, tmp->append - 1);
-		}
+			redirect_forward(tmp, cmd, fd);
 		else
-		{
-			if (fd[0])
-				close(fd[0]);
-			fd[0] = open_input(tmp->next->args[0], 0, fd[0]);
-		}
+			redirect_backward(tmp, fd);
 		tmp = tmp->next;
 	}
 	if (fd[1])
@@ -412,6 +423,17 @@ static int wait_child(t_shell *shell, pid_t pid, int st)
 	return (st);
 }
 
+int		get_status_number(int status)
+{
+	if (status > 200)
+		return (status - 129);
+	else if (status == 2)
+		return (130);
+	else if (status == 3)
+		return (131);
+	return (status);
+}
+
 t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
@@ -438,7 +460,8 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		}
 		close_pipes(shell->fds, shell->num_pipe);
 		status = wait_child(shell, pid, status);
-		cmds->ret = status > 200 ? status - 129 : status ;
+		// write_to_file("Status ", ft_itoa(status), 1);
+		cmds->ret = get_status_number(status);
 		free(shell->fds);
 	}
 	else if (cmds->cmd)

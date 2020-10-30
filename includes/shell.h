@@ -180,6 +180,7 @@ int					quote_activer(int quote, char c);
 void				free_shell(t_shell *shell);
 void				init_shell(t_shell *shell);
 void				free_config(t_config *config);
+int					valid_arg_name(char *val);
 
 // debuging
 void				write_to_file(char *s, char *num, int end);

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:01:52 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/29 19:07:40 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 20:01:05 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,22 @@ void	validate_cursor(t_config *config)
 	while (ft_isdigit(buff[i]))
 		i++;
 	new_x = ft_atoi(buff + i + 1) - 1;
-	if (new_y > config->y || (new_y == config->y && new_x ==
+	// write_to_file("Y: ", ft_itoa(config->y), 0);
+	// write_to_file(" | OY: ", ft_itoa(config->o_y), 0);
+	// write_to_file(" | NY: ", ft_itoa(new_y), 0);
+	// write_to_file(" | OX: ", ft_itoa(config->o_x), 0);
+	// write_to_file(" | X: ", ft_itoa(config->x), 0);
+	// write_to_file(" | NX: ", ft_itoa(new_x), 0);
+	// write_to_file(" | C: ", ft_itoa(config->c), 0);
+	// write_to_file(" | WIDTH: ", ft_itoa(config->width), 0);
+	// write_to_file(" | LEN: ", ft_itoa(config->len), 1);
+	// // write_to_file("CASE 1: ", ft_itoa(new_y > config->y), 1);
+	// // write_to_file("CASE 2: ", ft_itoa(new_y == config->y && config->c != 0 && new_x == config->o_x && (config->len < config->width - 1 || config->len > config->width)), 1);
+	// write_to_file("CASE 3: ", ft_itoa(config->o_x == new_x && config->len == config->width), 1);
+	if (new_y > config->y || (new_y == config->y && config->c && new_x ==
 		config->o_x && (config->len < config->width - 1 ||
 		config->len > config->width)) || (config->o_x ==
 		new_x && config->len == config->width))
 		reinit_cursor(config, new_x, new_y);
+	
 }

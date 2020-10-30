@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 14:35:25 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 17:43:18 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,11 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 
 	i = 1;
 	err = 0;
-	if (cmds->args[1] != NULL)
+	if (cmds->args[1])
 	{
 		while (cmds->args[i])
 		{
-			if (ft_isdigit(cmds->args[i][0]) ||
-				ft_strchr(cmds->args[i], ' ') ||
+			if (!valid_arg_name(cmds->args[i]) ||
 				!ft_export_cmd(shell, ft_strdup(cmds->args[i])))
 				err = print_error("invalid identifier", errno, 0);
 			i++;
