@@ -98,27 +98,6 @@ int		*pipe_ior(int num_sp, int *ior)
 }
 
 
-int			open_output(t_cmds *cmd, int append, int ofd)
-{
-	int		fd;
-	int		flag;
-	int		flag_mode;
-
-	flag = O_WRONLY | O_CREAT;
-	flag_mode = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
-	if (append)
-		flag = flag | O_APPEND;
-	else
-		flag = flag | O_TRUNC;
-	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
-	{
-		print_error(cmd->next->args[0], errno, 0);
-		exit(1);
-	}
-	ofd = fd;
-	dup2(ofd, 1);
-	return (ofd);
-}
 
 void	read_from_stdin(int fd)
 {
@@ -153,23 +132,105 @@ int		open_input(char *args, int append, int ifd)
 		}
 		ifd = fd;
 	}
-	dup2(ifd, 0);
+	// dup2(ifd, 0);
 	return (ifd);
 }
 
+int			open_output(t_cmds *cmd, int append)
+{
+	int		fd;
+	int		flag;
+	int		flag_mode;
+
+	flag = O_WRONLY | O_CREAT;
+	flag_mode = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
+	if (append)
+		flag = flag | O_APPEND;
+	else
+		flag = flag | O_TRUNC;
+	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
+	{
+		print_error(cmd->next->args[0], errno, 0);
+		exit(1);
+	}
+	return (fd);
+}
+
+
 void		do_redirect(t_cmds *cmd, int *fd)
 {
-	if (cmd->append == -2) // << not working now
-		fd[0] = open_input(cmd->args[1], 1, fd[0]);
-	else if (cmd->append == 2) // >> working
+	t_cmds	*tmp;
+
+	// ls -l | wc > out // working
+	// cat < out > out1 // need to be fixed
+	tmp = cmd;
+	while (tmp->append)
 	{
-		fd[1] = open_output(cmd, 1, fd[1]);
+		if (tmp->append > 0)
+		{
+			if (fd[1])
+				close(fd[1]);
+			fd[1] = open_output(tmp, tmp->append - 1);
+		}
+		else
+		{
+			if (fd[0])
+				close(fd[0]);
+			fd[0] = open_input(tmp->next->args[0], 0, fd[0]);
+		}
+		tmp = tmp->next;
 	}
-	if (cmd->append == 1) // > working || need to fix echo a > txt b
-		fd[1] = open_output(cmd, 0, fd[1]);
-	else if (cmd->append == -1) // < need fix
-		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
+	if (fd[1])
+		dup2(fd[1], 1);
+	if (fd[0])
+		dup2(fd[0], 0);
+
+	// if (cmd->append == -2) // << not working now
+	// 	fd[0] = open_input(cmd->args[1], 1, fd[0]);
+	// else if (cmd->append > 0) // >> working
+	// {
+	// 	tmp = cmd;
+	// 	while (tmp->append > 0)
+	// 	{
+	// 		if (fd[1])
+	// 			close(fd[1]);
+	// 		fd[1] = open_output(tmp, tmp->append - 1);
+	// 		tmp = tmp->next;
+	// 	}
+	// }
+	// else if (cmd->append == -1)
+	// {
+	// 	fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
+	// }
 }
+
+
+// void		do_redirect(t_cmds *cmd, int *fd)
+// {
+// 	t_cmds	*tmp;
+
+// 	// ls -l | wc > out // working
+// 	// cat < out > out1 // need to be fixed
+
+	
+
+// 	if (cmd->append == -2) // << not working now
+// 		fd[0] = open_input(cmd->args[1], 1, fd[0]);
+// 	else if (cmd->append > 0) // >> working
+// 	{
+// 		tmp = cmd;
+// 		while (tmp->append > 0)
+// 		{
+// 			if (fd[1])
+// 				close(fd[1]);
+// 			fd[1] = open_output(tmp, tmp->append - 1);
+// 			tmp = tmp->next;
+// 		}
+// 		dup2(fd[1], 1);
+// 	}
+// 	else if (cmd->append == -1) // < need fix
+// 		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
+// }
 
 void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
 {
@@ -356,6 +417,8 @@ t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			if (cmds->end && cmds->prev && cmds->prev->append)
 				break;
 			pid = run_child(shell, cmds, j);
+			while(cmds->append)
+				cmds = cmds->next;
 			if (cmds->end)
 				break;
 			else
