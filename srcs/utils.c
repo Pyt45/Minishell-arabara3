@@ -59,17 +59,13 @@ char    **ft_get_arr(char *value, char **arr)
     char    **new_arr;
     int     len;
 
-    i = 0;
+    i = -1;
     len = ft_arr_len(arr) + 2;
     if (!(new_arr = (char **)malloc(sizeof(char*) * len)))
         return (NULL);
-    while (arr[i] != NULL)
-    {
-		new_arr[i] = malloc(sizeof(char) * (ft_strlen(arr[i]) + 1));
-        new_arr[i] = arr[i];
-        i++;
-    }
-    //free(arr);
+    while (arr[++i] != NULL)
+		new_arr[i] = ft_strdup(arr[i]);
+	ft_free_arr(arr);
     new_arr[i] = value;
     new_arr[i + 1] = NULL;
     return (new_arr);

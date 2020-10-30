@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 10:13:33 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 11:51:44 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char		**ft_sort_export(char **env)
 
 	i = -1;
 	len = ft_arr_len(env);
-	while (i < len)
+	while (++i < len)
 	{
 		j = i;
 		while (++j < len)
@@ -69,6 +69,7 @@ static void		ft_print_export(char **arr)
 		while (arr[i] != NULL)
 		{
 			ft_putstr_fd("decalre -x ", 1);
+			write_to_file("arr ", arr[i], 1);
 			ft_putstr_fd(ft_get_first(arr[i], '='), 1);
 			if (ft_strchr(arr[i], '='))
 			{
@@ -88,9 +89,9 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	char	**argv;
 
 	i = 0;
-	argv = ft_split(value, '=');
 	if (value[0] == '=')
 		return (0);
+	argv = ft_split(value, '=');
 	if (argv[1] && (i = ft_getenv(argv[0], shell->env)) >= 0)
 	{
 		free(shell->env[i]);
@@ -98,6 +99,7 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	}
 	else
 		shell->env = ft_add_to_arr(value, shell->env);
+	free(argv);
 	return (1);
 }
 
