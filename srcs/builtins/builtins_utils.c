@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:31:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/29 19:33:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:32:15 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ char	**ft_setenv(char *var, char *path, char **env)
 	if ((i = ft_getenv(var, env)) >= 0)
 	{
 		free(env[i]);
-		env[i] = record;
+		env[i] = ft_strdup(record);
+		ft_del(record);
 	}
 	else
 		return (ft_add_to_arr(record, env));
 	// do not remove //
-	//ft_del(record);
 	return (env);	
 }

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 11:51:44 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:35:25 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void		ft_print_export(char **arr)
 		while (arr[i] != NULL)
 		{
 			ft_putstr_fd("decalre -x ", 1);
-			write_to_file("arr ", arr[i], 1);
+			// write_to_file("arr ", arr[i], 1);
 			ft_putstr_fd(ft_get_first(arr[i], '='), 1);
 			if (ft_strchr(arr[i], '='))
 			{
@@ -99,7 +99,7 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	}
 	else
 		shell->env = ft_add_to_arr(value, shell->env);
-	free(argv);
+	ft_free_arr(argv);
 	return (1);
 }
 
@@ -118,7 +118,7 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 		{
 			if (ft_isdigit(cmds->args[i][0]) ||
 				ft_strchr(cmds->args[i], ' ') ||
-				!ft_export_cmd(shell, cmds->args[i]))
+				!ft_export_cmd(shell, ft_strdup(cmds->args[i])))
 				err = print_error("invalid identifier", errno, 0);
 			i++;
 		}

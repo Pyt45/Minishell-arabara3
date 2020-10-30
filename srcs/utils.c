@@ -66,8 +66,9 @@ char    **ft_get_arr(char *value, char **arr)
     while (arr[++i] != NULL)
 		new_arr[i] = ft_strdup(arr[i]);
 	ft_free_arr(arr);
-    new_arr[i] = value;
+    new_arr[i] = ft_strdup(value);
     new_arr[i + 1] = NULL;
+	ft_del(value);
     return (new_arr);
 }
 
@@ -78,7 +79,7 @@ char    **ft_add_to_arr(char *value, char **arr)
     {
         if (!(new_arr = (char **)malloc(sizeof(char *) * 2)))
             return (NULL);
-        new_arr[0] = value;
+        new_arr[0] = ft_strdup(value);
         new_arr[1] = NULL;
     	return (new_arr);
     }

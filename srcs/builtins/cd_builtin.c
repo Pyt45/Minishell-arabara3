@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 10:28:03 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:39:29 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	ret = move_to_dir(path, shell, &is_print);
 	(ret && is_print) ? ft_putendl_fd(path, 1) : 0;
 	if (ret == 0)
-		print_error(path, errno, 0);
+	{
+		if (is_print)
+			path = "OLDPWD not set";
+		print_error(path , errno, 0);
+	}
 	shell->env = ft_setenv("OLDPWD", pwd, shell->env);
 	pwd = getcwd(NULL, 0);
 	shell->env = ft_setenv("PWD", pwd, shell->env);
