@@ -6,3 +6,4 @@ minishell
 .DS_Store
 .vscode
 debug.txt
+txt*
