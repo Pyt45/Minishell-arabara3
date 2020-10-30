@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
+#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/29 18:57:20 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/30 09:10:54 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC = srcs/utils.c \
 		srcs/builtins/pwd_builtin.c \
 		srcs/builtins/unset_builtin.c \
 		srcs/builtins/export_builtin.c \
+		srcs/builtins/builtins_utils.c \
 		srcs/utils/split.c \
 		srcs/utils/debug.c \
 		srcs/utils/free.c \
