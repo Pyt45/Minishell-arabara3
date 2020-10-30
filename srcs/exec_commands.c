@@ -293,6 +293,7 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	pid = fork();
 	if (pid == 0)
 	{
+		
 		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
@@ -309,10 +310,10 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 				close(ior[1]);
 			ior[1] = 1;
 		}
-		else if (cmds->args && exec_commands(shell, cmds))
+		else if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
 		{
-				print_error(cmds->cmd, errno, 1);
-				exit(1);
+			print_error(cmds->cmd, errno, 1);
+			exit(1);
 		}
 		exit(0);
 	}
