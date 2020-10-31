@@ -18,11 +18,11 @@ char    *parse_variable_name(char *str, int len, t_shell *shell){
     int i;
 
     var = NULL;
-	if (*str == '{')
-	{
-		len--;
-		str++;
-	}
+	// if (*str == '{')
+	// {
+	// 	len--;
+	// 	str++;
+	// }
     tmp = (char *)malloc(sizeof(char) * len);
     ft_strlcpy(tmp, str, len);
     if (tmp[0] == '?')
@@ -46,31 +46,28 @@ void	replace_in_string(char *src, char *dest, int *inc)
 	*inc = *inc + 1; 
 }
 
-char    *replace_var_string(char *src, int i, char *var, int *pos)
+char    *replace_var_string(char *src, int i, char *var, int len)
 {
     char    *tmp;
     int     j;
 	int		c_src;
 	int		c_var;
     int     tlen;
-	int		len;
 
-	len = *pos - i;
 	j = 0;
 	c_var = 0;
 	c_src = 0;
-	len = src[i] == '{' ? len + 2 : len; 
-	i = src[i] == '{' ? i - 1 : i;
+	// len = src[i] == '{' ? len + 2 : len; 
+	// i = src[i] == '{' ? i - 1 : i;
     tlen = ft_strlen(src) + ft_strlen(var) - len;
     tmp = (char *)malloc(sizeof(char) * tlen);
-    *pos = i + ft_strlen(var) - 1;
+    // *pos = i + ft_strlen(var) - 1;
     while (j < tlen - 1){
         if (j == i)
         {
 			c_src = c_src + len + 1;
             while (var && var[c_var])
 				replace_in_string(tmp + j, var + c_var++, &j);
-			// this may causes a problem
 			i = -1;
         }
 		else
@@ -96,14 +93,15 @@ char     *parse_env_var(char *str, t_shell *shell)
 		if (quote != 1 && var != -1 && var_checker_pass(str[i + 1]))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
-			str = replace_var_string(str, var, tmp, &i);
+			str = replace_var_string(str, var, tmp, i - var);
+			i = var + ft_strlen(tmp) - 1;
 			var = -1;
 		}
 		quotes_checker(&quote, str[i]);
 		if (quote != 1 && str[i] == '$')
 		{
-			if (str[i + 1] == '{')
-				i++;
+			// if (str[i + 1] == '{')
+			// 	i++;
 			var = i;
 		}
 	}

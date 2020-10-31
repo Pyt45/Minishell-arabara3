@@ -15,7 +15,6 @@
 void	free_shell(t_shell *shell)
 {
 	int		i;
-	int		debug;
 	t_cmds	*tmp;
 
 	shell->line = NULL;

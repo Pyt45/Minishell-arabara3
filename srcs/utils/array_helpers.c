@@ -48,11 +48,11 @@ char	**ft_add_to_arr(char *value, char **arr)
 
 char	**ft_remove_from_arr(int pos, char **arr)
 {
-	int		i;
 	int		len;
 	char	**new_arr;
 
-	if (arr != NULL)
+	new_arr = NULL;
+	if (arr)
 	{
 		len = ft_arr_len(arr);
 		if (!(new_arr = (char**)malloc(sizeof(char *) * len)))

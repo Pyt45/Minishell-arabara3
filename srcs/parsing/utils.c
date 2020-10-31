@@ -20,7 +20,7 @@ t_cmds      *init_cmds(t_cmds   *prev)
     cmds->start = 0;
     cmds->end = 0;
     cmds->p = 0;
-    cmds->r = 0;
+    // cmds->r = 0;
     cmds->append = 0;
     cmds->ret = 0;
     cmds->prev = NULL;
@@ -106,6 +106,6 @@ void	manage_redirections(t_cmds **cmds, int *i, char *tmp)
         (*cmds)->append--;
         (*i)++;
     }
-	if ((*cmds)->append != 0)
-		(*cmds)->r = 1;
+	// if ((*cmds)->append != 0)
+	// 	(*cmds)->r = 1;
 }

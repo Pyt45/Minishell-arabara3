@@ -63,10 +63,11 @@ char	*get_bin_path(char *filename, char **env)
 	char	*b_path;
 
 	path = NULL;
+	a_path = NULL;
 	i = 0;
 	if ((i = ft_getenv("PATH", env)) >= 0)
 		path = env[i] + 5;
-	if (path != NULL && (a_path = ft_split(path, ':')) != NULL)
+	if (path && (a_path = ft_split(path, ':')))
 	{
 		i = 0;
 		while (a_path[i] != NULL)

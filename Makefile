@@ -74,15 +74,15 @@ $(LIBFT_LIB):
 $(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc -lncurses $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
+	@echo "SUCCESS! REMOVE DS STORE"
 
 $(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
 	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
+	@echo "SUCCESS! REMOVE DS STORE"
 
 %.o: %.c
-	@gcc -c $< -o $@ -I $(INC)
+	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
 
 clean:
 	@make clean -C $(LIBFT)
@@ -97,3 +97,4 @@ fclean: clean
 re: fclean all
 
 # @gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
+# @gcc -c $< -o $@ -I $(INC)

@@ -52,13 +52,17 @@ void	move_cursor(t_config *config, int dir)
 		while (!ft_isalnum(config->str[config->c]) && config->str[config->c])
 			config->c++;
 	}
-	else if (dir == 5 || dir == 6)
-	{
-		if (config->c - config->width > 0 && dir == 5)
-			config->c -= config->width;
-		else if (dir == 6 && config->len >= config->c + config->width)
-			config->c += config->width;
-	}
+	else if (dir == 5 && config->c - config->width > 0)
+		config->c -= config->width;
+	else if (dir == 6 && config->len >= config->c + config->width)
+		config->c += config->width;
+	// else if (dir == 5 || dir == 6)
+	// {
+	// 	if (config->c - config->width > 0 && dir == 5)
+	// 		config->c -= config->width;
+	// 	else if (dir == 6 && config->len >= config->c + config->width)
+	// 		config->c += config->width;
+	// }
 	display_cursor(config);
 }
 

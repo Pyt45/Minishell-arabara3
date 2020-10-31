@@ -20,10 +20,9 @@
 
 typedef struct		s_cmds
 {
-	int				start;    //start command
-	int				end;      // end
-	int				p;         //pipes
-	int				r;		   //redirection
+	int				start;
+	int				end;
+	int				p;
 	int				append;
 	char			*cmd;
 	char			**args;
@@ -123,7 +122,7 @@ int					wait_child(t_shell *shell, pid_t pid, int st);
 void				redirect_forward(t_cmds *tmp, t_cmds *cmd, int *fd);
 void				redirect_backward(t_cmds *tmp, int *fd);
 void				do_redirect(t_cmds *cmd, int *fd);
-void				exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell);
+void				exec_io_redi(t_cmds *cmd, int ifd, int ofd);
 int					open_output(t_cmds *cmd, int append);
 int					exec_commands(t_shell *shell, t_cmds *cmds);
 int					run_commands(t_shell *shell);
@@ -151,7 +150,7 @@ int					unset_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_unset_cmd(t_shell *shell, char *value);
 char				**ft_copy_arr_without(int pos,
 	char **arr, char **new_arr, int len);
-int					echo_builtin(t_cmds *cmd, t_shell *shell);
+int					echo_builtin(t_cmds *cmd);
 void				print_line_up(t_config *config);
 void				print_line_down(t_config *config);
 void				display_cursor(t_config *config);

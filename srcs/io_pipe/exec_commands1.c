@@ -33,7 +33,7 @@ static t_cmds	*excute_loop_append(t_cmds *cmds)
 t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
-	int		*ior;
+	// int		*ior;
 	int		j;
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))

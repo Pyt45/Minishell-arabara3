@@ -38,7 +38,7 @@ int			check_n_flag(char *str, int *n)
 	return (is_flag);
 }
 
-int			echo_builtin(t_cmds *cmd, t_shell *shell)
+int			echo_builtin(t_cmds *cmd)
 {
 	int	i;
 	int	n;

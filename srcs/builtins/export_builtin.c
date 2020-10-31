@@ -69,7 +69,6 @@ static void		ft_print_export(char **arr)
 		while (arr[i] != NULL)
 		{
 			ft_putstr_fd("decalre -x ", 1);
-			// write_to_file("arr ", arr[i], 1);
 			ft_putstr_fd(ft_get_first(arr[i], '='), 1);
 			if (ft_strchr(arr[i], '='))
 			{

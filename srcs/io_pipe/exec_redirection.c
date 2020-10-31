@@ -62,7 +62,7 @@ void	do_redirect(t_cmds *cmd, int *fd)
 		dup2(fd[0], 0);
 }
 
-void	exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
+void	exec_io_redi(t_cmds *cmd, int ifd, int ofd)
 {
 	int		new_fd[2];
 

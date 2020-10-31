@@ -63,25 +63,21 @@ char    *parse_special_chars(char *str)
     int j;
 	int	quote;
 
-    i = 0;
+    i = -1;
 	quote = 0;
 	if (ft_strchr(str, '\\'))
 	{
-		while (str[i])
+		while (str[++i])
 		{
 			if (is_quote(str[i], 0))
 				quote = quote_activer(quote, str[i]);
 			if (str[i] == '\\' && !quote)
 			{
-				j = i;
-				while (str[j])
-				{
+				j = i - 1;
+				while (str[++j])
 					str[j] = str[j + 1];
-					j++;
-				}
 				str[j] = '\0';
 			}
-			i++;
 		}
 	}
     return (str);
@@ -103,17 +99,15 @@ int     is_quote(char c, int type)
     return (0);
 }
 
-char	**clear_args(char **args, t_shell *shell)
+char	**clear_args(char **args)
 {
 	int i;
 
 	i = 0;
 	while (args[i])
 	{
-		// args[i] = clear_quotes(args[i]);
 		if (ft_strchr(args[i] ,'\\'))
 			args[i] = parse_special_chars(args[i]);
-		// args[i] = replace_string(args[i], shell);
 		i++;
 	}
 	return (args);

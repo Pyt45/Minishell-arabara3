@@ -13,13 +13,8 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds->args[1])
 	{
 		while (cmds->args[1][++i])
-		{
 			if (ft_isalpha((int)(cmds->args[1][i])))
-			{
 				tstatus = 1;
-				break ;
-			}
-		}
 		status = ft_atoi(cmds->args[1]);
 	}
 	free_shell(shell);

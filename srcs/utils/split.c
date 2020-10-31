@@ -18,37 +18,40 @@ static int		count_strings(char *str)
 	int start;
 	int quote;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	quote = 0;
 	start = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (is_quote(str[i], 0))
 		{
 			quote = quote_activer(quote, str[i]);
-			if (start && !quote)
-			{
-				j++;
-				start = 0;
-			}
-			else if (quote && !start)
-				start = 1;
+			j = start && !quote ? j + 1 : j;
+			start = start && !quote ? 0 : 1;
+			// if (start && !quote)
+			// {
+			// 	j++;
+			// 	start = 0;
+			// }
+			// else if (quote && !start)
+			// 	start = 1;
 		}
 		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
 		{
-			if (start == 1)
-			{
-				j++;
-				start = 0;
-			}
+			// if (start == 1)
+			// {
+			// 	j++;
+			// 	start = 0;
+			// }
+			j = start == 1 ? j + 1 : j;
+			start = start == 1 ? 0 : start;
 		}
-		else if (str[i] != ' ')
-			start = 1;
-		i++;
+		// else if (str[i] != ' ')
+		// 	start = 1;
+		start = str[i] != ' ' ? 1 : 0;
 	}
-	if (start)
-		j++;
+	j = start ? j + 1 : j;
 	return (j);
 }
 

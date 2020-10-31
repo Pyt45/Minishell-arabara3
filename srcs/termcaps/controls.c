@@ -3,7 +3,6 @@
 void	paste_control(t_config *cfg)
 {
 	int		i;
-	char	tmp;
 	int		len;
 
 	len = cfg->control.len;
@@ -20,8 +19,6 @@ void	paste_control(t_config *cfg)
 
 void	cut_control(t_config *cfg)
 {
-	int i;
-
 	cfg->control.cut = 1;
 	cfg->control.len = cfg->c - cfg->control.start;
 	if (cfg->control.start > cfg->c)
