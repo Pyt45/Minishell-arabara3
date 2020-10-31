@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:01:52 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 20:01:05 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 09:06:56 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	get_cursor_pos(t_config *config)
 	config->o_y = ft_atoi(buff + i) - 1;
 	while (ft_isdigit(buff[i]))
 		i++;
-	config->o_x = ft_atoi(buff + i + 1) - 1;
+	config->o_x = ft_atoi(buff + i + 1);
 }
 
 void	reinit_cursor(t_config *config, int new_x, int new_y)
@@ -122,7 +122,7 @@ void	validate_cursor(t_config *config)
 	new_y = ft_atoi(buff + i) - 1;
 	while (ft_isdigit(buff[i]))
 		i++;
-	new_x = ft_atoi(buff + i + 1) - 1;
+	new_x = ft_atoi(buff + i + 1);
 	// write_to_file("Y: ", ft_itoa(config->y), 0);
 	// write_to_file(" | OY: ", ft_itoa(config->o_y), 0);
 	// write_to_file(" | NY: ", ft_itoa(new_y), 0);

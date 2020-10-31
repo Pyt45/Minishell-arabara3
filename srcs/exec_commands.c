@@ -153,21 +153,16 @@ int			open_output(t_cmds *cmd, int append)
 	return (fd);
 }
 
-void		append_arguments(t_cmds *tmp, t_cmds *cmd)
-{
-	
-}
-
 void		redirect_forward(t_cmds *tmp, t_cmds *cmd, int *fd)
 {
 	int i;
 
-	if (ft_arr_len(tmp->args) > 1 && !tmp->start)
+	if (ft_arr_len(tmp->next->args) > 1 && !tmp->next->start)
 	{
 		i = 1;
-		while (tmp->args[i])
+		while (tmp->next->args[i])
 		{
-			cmd->args = ft_get_arr(tmp->args[i], cmd->args);
+			cmd->args = ft_get_arr(tmp->next->args[i], cmd->args);
 			i++;
 		}
 	}
@@ -354,6 +349,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	}
 	else
 		ret = 0;
+	write_to_file("RET ", ft_itoa(ret), 1);
     return (ret);
 }
 
