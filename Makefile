@@ -6,14 +6,13 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/31 09:15:19 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/31 09:26:31 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = srcs/utils.c \
-		srcs/termcaps/config.c \
+SRC = srcs/termcaps/config.c \
 		srcs/termcaps/controls.c \
 		srcs/termcaps/cursor.c \
 		srcs/termcaps/display.c \
