@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
+#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/31 09:26:31 by zlayine          ###   ########.fr        #
+#    Updated: 2020/10/31 14:41:06 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ SRC = srcs/termcaps/config.c \
 		srcs/termcaps/handlers.c \
 		srcs/termcaps/history.c \
 		srcs/termcaps/utils.c \
-		srcs/exec_commands.c \
 		srcs/handle_path.c \
 		srcs/errors/errors.c \
 		srcs/builtins/cd_builtin.c \
@@ -36,7 +35,13 @@ SRC = srcs/termcaps/config.c \
 		srcs/parsing/main_parsing.c \
 		srcs/parsing/helpers.c \
 		srcs/parsing/var_manager.c \
-		srcs/parsing/utils.c
+		srcs/parsing/utils.c \
+		srcs/io_pipe/exec_commands1.c \
+		srcs/io_pipe/exec_help_func.c \
+		srcs/io_pipe/exec_redirection.c \
+		srcs/io_pipe/io_redirection.c \
+		srcs/io_pipe/run_child.c
+		# srcs/io_pipe/exec_commands.c
 		
 
 LIBFT = ./libft
