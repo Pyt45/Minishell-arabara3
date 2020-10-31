@@ -6,7 +6,7 @@
 #    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/30 09:10:54 by aaqlzim          ###   ########.fr        #
+#    Updated: 2020/10/31 08:58:08 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC = srcs/utils.c \
 		srcs/builtins/unset_builtin.c \
 		srcs/builtins/export_builtin.c \
 		srcs/builtins/builtins_utils.c \
+		srcs/builtins/exit_builtin.c \
 		srcs/utils/split.c \
 		srcs/utils/debug.c \
 		srcs/utils/free.c \
