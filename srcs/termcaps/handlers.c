@@ -30,6 +30,7 @@ void	handle_btns(t_config *config)
 
 void	handle_keys(t_config *config)
 {
+	// write_to_file("CURSOR ", ft_itoa(config->buff), 1);
 	if (config->buff == ARRW_LEFT)
 		move_cursor(config, 1);
 	else if (config->buff == ARRW_RIGHT)

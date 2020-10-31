@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 20:35:37 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/02/28 20:42:52 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/10/31 11:11:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strcat(char *dest, char *src)
 
 	i = 0;
 	len = ft_strlen(dest);
-	while (dest[i] != '\0')
+	while (src[i] != '\0')
 	{
 		dest[i + len] = src[i];
 		i++;

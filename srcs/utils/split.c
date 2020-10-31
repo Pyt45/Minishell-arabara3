@@ -11,7 +11,6 @@ char			**free_list_quote(char **split)
 	return (NULL);
 }
 
-
 static int		count_strings(char *str)
 {
 	int i;
@@ -96,6 +95,7 @@ char			**ft_split_quote(char const *s, char c)
 	if (!r)
 		return (0);
 	r = ft_make_splits(r, (char *)s, c);
+	ft_del((char *)s);
 	if (!r)
 		return (NULL);
 	r[len] = 0;

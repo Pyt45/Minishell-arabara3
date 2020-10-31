@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 10:54:07 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 09:27:15 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 09:38:27 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char			*ft_strcpy(char *dest, char *src);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_isdigit(int c);
-char			*ft_itoa(int n);
+char			*ft_itoa(long n);
 void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);

@@ -6,13 +6,13 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:06:13 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/26 11:54:56 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 09:38:07 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char    *ft_itoa(int n)
+char    *ft_itoa(long n)
 {
     char    *ptr;
     long    nbr;

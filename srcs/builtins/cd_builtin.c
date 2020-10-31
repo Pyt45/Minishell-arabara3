@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 14:39:29 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 11:37:53 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@ int		move_to_dir(char *path, t_shell *shell, int *is_print)
 	if (!path && *is_print)
 		return (0);
 	if (!path && (path = get_home_dir(shell)) != NULL && chdir(path))
+	{
+		ft_del(path - 5);
 		return (0);
+	}
 	if (chdir(path))
+	{
+		ft_del(path - 5);
 		return (0);
+	}
 	return (1);
 }
 
@@ -59,7 +65,9 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 		print_error(path , errno, 0);
 	}
 	shell->env = ft_setenv("OLDPWD", pwd, shell->env);
+	ft_del(pwd);
 	pwd = getcwd(NULL, 0);
 	shell->env = ft_setenv("PWD", pwd, shell->env);
+	ft_del(pwd);
 	return (!ret);
 }

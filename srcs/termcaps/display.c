@@ -40,6 +40,7 @@ void	print_line_down(t_config *config)
 		ft_putchars(config->str[i + c]);
 		i++;
 	}
+	display_cursor(config);
 }
 
 void	newline_config(t_config *config, int x)

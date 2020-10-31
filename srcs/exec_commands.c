@@ -349,7 +349,6 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 	}
 	else
 		ret = 0;
-	write_to_file("RET ", ft_itoa(ret), 1);
     return (ret);
 }
 

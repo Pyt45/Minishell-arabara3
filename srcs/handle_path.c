@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:35:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/29 19:38:23 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 11:21:49 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int		ft_getenv(char *name, char **env)
 	int		i;
 	int		len;
 
+	search = NULL;
 	len = ft_strlen(name) + 2;
 	if (!(search = (char *)malloc(sizeof(char) * len)))
 		return (-1);
@@ -50,6 +51,7 @@ char	*try_path(char *filename, char *dir)
 	ft_strcat(path, filename);
 	if (ft_access(path, 1) == 1)
 		return (path);
+	ft_del(path);
 	return (NULL);
 }
 
@@ -77,6 +79,7 @@ char	*get_bin_path(char *filename, char **env)
 			i++;
 		}
 	}
+	ft_free_arr(a_path);
 	return (filename);
 }
 

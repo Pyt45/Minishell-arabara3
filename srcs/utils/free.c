@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 17:02:02 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 11:27:26 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,31 @@
 
 void	free_shell(t_shell *shell)
 {
-	int i;
-	int debug = 0;
-	t_cmds *tmp;
-	// free all the data and re-init
+	int		i;
+	int		debug;
+	t_cmds	*tmp;
+
 	shell->line = NULL;
-	if (debug)
-		write_to_file("FREEING", "", 1);
 	if (shell->cmds && shell->cmds->cmd)
 	{
-		if (debug)
-			write_to_file(" 1 ", "", 0);
 		while(shell->cmds)
 		{
-			if (debug)
-				write_to_file(" 1x ", "", 0);
 			i = 0;
 			if (shell->cmds->args)
 			{
-				if (debug)
-					write_to_file(" 2 ", "", 0);
 				while (shell->cmds->args[i])
 				{
 					ft_del(shell->cmds->args[i]);
-					if (debug)
-						write_to_file(" 2x ", "", 0);
 					i++;
 				}
 				ft_del(shell->cmds->args);
-				if (debug)
-					write_to_file(" 3 ", "", 0);
 			}
 			ft_del(shell->cmds->cmd);
-			if (debug)
-				write_to_file(" 4 ", "", 0);
 			tmp = shell->cmds->next;
 			ft_del(shell->cmds);
-			if (debug)
-				write_to_file(" 5 ", "", 0);
 			shell->cmds = tmp;
 		}
 	}
-	if (debug)
-		write_to_file(" END ", "", 1);
 	shell->cmds = NULL;
 }
 
@@ -77,6 +59,7 @@ void	free_config(t_config *config)
 		free(history);
 		history = tmp;
 	}
+	free(history);
 	config->history = NULL;
 }
 

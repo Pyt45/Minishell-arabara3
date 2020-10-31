@@ -1,7 +1,6 @@
 
 #include "../includes/shell.h"
 
-
 // int     get_special_char(char c)
 // {
 //     if (c == 'n')

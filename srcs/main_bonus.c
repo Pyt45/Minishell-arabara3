@@ -7,6 +7,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	int     i;
 
 	tstatus = 0;
+	status = 0;
 	i = -1;
 	if (cmds->args[1])
     {
@@ -36,11 +37,9 @@ char	*clear_str(char *str)
 	int i;
 	int j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (str[i])
-	{
-		
+	while (str[++i])
 		if (str[i] == ' ')
 		{
 			j = i;
@@ -53,8 +52,6 @@ char	*clear_str(char *str)
 		}
 		else
 		 	break;
-		i++;
-	}
 	return (str);
 }
 
