@@ -36,6 +36,7 @@ int			command_line(t_shell *shell)
 	int		r;
 	int		status;
 
+	status = 1;
 	while (status)
 	{
 		if (shell->ret != 130)

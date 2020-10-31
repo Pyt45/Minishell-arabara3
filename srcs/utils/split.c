@@ -91,6 +91,7 @@ char			**ft_split_quote(char const *s, char c)
 		return (0);
 	len = count_strings((char *)s);
 	// write_to_file(" LEN ", ft_itoa(len), 1);
+	r = NULL;
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)
 		return (0);

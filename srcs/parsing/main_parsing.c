@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 17:14:13 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 14:34:05 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_shell     *parse_commands(t_shell *shell)
     pos = 0;
     i = -1;
 	quote = 0;
-	tmp = replace_string(shell->line, shell);
+	tmp = replace_string(ft_strdup(shell->line), shell);
     cmds = init_cmds(NULL);
     shell->cmds = cmds;
     while (tmp[++i] && pos != -1)
@@ -108,6 +108,7 @@ t_shell     *parse_commands(t_shell *shell)
     }
 	if (quote)
 		shell->parse_err = -1;
+	ft_del(tmp);
     return (shell);
 }
 

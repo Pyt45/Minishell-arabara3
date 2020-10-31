@@ -28,7 +28,7 @@ void	display_tmp_data(t_config *config)
 
 void	init_prompt(t_config *config, int err)
 {
-	if (config->history)
+	if (config && config->history)
 		config = add_history(config);
 	else
 		init_config_data(config);

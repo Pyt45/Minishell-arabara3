@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/29 19:40:47 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/10/31 14:34:46 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char    **get_args(char *str, int n)
 char	*replace_string(char *str, t_shell *shell)
 {
 	if (ft_strchr(str, '$'))
-	    str = parse_env_var(str, shell);
+	    return (parse_env_var(str, shell));
 	return (str);
 }
 
