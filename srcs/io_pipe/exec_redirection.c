@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/02 08:53:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:58:14 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	redirect_backward(t_cmds *tmp, int *fd)
 		close(fd[0]);
 	while (tmp->next->args[++i])
 		file = tmp->next->args[i];
-	fd[0] = open_input(file, 0, fd[0]);
+	fd[0] = open_input(file);
 }
 
 void	do_redirect(t_cmds *cmd, int *fd)

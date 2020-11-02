@@ -114,7 +114,7 @@ t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds);
 pid_t				run_child(t_shell *shell, t_cmds *cmds, int j);
 int					*pipe_fds(int num_pipe, int *fds);
 int					*create_fds(t_cmds *cmds, int j, int *fds);
-int					open_input(char *args, int append, int ifd);
+int					open_input(char *args);
 int					get_num_pipes(t_cmds *cmds);
 int					is_builtin(char *cmd);
 void				close_pipes(int *fds, int num_pipe);
