@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
+#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/31 14:41:06 by aaqlzim          ###   ########.fr        #
+#    Updated: 2020/11/02 08:55:21 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,15 +74,15 @@ $(LIBFT_LIB):
 $(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc -lncurses $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
+	@echo "SUCCESS!"
 
 $(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
 	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS! NO WALL WEXTRA WERROR ACTIVATED AND REMOVE DS STORE"
+	@echo "SUCCESS!"
 
 %.o: %.c
-	@gcc -c $< -o $@ -I $(INC)
+	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
 
 clean:
 	@make clean -C $(LIBFT)
@@ -95,5 +95,3 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
-
-# @gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)

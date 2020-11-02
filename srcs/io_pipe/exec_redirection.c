@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/10/31 11:14:56 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:53:09 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	do_redirect(t_cmds *cmd, int *fd)
 		dup2(fd[0], 0);
 }
 
-void	exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
+void	exec_io_redi(t_cmds *cmd, int ifd, int ofd)
 {
 	int		new_fd[2];
 

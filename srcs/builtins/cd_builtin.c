@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/02 08:27:00 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:49:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_dir(char *path)
 	return (path);
 }
 
-int		move_to_dir(char *path, t_shell *shell, int *is_print)
+int		move_to_dir(char *path, int *is_print)
 {
 	if (!path && *is_print)
 		return (0);
@@ -70,7 +70,7 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	is_print = 0;
 	pwd = getcwd(NULL, 0);
 	path = manage_path_cd(shell, cmds->args[1], &is_print);
-	ret = move_to_dir(path, shell, &is_print);
+	ret = move_to_dir(path, &is_print);
 	(ret && is_print) ? ft_putendl_fd(path, 1) : 0;
 	if (ret == 0)
 	{

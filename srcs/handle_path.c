@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:35:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 11:21:49 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:49:01 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,16 @@ char	*get_bin_path(char *filename, char **env)
 	char	*b_path;
 
 	path = NULL;
+	a_path = NULL;
 	i = 0;
 	if ((i = ft_getenv("PATH", env)) >= 0)
 		path = env[i] + 5;
-	if (path != NULL && (a_path = ft_split(path, ':')) != NULL)
+	if (path && (a_path = ft_split(path, ':')))
 	{
 		i = 0;
-		while (a_path[i] != NULL)
+		while (a_path[i])
 		{
-			if ((b_path = try_path(filename, a_path[i])) != NULL)
+			if ((b_path = try_path(filename, a_path[i])))
 			{
 				ft_free_arr(a_path);
 				return (b_path);

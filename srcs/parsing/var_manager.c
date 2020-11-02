@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:23:39 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/02 08:39:31 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:41:05 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char     *parse_env_var(char *str, t_shell *shell)
 			var = -1;
 		}
 		quotes_checker(&quote, str[i]);
-		if (quote != 1 && str[i] == '$')
+		if (quote != 1 && str[i] == '$' && str[i - 1] != '\\')
 			var = i;
 	}
     return (str);

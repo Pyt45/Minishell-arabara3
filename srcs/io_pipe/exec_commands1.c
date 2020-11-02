@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_commands1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/10/31 14:25:38 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:52:40 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static t_cmds	*excute_loop_append(t_cmds *cmds)
 t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
-	int		*ior;
 	int		j;
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))

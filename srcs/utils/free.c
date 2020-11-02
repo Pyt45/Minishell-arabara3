@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 11:27:26 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:50:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	free_shell(t_shell *shell)
 {
 	int		i;
-	int		debug;
 	t_cmds	*tmp;
 
 	shell->line = NULL;

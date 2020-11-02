@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:43:08 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/29 18:47:32 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:49:55 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			check_n_flag(char *str, int *n)
 	return (is_flag);
 }
 
-int			echo_builtin(t_cmds *cmd, t_shell *shell)
+int			echo_builtin(t_cmds *cmd)
 {
 	int	i;
 	int	n;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/10/31 14:26:08 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:54:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 	else if (!ft_strcmp(cmds->cmd, "unset"))
 		ret = unset_builtin(shell, cmds);
 	else if (!ft_strcmp(cmds->cmd, "echo"))
-		ret = echo_builtin(cmds, shell);
+		ret = echo_builtin(cmds);
 	else if (!cmds->prev || !cmds->prev->append)
 		exec_help(shell, cmds);
 	else
@@ -53,7 +53,7 @@ static void	child_help(t_shell *shell, t_cmds *cmds, int *ior)
 {
 	ior[0] = 0;
 	ior[1] = shell->fds[1];
-	exec_io_redi(cmds, ior[0], ior[1], shell);
+	exec_io_redi(cmds, ior[0], ior[1]);
 	if (cmds->args && exec_commands(shell, cmds))
 	{
 		print_error(cmds->cmd, errno, 1);
