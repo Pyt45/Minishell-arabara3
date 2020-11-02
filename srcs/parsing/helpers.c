@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 11:27:03 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:52:53 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,16 @@ int     is_quote(char c, int type)
     return (0);
 }
 
-char	**clear_args(char **args, t_shell *shell)
-{
-	int i;
+// char	**clear_args(char **args)
+// {
+// 	int i;
 
-	i = 0;
-	while (args[i])
-	{
-		// args[i] = clear_quotes(args[i]);
-		if (ft_strchr(args[i] ,'\\'))
-			args[i] = parse_special_chars(args[i]);
-		// args[i] = replace_string(args[i], shell);
-		i++;
-	}
-	return (args);
-}
+// 	i = 0;
+// 	while (args[i])
+// 	{
+// 		if (ft_strchr(args[i] ,'\\'))
+// 			args[i] = parse_special_chars(args[i]);
+// 		i++;
+// 	}
+// 	return (args);
+// }
