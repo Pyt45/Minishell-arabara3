@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/02 08:54:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 10:27:28 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 static void	child_help(t_shell *shell, t_cmds *cmds, int *ior)
 {
 	ior[0] = 0;
-	ior[1] = shell->fds[1];
+	ior[1] = shell->fds[0];
 	exec_io_redi(cmds, ior[0], ior[1]);
 	if (cmds->args && exec_commands(shell, cmds))
 	{

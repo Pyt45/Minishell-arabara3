@@ -51,7 +51,7 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 	{
 		if (dup2(fds[j + 1], 1) < 0)
 		{
-			perror("1.|dup2|");
+			perror("5.|dup2|");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -167,9 +167,7 @@ void		do_redirect(t_cmds *cmd, int *fd)
 	if (fd[0])
 		dup2(fd[0], 0);
 
-	// if (cmd->append == -2) // << not working now
-	// 	fd[0] = open_input(cmd->args[1], 1, fd[0]);
-	// else if (cmd->append > 0) // >> working
+	// if (cmd->append > 0) // >> working
 	// {
 	// 	tmp = cmd;
 	// 	while (tmp->append > 0)
@@ -181,9 +179,7 @@ void		do_redirect(t_cmds *cmd, int *fd)
 	// 	}
 	// }
 	// else if (cmd->append == -1)
-	// {
 	// 	fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
-	// }
 }
 
 
@@ -216,7 +212,7 @@ void		do_redirect(t_cmds *cmd, int *fd)
 // 		fd[0] = open_input(cmd->next->args[0], 0, fd[0]);
 // }
 
-void		exec_io_redi(t_cmds *cmd, int ifd, int ofd, t_shell *shell)
+void		exec_io_redi(t_cmds *cmd, int ifd, int ofd)
 {
 	int		new_fd[2];
 
@@ -320,7 +316,7 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
     else if (!ft_strcmp(cmds->cmd, "unset"))
         ret = unset_builtin(shell, cmds);
     else if (!ft_strcmp(cmds->cmd, "echo"))
-    	ret = echo_builtin(cmds, shell);
+    	ret = echo_builtin(cmds);
 	else if(!cmds->prev || cmds->prev->append == 0)
 	{
 		if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
@@ -336,8 +332,8 @@ int     exec_commands(t_shell *shell, t_cmds *cmds)
 static void	child_help(t_shell *shell, t_cmds *cmds, int *ior)
 {
 	ior[0] = 0;
-	ior[1] = shell->fds[1];
-	exec_io_redi(cmds, ior[0], ior[1], shell);
+	ior[1] = shell->fds[2];
+	exec_io_redi(cmds, ior[0], ior[1]);
 	if (cmds->args && exec_commands(shell, cmds))
 	{
 		print_error(cmds->cmd, errno, 1);
@@ -351,7 +347,6 @@ static void	child_help(t_shell *shell, t_cmds *cmds, int *ior)
 static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 {
 	pid_t	pid;
-	int		in;
 	int		ior[2];
 	ior[1] = 0;
 
@@ -360,13 +355,14 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	{
 		
 		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
+		write_to_file("J ", ft_itoa(j), 1);
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{
 			child_help(shell, cmds, ior);
 			// ior[0] = 0;
 			// ior[1] = shell->fds[1];
-			// exec_io_redi(cmds, ior[0], ior[1], shell);
+			// exec_io_redi(cmds, ior[0], ior[1]);
 			// if (cmds->args && exec_commands(shell, cmds))
 			// {
 			// 	print_error(cmds->cmd, errno, 1);
@@ -414,8 +410,6 @@ static t_cmds *excute_codition(t_cmds *cmds)
 t_cmds     *excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
-	int 	status = 0;
-	int		*ior;
 	int		j = 0;
 	
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
