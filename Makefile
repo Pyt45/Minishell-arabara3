@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/02 10:38:39 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/06 17:09:06 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,6 @@ SRC = srcs/termcaps/config.c \
 		srcs/io_pipe/exec_redirection.c \
 		srcs/io_pipe/io_redirection.c \
 		srcs/io_pipe/run_child.c
-		# srcs/io_pipe/exec_commands.c
 		
 
 LIBFT = ./libft
