@@ -23,6 +23,8 @@ int		*pipe_fds(int num_pipe, int *fds)
 {
 	int i;
 
+	if (!num_pipe)
+		return (NULL);
 	i = 0;
 	fds = malloc(sizeof(int) * 2 * num_pipe);
 	while (i < num_pipe)
@@ -353,9 +355,8 @@ static pid_t	run_child(t_shell *shell, t_cmds *cmds, int j)
 	pid = fork();
 	if (pid == 0)
 	{
-		
 		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
-		write_to_file("J ", ft_itoa(j), 1);
+		// write_to_file("J ", ft_itoa(j), 1);
 		close_pipes(shell->fds, shell->num_pipe);
 		if (cmds->append != 0 || (cmds->prev && cmds->prev->append))
 		{

@@ -18,6 +18,14 @@
 # include <term.h>
 # include "../libft/libft.h"
 
+typedef struct		s_exec
+{
+	int		tmpin;
+	int		tmpout;
+	int		fdin;
+	int		fdout;
+}					t_exec;
+
 typedef struct		s_cmds
 {
 	int				start;    //start command
@@ -68,7 +76,7 @@ typedef struct		s_shell
 	int				parse_err;
 	struct s_cmds	*cmds;
 	struct s_config	config;
-	int				*fds;
+	struct s_exec	exec;
 	int				num_pipe;
 	int				num_sp;
 }					t_shell;
@@ -111,7 +119,7 @@ char				*get_bin_path(char *filename, char **env);
 t_shell				*control_command(t_shell *shell);
 t_shell				*get_single_command(t_shell *shell);
 t_cmds				*excute_command_by_order(t_shell *shell, t_cmds *cmds);
-pid_t				run_child(t_shell *shell, t_cmds *cmds, int j);
+pid_t				run_child(t_shell *shell, t_cmds *cmds);
 int					*pipe_fds(int num_pipe, int *fds);
 int					*create_fds(t_cmds *cmds, int j, int *fds);
 int					open_input(char *args);
@@ -120,10 +128,10 @@ int					is_builtin(char *cmd);
 void				close_pipes(int *fds, int num_pipe);
 int					get_status_number(int status);
 int					wait_child(t_shell *shell, pid_t pid, int st);
-void				redirect_forward(t_cmds *tmp, t_cmds *cmd, int *fd);
-void				redirect_backward(t_cmds *tmp, int *fd);
+int					redirect_forward(t_cmds *tmp, t_cmds *cmd);
+int					redirect_backward(t_cmds *tmp);
 void				do_redirect(t_cmds *cmd, int *fd);
-void				exec_io_redi(t_cmds *cmd, int ifd, int ofd);
+void				exec_io_redi(t_shell *shell, t_cmds *cmd);
 int					open_output(t_cmds *cmd, int append);
 int					exec_commands(t_shell *shell, t_cmds *cmds);
 int					run_commands(t_shell *shell);

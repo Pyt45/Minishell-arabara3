@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/06 17:08:58 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/06 20:30:37 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,36 +49,38 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 	return (ret);
 }
 
-static void	child_help(t_shell *shell, t_cmds *cmds, int *ior)
+static void	child_help(t_shell *shell, t_cmds *cmds)
 {
-	ior[0] = 0;
-	ior[1] = shell->fds[0];
-	exec_io_redi(cmds, ior[0], ior[1]);
-	if (cmds->args && exec_commands(shell, cmds))
+	if (cmds->append >= 0)
 	{
-		print_error(cmds->cmd, errno, 1);
-		exit(1);
+		dup2(shell->exec.fdin, 0);
+		close(shell->exec.fdin);
 	}
-	if (ior[1] != shell->fds[1])
-		close(shell->fds[1]);
-	ior[1] = 1;
+	write_to_file("CMD ", cmds->cmd, 1);
+	if (cmds->append || (cmds->prev && cmds->prev->append))
+		exec_io_redi(shell, cmds);
+	if (cmds->end)
+		shell->exec.fdout = dup(shell->exec.tmpout);
+	else if (cmds->next && !cmds->append)
+	{
+		int	fdpipe[2];
+		pipe(fdpipe);
+		shell->exec.fdout = fdpipe[1];
+		shell->exec.fdin = fdpipe[0];
+	}
+	dup2(shell->exec.fdout, 1);
+	close(shell->exec.fdout);
 }
 
-pid_t		run_child(t_shell *shell, t_cmds *cmds, int j)
+pid_t		run_child(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
-	int		ior[2];
-
-	ior[1] = 0;
+	
+	child_help(shell, cmds);
 	pid = fork();
 	if (pid == 0)
 	{
-		(shell->num_pipe) ? shell->fds = create_fds(cmds, j, shell->fds) : 0;
-		close_pipes(shell->fds, shell->num_pipe);
-		if (cmds->append || (cmds->prev && cmds->prev->append))
-			child_help(shell, cmds, ior);
-		else if (cmds->args && exec_commands(shell, cmds) &&
-		!is_builtin(cmds->cmd))
+		if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
 		{
 			print_error(cmds->cmd, errno, 1);
 			exit(1);
