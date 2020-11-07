@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 08:59:38 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/07 11:01:48 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 	{
 		shell->exec.tmpin = dup(0);
 		shell->exec.tmpout = dup(1);
-		write_to_file("TMPIN ", ft_itoa(shell->exec.tmpin), 1);
-		write_to_file("TMPOUT ", ft_itoa(shell->exec.tmpout), 1);
 		if (cmds->append >= 0)
 			shell->exec.fdin = dup(shell->exec.tmpin);
 		while (cmds)
@@ -60,10 +58,7 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		excute_cmd_help(shell, cmds, pid);
 	}
 	else if (cmds->cmd)
-	{
-		write_to_file("OUR_CMD ", cmds->cmd, 1);
 		cmds->ret = exec_commands(shell, cmds);
-	}
 	return (cmds);
 }
 

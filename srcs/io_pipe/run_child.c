@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 08:53:00 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/07 11:32:11 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,18 @@ static void	child_help(t_shell *shell, t_cmds *cmds)
 	if (cmds->append >= 0)
 	{
 		dup2(shell->exec.fdin, 0);
+		//write_to_file("fdin1 ", ft_itoa(shell->exec.fdin), 1);
+		//write_to_file("fdin2 ", ft_itoa(shell->exec.fdin), 1);
 		close(shell->exec.fdin);
 	}
-	if (cmds->append || (cmds->prev && cmds->prev->append))
+	if (cmds->append/*  || (cmds->prev && cmds->prev->append) */)
+	{
 		exec_io_redi(shell, cmds);
-	if (cmds->end)
+		// cmds = cmds->next;
+		// write_to_file("CMD ", cmds->next->next->cmd, 1);
+	}
+	// if (cmds->end || cmds->append < 0)
+	else if (cmds->end)
 		shell->exec.fdout = dup(shell->exec.tmpout);
 	else if (cmds->next && !cmds->append)
 	{
