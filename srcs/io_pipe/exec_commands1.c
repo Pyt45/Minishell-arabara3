@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 09:58:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 11:27:12 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	int		status;
 
 	status = 0;
-	// close_pipes(shell, shell->num_pipe);
 	status = wait_child(shell, pid, status);
 	cmds->ret = get_status_number(status);
-	// free(shell->fds);
 }
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
@@ -46,7 +44,7 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 				break ;
 			pid = run_child(shell, cmds);
 			// cmds = excute_loop_append(cmds);
-			if (cmds->end)
+			if (cmds->end || !cmds->next)
 				break ;
 			else
 				cmds = cmds->next;
