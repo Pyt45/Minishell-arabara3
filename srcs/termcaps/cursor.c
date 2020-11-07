@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:01:52 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 10:53:31 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 10:21:36 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	reinit_cursor(t_config *config, int new_x, int new_y)
 	move_cursor(config, 3);
 }
 
+// void	validate_cursor(t_config *config, t_shell *shell)
 void	validate_cursor(t_config *config)
 {
 	int		new_y;
@@ -134,20 +135,24 @@ void	validate_cursor(t_config *config)
 	// write_to_file(" | LEN: ", ft_itoa(config->len), 1);
 	// if ()
 	// 	write_to_file("REINIT", "", 1);
-	if ((new_y == config->y + 1 && config->o_x == new_x &&
-		config->c != 0) || (new_y == config->y && config->o_x ==
-		new_x && config->c != 0 && (config->x > new_x)))
-		reinit_cursor(config, new_x, new_y);
+	
+	// if (new_y > config->y || (new_y == config->y + 1 && config->o_x == new_x &&
+	// 	config->c != 0) || (new_y == config->y && config->o_x ==
+	// 	new_x && config->c != 0 && (config->x > new_x)))
+	// 	reinit_cursor(config, new_x, new_y);
+	
 	// if (new_y > config->y)
 	// 	write_to_file("CASE 1: ", ft_itoa(new_y > config->y), 1);
 	// if (new_y == config->y && config->c != 0 && new_x == config->o_x && (config->len < config->width - 1 || config->len > config->width))
 	// 	write_to_file("CASE 2: ", ft_itoa(new_y == config->y && config->c != 0 && new_x == config->o_x && new_x == config->x && (config->len < config->width - 1 || config->len > config->width)), 1);
 	// if (config->o_x == new_x && config->len == config->width)
 	// 	write_to_file("CASE 3: ", ft_itoa(config->o_x == new_x && config->len == config->width), 1);
-	// if (new_y > config->y || (new_y == config->y && config->c && new_x ==
-	// 	config->o_x && (config->len < config->width - 1 ||
-	// 	config->len > config->width)) || (config->o_x ==
-	// 	new_x && config->len == config->width))
-	// 	
-	
+	if (new_y > config->y || (new_y == config->y && new_x ==
+		config->o_x && (config->len < config->width - 1 ||
+		config->len > config->width)) || (config->o_x ==
+		new_x && config->len == config->width))
+	{
+			// shell->ret = 1;
+		reinit_cursor(config, new_x, new_y);
+	}
 }

@@ -6,7 +6,7 @@
 #    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/04 09:15:16 by aaqlzim          ###   ########.fr        #
+#    Updated: 2020/11/04 09:19:47 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ $(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@echo "SUCCESS!"
 
 %.o: %.c
-	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
+	@gcc -c $< -o $@ -I $(INC)
 
 clean:
 	@make clean -C $(LIBFT)
@@ -94,3 +94,5 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
+
+	# @gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
