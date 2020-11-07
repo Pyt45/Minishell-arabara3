@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/06 20:23:23 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 09:58:23 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,7 @@ int		redirect_forward(t_cmds *tmp, t_cmds *cmd)
 			i++;
 		}
 	}
-	// if (fd[1])
-	// 	close(fd[1]);
 	return open_output(tmp, tmp->append - 1);
-	// dup2(fd[1], 1);
-	// close(fd[1]);
 }
 
 int		redirect_backward(t_cmds *tmp)
@@ -38,13 +34,9 @@ int		redirect_backward(t_cmds *tmp)
 	char	*file;
 
 	i = -1;
-	// if (fd[0])
-	// 	close(fd[0]);
 	while (tmp->next->args[++i])
 		file = tmp->next->args[i];
 	return open_input(file);
-	// dup2(fd[0], 0);
-	// close(fd[0]);
 }
 
 void	exec_io_redi(t_shell *shell, t_cmds *cmd)
@@ -55,14 +47,11 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 	while (tmp->append)
 	{
 		if (tmp->append > 0)
-		{
 			shell->exec.fdout = redirect_forward(tmp, cmd);
-			dup2(shell->exec.fdout, 1);
-			close(shell->exec.fdout);
-		}
 		else
 		{
 			shell->exec.fdin = redirect_backward(tmp);
+			// shell->exec.fdout = dup(shell->exec.tmpout);
 			dup2(shell->exec.fdin, 0);
 			close(shell->exec.fdin);
 		}

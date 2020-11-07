@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/06 20:30:37 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 10:03:11 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ static void	child_help(t_shell *shell, t_cmds *cmds)
 		dup2(shell->exec.fdin, 0);
 		close(shell->exec.fdin);
 	}
-	write_to_file("CMD ", cmds->cmd, 1);
 	if (cmds->append || (cmds->prev && cmds->prev->append))
 		exec_io_redi(shell, cmds);
+	// if (cmds->end || cmds->append < 0)
 	if (cmds->end)
 		shell->exec.fdout = dup(shell->exec.tmpout);
 	else if (cmds->next && !cmds->append)
