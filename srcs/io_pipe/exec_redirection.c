@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 11:32:53 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/07 11:42:56 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,18 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 	t_cmds	*tmp;
 
 	tmp = cmd;
-	while (tmp->append)
+	while (tmp && tmp->append)
 	{
 		if (tmp->append > 0)
 		{
 			shell->exec.fdout = redirect_forward(tmp, cmd);
-			dup2(shell->exec.fdout, 1);
-			close(shell->exec.fdout);
+			// dup2(shell->exec.fdout, 1);
+			// close(shell->exec.fdout);
 		}
 		else
 		{
+			shell->exec.fdout = dup(shell->exec.tmpout);
 			shell->exec.fdin = redirect_backward(tmp);
-			// shell->exec.fdout = dup(shell->exec.tmpout);
 			dup2(shell->exec.fdin, 0);
 			close(shell->exec.fdin);
 		}
