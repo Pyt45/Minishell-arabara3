@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 11:28:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 11:55:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,31 @@ static void	child_help(t_shell *shell, t_cmds *cmds)
 	}
 	// if (cmds->append || (cmds->prev && cmds->prev->append))
 	if (cmds->append)
+	{
 		exec_io_redi(shell, cmds);
+		// for cat < out | echo a
+		if (cmds->append < 0)
+			cmds->next = cmds->next->next;
+		if (cmds->append < 0 && cmds->next)
+		{
+			int	fdpipe[2];
+			pipe(fdpipe);
+			shell->exec.fdout = fdpipe[1];
+			shell->exec.fdin = fdpipe[0];
+		}
+	}
 	else if (cmds->end)
 		shell->exec.fdout = dup(shell->exec.tmpout);
 	else if (cmds->next)
 	{
+		write_to_file("PIPE ", cmds->cmd, 1);
 		int	fdpipe[2];
 		pipe(fdpipe);
 		shell->exec.fdout = fdpipe[1];
 		shell->exec.fdin = fdpipe[0];
 	}
+	write_to_file("IN ", ft_itoa(shell->exec.fdin), 1);
+	write_to_file("OUT ", ft_itoa(shell->exec.fdout), 1);
 	dup2(shell->exec.fdout, 1);
 	close(shell->exec.fdout);
 }
