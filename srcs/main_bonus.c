@@ -98,15 +98,16 @@ void	sig_handle_ctrl_c(int sig)
 
 int     main(int argc, char **argv, char **envp)
 {
-	t_shell shell;
+	t_shell *shell;
 
+	shell = malloc(sizeof(t_shell));
 	erase_file_debug();
 	signal(SIGINT, sig_handle_ctrl_c);
 	if (argc && argv)
 	{
-		init_shell(&shell);
-		shell.env = ft_arrdup(envp);
-		command_line(&shell);
+		init_shell(shell);
+		shell->env = ft_arrdup(envp);
+		command_line(shell);
 	}
     return (0);
 }

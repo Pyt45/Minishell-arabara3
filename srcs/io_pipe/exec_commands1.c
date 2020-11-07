@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/04 09:17:47 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/07 08:59:38 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	int		status;
 
 	status = 0;
-	close_pipes(shell->fds, shell->num_pipe);
+	// close_pipes(shell, shell->num_pipe);
 	status = wait_child(shell, pid, status);
 	cmds->ret = get_status_number(status);
-	free(shell->fds);
+	// free(shell->fds);
 }
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
@@ -33,28 +33,37 @@ static t_cmds	*excute_loop_append(t_cmds *cmds)
 t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
-	int		j;
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
-		shell->fds = pipe_fds(shell->num_pipe, shell->fds);
-		j = 0;
+		shell->exec.tmpin = dup(0);
+		shell->exec.tmpout = dup(1);
+		write_to_file("TMPIN ", ft_itoa(shell->exec.tmpin), 1);
+		write_to_file("TMPOUT ", ft_itoa(shell->exec.tmpout), 1);
+		if (cmds->append >= 0)
+			shell->exec.fdin = dup(shell->exec.tmpin);
 		while (cmds)
 		{
 			if (cmds->end && cmds->prev && cmds->prev->append)
 				break ;
-			pid = run_child(shell, cmds, j);
-			cmds = excute_loop_append(cmds);
+			pid = run_child(shell, cmds);
+			// cmds = excute_loop_append(cmds);
 			if (cmds->end)
 				break ;
 			else
 				cmds = cmds->next;
-			j += 2;
 		}
+		dup2(shell->exec.tmpin, 0);
+		dup2(shell->exec.tmpout, 1);
+		close(shell->exec.tmpin);
+		close(shell->exec.tmpout);
 		excute_cmd_help(shell, cmds, pid);
 	}
 	else if (cmds->cmd)
+	{
+		write_to_file("OUR_CMD ", cmds->cmd, 1);
 		cmds->ret = exec_commands(shell, cmds);
+	}
 	return (cmds);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/04 09:33:22 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/07 08:38:16 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 {
 	if (j != 0 && !cmds->prev->append)
 	{
-		write_to_file("1J ", ft_itoa(j), 1);
+		// write_to_file("1J ", ft_itoa(j), 1);
+		// dprintf(2, "1J %d | ", j);
 		if (dup2(fds[j - 2], 0) < 0)
 		{
 			print_error("Dup2", 2, 0);
@@ -46,6 +47,7 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 	}
 	if (cmds->next && !cmds->append)
 	{
+		// dprintf(2, "J %d | ", j);
 		// write_to_file("J ", ft_itoa(j), 1);
 		if (dup2(fds[j + 1], 1) < 0)
 		{
