@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 11:27:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 12:10:52 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			if (cmds->end && cmds->prev && cmds->prev->append)
 				break ;
 			pid = run_child(shell, cmds);
-			// cmds = excute_loop_append(cmds);
+			cmds = excute_loop_append(cmds);
 			if (cmds->end || !cmds->next)
 				break ;
 			else
