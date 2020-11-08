@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/10/31 14:27:10 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/06 17:26:44 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,20 @@ int		*pipe_fds(int num_pipe, int *fds)
 
 int		*create_fds(t_cmds *cmds, int j, int *fds)
 {
-	if (j != 0)
+	if (j != 0 && !cmds->prev->append)
 	{
+		// write_to_file("1J ", ft_itoa(j), 1);
+		// dprintf(2, "1J %d | ", j);
 		if (dup2(fds[j - 2], 0) < 0)
 		{
 			print_error("Dup2", 2, 0);
 			exit(1);
 		}
 	}
-	if (cmds->next)
+	if (cmds->next && !cmds->append)
 	{
+		// dprintf(2, "J %d | ", j);
+		// write_to_file("J ", ft_itoa(j), 1);
 		if (dup2(fds[j + 1], 1) < 0)
 		{
 			print_error("Dup2", 2, 0);
@@ -54,40 +58,16 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 	return (fds);
 }
 
-void	read_from_stdin(int fd)
-{
-	char	buff[1024];
-	int		r;
-
-	while ((r = read(0, buff, 1024)))
-	{
-		if (write(fd, buff, r) < r)
-			return ;
-	}
-}
-
-int		open_input(char *args, int append, int ifd)
+int		open_input(char *args)
 {
 	int		fd;
-	int		pipefd[2];
 
-	if (append)
+	if ((fd = open(args, O_RDONLY)) < 0)
 	{
-		pipe(pipefd);
-		read_from_stdin(pipefd[1]);
-		close(pipefd[1]);
-		ifd = pipefd[0];
+		print_error(args, errno, 0);
+		exit(1);
 	}
-	else
-	{
-		if ((fd = open(args, O_RDONLY)) < 0)
-		{
-			print_error(args, errno, 0);
-			exit(1);
-		}
-		ifd = fd;
-	}
-	return (ifd);
+	return (fd);
 }
 
 int		open_output(t_cmds *cmd, int append)

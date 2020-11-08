@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:01:04 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 09:26:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:51:41 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	**ft_get_arr(char *value, char **arr)
 	int	 len;
 
 	i = -1;
+	new_arr = NULL;
 	len = ft_arr_len(arr) + 2;
 	if (!(new_arr = (char **)malloc(sizeof(char*) * len)))
 		return (NULL);

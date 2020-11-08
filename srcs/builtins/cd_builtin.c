@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 12:11:55 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/02 08:49:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int		move_to_dir(char *path, int *is_print)
 	if (!path && *is_print)
 		return (0);
 	if (chdir(get_dir(path)))
+	{
+		ft_del(path);
 		return (0);
+	}
 	return (1);
 }
 
@@ -72,8 +75,9 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	if (ret == 0)
 	{
 		if (is_print)
-			path = "OLDPWD not set";
-		print_error(path , errno, 0);
+			print_error("OLDPWD not set" , errno, 0);
+		else
+			print_error(cmds->args[1] , errno, 0);
 		ft_del(pwd);
 		return (!ret);
 	}
