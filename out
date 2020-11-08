@@ -6,7 +6,6 @@ minishell
 minishell.a
 minishell_bonus.a
 out
-out1
 run.sh
 srcs
 txt

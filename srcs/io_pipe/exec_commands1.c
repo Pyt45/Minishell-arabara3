@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_commands1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 12:10:52 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 11:48:54 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,21 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 
 	status = 0;
 	status = wait_child(shell, pid, status);
-	cmds->ret = get_status_number(status);
+	if (WIFEXITED(status))
+		cmds->ret = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		cmds->ret = WTERMSIG(status) + 128;
+	//cmds->ret = get_status_number(status);
 }
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
-	while (cmds->append)
+	while (cmds && cmds->append > 0)
+	{
+		if (!cmds->next)
+			break;
 		cmds = cmds->next;
+	}
 	return (cmds);
 }
 
@@ -40,11 +48,12 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			shell->exec.fdin = dup(shell->exec.tmpin);
 		while (cmds)
 		{
-			if (cmds->end && cmds->prev && cmds->prev->append)
-				break ;
+			// if (cmds->end && cmds->prev && cmds->prev->append)
+			// 	break ;	
+			// write_to_file("CMD ", cmds->cmd, 1);
 			pid = run_child(shell, cmds);
 			cmds = excute_loop_append(cmds);
-			if (cmds->end || !cmds->next)
+			if (cmds && (cmds->end || !cmds->next))
 				break ;
 			else
 				cmds = cmds->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 12:11:44 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/07 12:08:31 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,39 +51,36 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 
 static void	child_help(t_shell *shell, t_cmds *cmds)
 {
+	int	fdpipe[2];
+
 	if (cmds->append >= 0)
 	{
-		// shell->exec.fdin = dup(shell->exec.tmpin);
 		dup2(shell->exec.fdin, 0);
 		close(shell->exec.fdin);
 	}
-	// if (cmds->append || (cmds->prev && cmds->prev->append))
 	if (cmds->append)
 	{
 		exec_io_redi(shell, cmds);
-		// for cat < out | echo a
 		if (cmds->append < 0)
 			cmds->next = cmds->next->next;
-		if (cmds->append < 0 && cmds->next)
-		{
-			int	fdpipe[2];
-			pipe(fdpipe);
-			shell->exec.fdout = fdpipe[1];
-			shell->exec.fdin = fdpipe[0];
-		}
 	}
-	else if (cmds->end)
+	// write_to_file("FDi b ", ft_itoa(shell->exec.fdin), 1);
+	// write_to_file("FDo b ", ft_itoa(shell->exec.fdout), 1);
+	if (cmds->end)
 		shell->exec.fdout = dup(shell->exec.tmpout);
-	else if (cmds->next)
+	else if (cmds->next && (cmds->append < 0 || !cmds->append))
 	{
-		write_to_file("PIPE ", cmds->cmd, 1);
-		int	fdpipe[2];
 		pipe(fdpipe);
+		if (cmds->next->append < 0)
+			close(fdpipe[0]);
+		else
+			shell->exec.fdin = fdpipe[0];
 		shell->exec.fdout = fdpipe[1];
-		shell->exec.fdin = fdpipe[0];
 	}
-	// write_to_file("IN ", ft_itoa(shell->exec.fdin), 1);
-	// write_to_file("OUT ", ft_itoa(shell->exec.fdout), 1);
+	if (!shell->exec.fdout)
+		shell->exec.fdout = dup(shell->exec.tmpout);
+	write_to_file("FDi a ", ft_itoa(shell->exec.fdin), 1);
+	write_to_file("FDo a ", ft_itoa(shell->exec.fdout), 1);
 	dup2(shell->exec.fdout, 1);
 	close(shell->exec.fdout);
 }
