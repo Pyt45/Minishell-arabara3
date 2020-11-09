@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 14:34:46 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:24:12 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char    *get_cmd(char *str, int n)
 	{
 		if (is_quote(str[i], 0))
 			quote = quote_activer(quote, str[i]);
-		if ((str[i] == ' ' || str[i] == ';' || str[i] == '|') && !quote)
+		if ((str[i] == ' ' || str[i] == ';' || str[i] == '|' || str[i] == '>' || str[i] == '<') && !quote)
 			break;
 		i++;
 	}
@@ -106,6 +106,4 @@ void	manage_redirections(t_cmds **cmds, int *i, char *tmp)
         (*cmds)->append--;
         (*i)++;
     }
-	// if ((*cmds)->append != 0)
-	// 	(*cmds)->r = 1;
 }

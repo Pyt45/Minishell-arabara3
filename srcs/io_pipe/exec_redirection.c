@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 12:07:40 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:26:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 		{
 			
 			shell->exec.fdout = redirect_forward(tmp, cmd);
-			write_to_file("FDi ", ft_itoa(shell->exec.fdin), 1);
-			write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
+			// write_to_file("FDi ", ft_itoa(shell->exec.fdin), 1);
+			// write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
 		}
 		else
 		{
@@ -70,8 +70,8 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 			// 	shell->exec.fdout = 0;
 			// }
 			// shell->exec.fdout = dup(shell->exec.tmpout);
-			write_to_file("FDi ", ft_itoa(shell->exec.fdin), 1);
-			write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
+			// write_to_file("FDi ", ft_itoa(shell->exec.fdin), 1);
+			// write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
 		}
 		tmp = tmp->next;
 	}

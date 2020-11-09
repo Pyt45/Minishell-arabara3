@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
+#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/07 08:38:57 by aaqlzim          ###   ########.fr        #
+#    Updated: 2020/11/09 11:25:37 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC = srcs/termcaps/config.c \
 		srcs/parsing/helpers.c \
 		srcs/parsing/var_manager.c \
 		srcs/parsing/utils.c \
-		srcs/io_pipe/exec_commands1.c \
+		srcs/io_pipe/exec_commands.c \
 		srcs/io_pipe/exec_help_func.c \
 		srcs/io_pipe/exec_redirection.c \
 		srcs/io_pipe/io_redirection.c \

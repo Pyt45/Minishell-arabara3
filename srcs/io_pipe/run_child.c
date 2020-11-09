@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 12:08:31 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:26:24 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ static void	child_help(t_shell *shell, t_cmds *cmds)
 	}
 	if (!shell->exec.fdout)
 		shell->exec.fdout = dup(shell->exec.tmpout);
-	write_to_file("FDi a ", ft_itoa(shell->exec.fdin), 1);
-	write_to_file("FDo a ", ft_itoa(shell->exec.fdout), 1);
+	// write_to_file("FDi a ", ft_itoa(shell->exec.fdin), 1);
+	// write_to_file("FDo a ", ft_itoa(shell->exec.fdout), 1);
 	dup2(shell->exec.fdout, 1);
 	close(shell->exec.fdout);
 }
