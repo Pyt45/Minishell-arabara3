@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 13:25:26 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/09 14:11:27 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	child_help(t_shell *shell, t_cmds *cmds)
 {
 	int	fdpipe[2];
 
-	if (cmds->append >= 0 || (cmds->prev && cmds->prev->p))
+	if (cmds->append >= 0)
 	{
 		write_to_file("CMD ", cmds->cmd, 1);
 		dup2(shell->exec.fdin, 0);
@@ -72,6 +72,7 @@ static void	child_help(t_shell *shell, t_cmds *cmds)
 			{
 				cmds->p = 1;
 				cmds->next->skip = 1;
+				cmds->next->p = 0;
 			}
 			// cmds->next = cmds->next->next;
 			// this does not work if the next doesnt exist (the free must be done before)
@@ -101,25 +102,22 @@ pid_t		run_child(t_shell *shell, t_cmds *cmds)
 	pid_t	pid;
 	
 	child_help(shell, cmds);
-	pid = 0;
-	if (!cmds->skip)
+	pid = fork();
+	if (pid == 0)
 	{
-		pid = fork();
-		if (pid == 0)
+		if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
 		{
-			if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
-			{
-				// print_error(cmds->cmd, errno, 1);
-				exit_error(cmds->cmd, 127, shell);
-				// exit(1);
-			}
-			exit(0);
+			// print_error(cmds->cmd, errno, 1);
+			exit_error(cmds->cmd, 127, shell);
+			// exit(1);
 		}
-		else if (pid < 0)
-		{
-			print_error("fork", errno, 0);
-			exit(1);
-		}
+		exit(0);
 	}
+	else if (pid < 0)
+	{
+		print_error("fork", errno, 0);
+		exit(1);
+	}
+	write_to_file("PID ", ft_itoa(pid), 1);
 	return (pid);
 }

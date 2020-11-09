@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 13:20:24 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/09 14:12:09 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	int		status;
 
 	status = 0;
+	write_to_file("WAIT ", ft_itoa(pid), 1);
 	status = wait_child(shell, pid, status);
 	if (WIFEXITED(status))
 		cmds->ret = WEXITSTATUS(status);
@@ -50,12 +51,12 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		{
 			// if (cmds->end && cmds->prev && cmds->prev->append)
 			// 	break ;	
-			// if (!cmds->skip)
-			// {
-			// write_to_file("CMD ", cmds->cmd, 1);
-			pid = run_child(shell, cmds);
-			cmds = excute_loop_append(cmds);
-			// }
+			if (!cmds->skip)
+			{
+				// write_to_file("CMD ", cmds->cmd, 1);
+				pid = run_child(shell, cmds);
+				cmds = excute_loop_append(cmds);
+			}
 			// if (cmds && (cmds->end || !cmds->next))
 			if (cmds->end)
 				break ;
