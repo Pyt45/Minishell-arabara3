@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_commands1.c                                   :+:      :+:    :+:   */
+/*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 11:48:54 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/09 13:20:24 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,14 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		{
 			// if (cmds->end && cmds->prev && cmds->prev->append)
 			// 	break ;	
+			// if (!cmds->skip)
+			// {
 			// write_to_file("CMD ", cmds->cmd, 1);
 			pid = run_child(shell, cmds);
 			cmds = excute_loop_append(cmds);
-			if (cmds && (cmds->end || !cmds->next))
+			// }
+			// if (cmds && (cmds->end || !cmds->next))
+			if (cmds->end)
 				break ;
 			else
 				cmds = cmds->next;

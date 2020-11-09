@@ -4,6 +4,7 @@
 		"sstream": "c",
 		"string": "c",
 		"__locale": "c",
-		"ios": "c"
+		"ios": "c",
+		"shell.h": "c"
 	}
 }

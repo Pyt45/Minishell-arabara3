@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 11:26:32 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:39:09 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,12 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 	{
 		if (tmp->append > 0)
 		{
-			
 			shell->exec.fdout = redirect_forward(tmp, cmd);
 			// write_to_file("FDi ", ft_itoa(shell->exec.fdin), 1);
 			// write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
 		}
 		else
 		{
-			
 			// if (shell->exec.fdin)
 			// {
 			// 	close(shell->exec.fdin);

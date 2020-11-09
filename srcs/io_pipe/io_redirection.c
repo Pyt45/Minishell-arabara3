@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 11:31:11 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/09 11:34:29 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 
 int		open_input(char *args)
 {
-	int		fd;
+	int			fd;
+	struct stat	fileStat;
 
 	fd = 0;
-	if (!ft_access(args, 1))
+	if (stat(args, &fileStat) < 0)
 		print_error(args, errno, 0);
 	else if ((fd = open(args, O_RDONLY)) < 0)
 	{
@@ -82,9 +83,7 @@ int		open_output(t_cmds *cmd, int append)
 		flag = flag | O_APPEND;
 	else
 		flag = flag | O_TRUNC;
-	if (!ft_access(cmd->next->args[0], 1))
-		print_error(cmd->next->args[0], errno, 0);
-	else if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
+	if ((fd = open(cmd->next->args[0], flag, flag_mode)) < 0)
 	{
 		print_error(cmd->next->args[0], errno, 0);
 		exit(1);

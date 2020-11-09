@@ -35,6 +35,7 @@ typedef struct		s_cmds
 	char			*cmd;
 	char			**args;
 	int				ret;
+	int				skip;
 	struct s_cmds	*prev;
 	struct s_cmds	*next;
 }					t_cmds;
@@ -202,6 +203,7 @@ void				free_shell(t_shell *shell);
 void				init_shell(t_shell *shell);
 void				free_config(t_config *config);
 int					valid_arg_name(char *val);
+void				exit_error(char *str, int status, t_shell *shell);
 
 // debuging
 void				write_to_file(char *s, char *num, int end);

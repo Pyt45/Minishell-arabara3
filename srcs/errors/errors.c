@@ -19,5 +19,9 @@ void		exit_error(char *str, int status, t_shell *shell)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
+	if (status == 127)
+		ft_putstr_fd(": command not found", 2);
+	ft_putchar_fd('\n', 2);
 	shell->ret = status;
+	exit(status);
 }
