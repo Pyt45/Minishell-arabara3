@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/09 12:57:33 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/10 11:28:15 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int		manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp)
 		pos = parse_redirections(cmds, i, pos, tmp);
 	else if (tmp[*i] == ';' || tmp[*i + 1] == '\0')
 		pos = parse_semicolons(cmds, *i, pos, tmp);
+	if ((*cmds)->prev && (*cmds)->prev->append < 0)
+		(*cmds)->skip = 1;
 	return (pos);
 }
 

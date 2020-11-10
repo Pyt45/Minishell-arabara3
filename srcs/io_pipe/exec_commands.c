@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 14:12:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/10 12:11:20 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	int		status;
 
 	status = 0;
-	write_to_file("WAIT ", ft_itoa(pid), 1);
 	status = wait_child(shell, pid, status);
 	if (WIFEXITED(status))
 		cmds->ret = WEXITSTATUS(status);
@@ -37,36 +36,48 @@ static t_cmds	*excute_loop_append(t_cmds *cmds)
 	return (cmds);
 }
 
+void	save_fds(int *fds)
+{
+	fds[0] = dup(0);	
+	fds[1] = dup(1);	
+	fds[2] = dup(2);	
+}
+
+void	restore_fds(int *fds)
+{
+	dup2(fds[0], 0);
+	close(fds[0]);	
+	dup2(fds[1], 1);
+	close(fds[1]);
+	dup2(fds[2], 2);
+	close(fds[2]);
+}
+
 t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
-		shell->exec.tmpin = dup(0);
-		shell->exec.tmpout = dup(1);
-		if (cmds->append >= 0)
-			shell->exec.fdin = dup(shell->exec.tmpin);
+		shell->exec.fds = pipe_fds(shell->num_pipe, shell->exec.fds);
+		save_fds(shell->exec.backup);
+		shell->exec.j = 0;
 		while (cmds)
 		{
-			// if (cmds->end && cmds->prev && cmds->prev->append)
-			// 	break ;	
 			if (!cmds->skip)
 			{
-				// write_to_file("CMD ", cmds->cmd, 1);
+				write_to_file("CMD ", cmds->cmd, 1);
 				pid = run_child(shell, cmds);
 				cmds = excute_loop_append(cmds);
+				if (cmds->p)
+					shell->exec.j += 2;
 			}
-			// if (cmds && (cmds->end || !cmds->next))
 			if (cmds->end)
 				break ;
 			else
 				cmds = cmds->next;
 		}
-		dup2(shell->exec.tmpin, 0);
-		dup2(shell->exec.tmpout, 1);
-		close(shell->exec.tmpin);
-		close(shell->exec.tmpout);
+		restore_fds(shell->exec.backup);
 		excute_cmd_help(shell, cmds, pid);
 	}
 	else if (cmds->cmd)

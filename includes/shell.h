@@ -20,10 +20,11 @@
 
 typedef struct		s_exec
 {
-	int		tmpin;
-	int		tmpout;
+	int		backup[3];
 	int		fdin;
 	int		fdout;
+	int		j;
+	int		*fds;
 }					t_exec;
 
 typedef struct		s_cmds

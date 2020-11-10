@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 12:39:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/10 12:22:07 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 	{
 		if (tmp->append > 0)
 		{
-			shell->exec.fdout = redirect_forward(tmp, cmd);
+			write_to_file("J ", ft_itoa(shell->exec.j), 1);
+			if (!shell->num_pipe)
+				shell->exec.fdout = redirect_forward(tmp, cmd);
+			else
+				shell->exec.fds[shell->exec.j + 1] = redirect_forward(tmp, cmd);
 			// write_to_file("FDi ", ft_itoa(shell->exec.fdin), 1);
 			// write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
 		}
@@ -59,9 +63,13 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 			// 	close(shell->exec.fdin);
 			// 	shell->exec.fdin = 0;
 			// }
-			shell->exec.fdin = redirect_backward(tmp);
-			dup2(shell->exec.fdin, 0);
-			close(shell->exec.fdin);
+			write_to_file("J ", ft_itoa(shell->exec.j), 1);
+			if (!shell->num_pipe)
+				shell->exec.fdin = redirect_backward(tmp);
+			else
+				shell->exec.fds[shell->exec.j] = redirect_backward(tmp);
+			// dup2(shell->exec.fdin, 0);
+			// close(shell->exec.fdin);
 			// if (shell->exec.fdout)
 			// {
 			// 	close(shell->exec.fdout);
@@ -72,5 +80,19 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 			// write_to_file("FDo ", ft_itoa(shell->exec.fdout), 1);
 		}
 		tmp = tmp->next;
+	}
+	if (!shell->num_pipe)
+	{
+		if (shell->exec.fdin)
+		{
+			dup2(shell->exec.fdin, 0);
+			close(shell->exec.fdin);
+			
+		}
+		if (shell->exec.fdout)
+		{
+			dup2(shell->exec.fdout, 1);
+			close(shell->exec.fdout);
+		}
 	}
 }

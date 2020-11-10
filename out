@@ -1,1 +1,12 @@
-[25;13Rd[25;14R[25;14R[25;14Rsf[25;15R[25;15R[25;15R[25;12Rd
+Makefile
+debug.txt
+includes
+libft
+minishell
+minishell.a
+minishell.dSYM
+minishell_bonus.a
+out
+run.sh
+srcs
+tests

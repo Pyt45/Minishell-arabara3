@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/09 14:11:27 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/10 11:53:55 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,60 +51,89 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 
 static void	child_help(t_shell *shell, t_cmds *cmds)
 {
-	int	fdpipe[2];
-
-	if (cmds->append >= 0)
-	{
-		write_to_file("CMD ", cmds->cmd, 1);
-		dup2(shell->exec.fdin, 0);
-		close(shell->exec.fdin);
-	}
-	// write_to_file("FDi b ", ft_itoa(shell->exec.fdin), 1);
-	// write_to_file("FDo b ", ft_itoa(shell->exec.fdout), 1);
 	if (cmds->append)
 	{
 		exec_io_redi(shell, cmds);
-		if (cmds->append < 0)
-		{
-			if (cmds->next->end)
-				cmds->end = 1;
-			else if (cmds->next->p)
-			{
-				cmds->p = 1;
-				cmds->next->skip = 1;
-				cmds->next->p = 0;
-			}
-			// cmds->next = cmds->next->next;
-			// this does not work if the next doesnt exist (the free must be done before)
-			// if (cmds->next)
-			// {
-			// 	ft_del(cmds->next->prev);
-			// 	cmds->next->prev = cmds;
-			// }
-		}
+		// if (cmds->append < 0)
+		// {
+		// 	if (cmds->next)
+		// 	{
+		// 		cmds->next->skip = 1;
+		// 		cmds->end = 1;
+		// 	}
+		// 	else if (cmds->next->p)
+		// 	{
+		// 		cmds->p = 1;
+		// 		cmds->next->skip = 1;
+		// 	}
+		// }
 	}
-	if (cmds->end)
-		shell->exec.fdout = dup(shell->exec.tmpout);
-	else if (cmds->p)
-	{
-		pipe(fdpipe);
-		shell->exec.fdin = fdpipe[0];
-		shell->exec.fdout = fdpipe[1];
-	}
-	// write_to_file("FDi a ", ft_itoa(shell->exec.fdin), 1);
-	// write_to_file("FDo a ", ft_itoa(shell->exec.fdout), 1);
-	dup2(shell->exec.fdout, 1);
-	close(shell->exec.fdout);
 }
+
+// static void	child_help(t_shell *shell, t_cmds *cmds)
+// {
+// 	int	fdpipe[2];
+
+// 	write_to_file("CMD ", cmds->cmd, 1);
+// 	if (cmds->append >= 0)
+// 	{
+// 		dup2(shell->exec.fdin, 0);
+// 		close(shell->exec.fdin);
+// 	}
+	
+// 	if (cmds->append)
+// 	{
+// 		exec_io_redi(shell, cmds);
+// 		// write_to_file("FDi io ", ft_itoa(shell->exec.fdin), 1);
+// 		// write_to_file("FDo io ", ft_itoa(shell->exec.fdout), 1);
+// 		if (cmds->append < 0)
+// 		{
+// 			if (cmds->next->end)
+// 			{
+// 				cmds->next->skip = 1;
+// 				// cmds->end = 1;
+// 			}
+// 			else if (cmds->next->p)
+// 			{
+// 				cmds->p = 1;
+// 				cmds->next->skip = 1;
+// 			}
+// 			// cmds->next = cmds->next->next;
+// 			// this does not work if the next doesnt exist (the free must be done before)
+// 			// if (cmds->next)
+// 			// {
+// 			// 	ft_del(cmds->next->prev);
+// 			// 	cmds->next->prev = cmds;
+// 			// }
+// 		}
+// 	}
+// 	if (cmds->end)
+// 		shell->exec.fdout = dup(shell->exec.tmpout);
+// 	else if (cmds->p)
+// 	{
+// 		pipe(fdpipe);
+// 		shell->exec.fdin = fdpipe[0];
+// 		shell->exec.fdout = fdpipe[1];
+// 	}
+// 	write_to_file("FDi a ", ft_itoa(shell->exec.fdin), 1);
+// 	write_to_file("FDo a ", ft_itoa(shell->exec.fdout), 1);
+// 	dup2(shell->exec.fdout, 1);
+// 	close(shell->exec.fdout);
+// }
 
 pid_t		run_child(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
 	
-	child_help(shell, cmds);
+	// child_help(shell, cmds);
 	pid = fork();
 	if (pid == 0)
 	{
+		(shell->num_pipe) ? shell->exec.fds = create_fds(cmds, shell->exec.j, shell->exec.fds) : 0;
+		close_pipes(shell->exec.fds, shell->num_pipe);
+		shell->exec.fdin = 0;
+		shell->exec.fdout = 0;
+		child_help(shell, cmds);
 		if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
 		{
 			// print_error(cmds->cmd, errno, 1);
@@ -118,6 +147,5 @@ pid_t		run_child(t_shell *shell, t_cmds *cmds)
 		print_error("fork", errno, 0);
 		exit(1);
 	}
-	write_to_file("PID ", ft_itoa(pid), 1);
 	return (pid);
 }
