@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/11 09:35:17 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 11:43:25 by zlayine          ###   ########.fr       */
+/*   Created: 2020/11/11 11:51:00 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 11:51:16 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int		count_strings(char *str)
 	quote = 0;
 	start = 0;
 	while (str[++i])
-	{
 		if (is_quote(str[i], 0))
 		{
 			quote = quote_activer(quote, str[i]);
@@ -47,10 +46,9 @@ static int		count_strings(char *str)
 			j = start == 1 ? j + 1 : j;
 			start = start == 1 ? 0 : start;
 		}
-		start = str[i] != ' ' ? 1 : 0;
-	}
-	j = start ? j + 1 : j;
-	return (j);
+		else if (str[i] != ' ')
+			start = 1;
+	return (start ? j + 1 : j);
 }
 
 static char		**ft_make_splits(char **split, char *str, char x)

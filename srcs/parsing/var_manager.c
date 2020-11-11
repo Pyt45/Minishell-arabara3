@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:23:39 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 09:58:01 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 12:04:01 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char	*replace_var_string(char *src, int i, char *var, int len)
 	tlen = ft_strlen(src) + ft_strlen(var) - len;
 	tmp = (char *)malloc(sizeof(char) * tlen);
 	while (j < tlen - 1)
-	{
 		if (j == i)
 		{
 			c_src = c_src + len + 1;
@@ -66,7 +65,6 @@ char	*replace_var_string(char *src, int i, char *var, int len)
 		}
 		else
 			replace_in_string(tmp + j, src + c_src++, &j);
-	}
 	ft_del(src);
 	tmp[j] = '\0';
 	return (tmp);

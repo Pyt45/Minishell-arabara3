@@ -193,10 +193,10 @@ char				*replace_string(char *str, t_shell *shell);
 void				init_prompt(t_config *config, int err);
 void				reinit_cursor(t_config *config, int new_x, int new_y);
 void				validate_cursor(t_config *config, t_shell *shell);
-char    			*parse_special_chars(char *str);
+char				*parse_special_chars(char *str);
 void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
 t_cmds				*init_cmds(t_cmds   *prev);
-char     			*parse_env_var(char *str, t_shell *shell);
+char				*parse_env_var(char *str, t_shell *shell);
 void				quotes_checker(int *quote, int c);
 int					var_checker_pass(char c);
 int					quote_activer(int quote, char c);
@@ -205,6 +205,7 @@ void				init_shell(t_shell *shell);
 void				free_config(t_config *config);
 int					valid_arg_name(char *val);
 void				exit_error(char *str, int status, t_shell *shell);
+char				*get_cursor_buff(t_config *config, int active);
 
 // debuging
 void				write_to_file(char *s, char *num, int end);

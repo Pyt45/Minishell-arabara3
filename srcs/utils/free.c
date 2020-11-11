@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 09:41:54 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 13:21:58 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	free_shell(t_shell *shell)
 			ft_del(shell->cmds);
 			shell->cmds = tmp;
 		}
-	}
+	} else if (shell->cmds)
+		ft_del(shell->cmds);
 	shell->cmds = NULL;
 }
 
@@ -48,7 +49,7 @@ void	free_config(t_config *config)
 
 	history = config->history;
 	ft_del(config->str);
-	ft_del(config->tmp); // this is not fully freed
+	ft_del(config->tmp);
 	while (history->prev)
 		history = history->prev;
 	while (history->next)

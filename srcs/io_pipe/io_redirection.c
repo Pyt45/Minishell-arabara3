@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/11 10:06:39 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 13:21:20 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,15 @@ int		*pipe_fds(int num_pipe, int *fds)
 	int		i;
 
 	i = -1;
+	
+	if (!num_pipe)
+		return (NULL);
 	if (!(fds = (int *)malloc(sizeof(int) * 2 * num_pipe)))
-	{
-		print_error("malloc", 12, 0);
-		exit(1);
-	}
+		print_error("malloc ", 12, 0);
 	while (++i < num_pipe)
 	{
 		if (pipe(fds + i * 2) < 0)
-		{
-			print_error("pipe", 32, 0);
-			exit(1);
-		}
+			print_error("pipe error ", 32, 0);
 	}
 	return (fds);
 }
@@ -39,7 +36,7 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 	{
 		if (dup2(fds[j - 2], 0) < 0)
 		{
-			print_error("Dup2", 2, 0);
+			print_error("Dup2 error", 2, 0);
 			exit(1);
 		}
 	}
@@ -47,7 +44,7 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 	{
 		if (dup2(fds[j + 1], 1) < 0)
 		{
-			print_error("Dup2", 2, 0);
+			print_error("Dup2 error", 2, 0);
 			exit(1);
 		}
 	}

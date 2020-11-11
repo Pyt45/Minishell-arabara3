@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 10:10:19 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 13:50:21 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,16 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	status = 0;
 	close_pipes(shell->exec.fds, shell->num_pipe);
 	status = wait_child(shell, pid, status);
+	write_to_file("Status ", ft_itoa(status), 1);
+	write_to_file("Status ", cmds->cmd, 1);
+	// if (status == 13)
+	// 	status = 1;
 	if (WIFEXITED(status))
 		cmds->ret = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
 		cmds->ret = WTERMSIG(status) + 128;
 	if (shell->num_pipe)
 		free(shell->exec.fds);
-	//cmds->ret = get_status_number(status);
 }
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
