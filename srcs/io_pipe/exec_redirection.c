@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/11 10:10:49 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:46:33 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,17 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 	while (tmp && tmp->append)
 	{
 		if (tmp->append > 0)
+		{
 			shell->exec.fdout = redirect_forward(tmp, cmd);
+			if (!shell->exec.fdout)
+				shell->ret = 1;
+		}
 		else
+		{
 			shell->exec.fdin = redirect_backward(tmp);
+			if (!shell->exec.fdin)
+				shell->ret = 1;
+		}
 		tmp = tmp->next;
 	}
 	if (shell->exec.fdin)

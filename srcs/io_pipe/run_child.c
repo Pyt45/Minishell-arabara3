@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/11 10:06:22 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:47:54 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ pid_t		run_child(t_shell *shell, t_cmds *cmds)
 		close_pipes(shell->exec.fds, shell->num_pipe);
 		if (cmds->append)
 			exec_io_redi(shell, cmds);
-		if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
+		if (cmds->args && !shell->ret && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
 			exit_error(cmds->cmd, 127, shell);
-		exit(0);
+		exit(shell->ret);
 	}
 	else if (pid < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:42:22 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 10:26:36 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:43:05 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	init_config_data(t_config *config)
 	ret = tgetent(NULL, term);
 	if (ret < 1)
 		print_error("Terminal error", 0, 0);
-	tcgetattr(0, &config->term);
 	if (tcgetattr(0, &config->term) == -1)
 		print_error("Terminal error", 0, 0);
 	config->str = malloc(sizeof(char) * 512);
