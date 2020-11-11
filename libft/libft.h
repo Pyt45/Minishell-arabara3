@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 10:54:07 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 09:38:27 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 09:33:16 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int				get_newln_len(char *str);
 void			*new_str(void *str, void *data);
 int				get_next_line(int fd, char **line);
 char			**ft_arrdup(char **arr);
-int     		ft_arr_len(char **arr);
+int				ft_arr_len(char **arr);
 
 typedef struct	s_list
 {

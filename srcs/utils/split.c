@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 09:35:17 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 09:35:36 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
 char			**free_list_quote(char **split)
@@ -29,26 +41,12 @@ static int		count_strings(char *str)
 			quote = quote_activer(quote, str[i]);
 			j = start && !quote ? j + 1 : j;
 			start = start && !quote ? 0 : 1;
-			// if (start && !quote)
-			// {
-			// 	j++;
-			// 	start = 0;
-			// }
-			// else if (quote && !start)
-			// 	start = 1;
 		}
 		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
 		{
-			// if (start == 1)
-			// {
-			// 	j++;
-			// 	start = 0;
-			// }
 			j = start == 1 ? j + 1 : j;
 			start = start == 1 ? 0 : start;
 		}
-		// else if (str[i] != ' ')
-		// 	start = 1;
 		start = str[i] != ' ' ? 1 : 0;
 	}
 	j = start ? j + 1 : j;
@@ -93,7 +91,6 @@ char			**ft_split_quote(char const *s, char c)
 	if (!s)
 		return (0);
 	len = count_strings((char *)s);
-	// write_to_file(" LEN ", ft_itoa(len), 1);
 	r = NULL;
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)

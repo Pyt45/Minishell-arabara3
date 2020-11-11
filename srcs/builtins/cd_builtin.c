@@ -75,9 +75,9 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	if (ret == 0)
 	{
 		if (is_print)
-			print_error("OLDPWD not set" , errno, 0);
+			print_error("OLDPWD not set", errno, 0);
 		else
-			print_error(cmds->args[1] , errno, 0);
+			print_error(cmds->args[1], errno, 0);
 		ft_del(pwd);
 		return (!ret);
 	}

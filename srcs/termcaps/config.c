@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   config.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 09:42:22 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 10:26:36 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
 void	display_tmp_data(t_config *config)
@@ -13,7 +25,7 @@ void	display_tmp_data(t_config *config)
 			if (ft_isprint(config->buff))
 				print_char(config);
 			else if (config->buff == ENTER_BTN)
-				break;
+				break ;
 			i++;
 		}
 	}
@@ -39,7 +51,7 @@ void	init_prompt(t_config *config, int err)
 	config->term.c_lflag &= ~(ICANON | ECHO);
 	config->cursor = tgetstr("cm", NULL);
 	if (tcsetattr(0, 0, &config->term) == -1)
-		printf("this is an error");
+		print_error("Terminal error", 0, 0);
 	if (err != 130)
 		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
 	get_cursor_pos(config);

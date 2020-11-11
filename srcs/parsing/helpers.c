@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/02 08:52:53 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:22:39 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,24 @@ void	quotes_checker(int *quote, int c)
 		*quote = 0;
 	if (is_quote(c, 2) && !*quote)
 		*quote = 2;
-	else if (is_quote(c, 2)&& *quote == 2)
+	else if (is_quote(c, 2) && *quote == 2)
 		*quote = 0;
 }
 
-int		var_checker_pass(char c)
+char	*clear_quotes(char *str)
 {
-	if (!c || is_quote(c, 0) || !ft_isalnum(c) || c == ' '
-		||  c == '$' || c == '}')
-		return (1);
-	return (0);
-}
-
-char    *clear_quotes(char *str)
-{
-    int     j;
-    int     i;
+	int		j;
+	int		i;
 	int		quote;
 
-    i = 0;
+	i = 0;
 	quote = 0;
 	str = parse_special_chars(str);
-    while (str[i]){
-        if ((!quote && is_quote(str[i], 0)) || (quote && is_quote(str[i], 0) == quote)){
+	while (str[i])
+	{
+		if ((!quote && is_quote(str[i], 0)) ||
+			(quote && is_quote(str[i], 0) == quote))
+		{
 			quote = !quote ? is_quote(str[i], 0) : 0;
 			j = i;
 			while (str[j])
@@ -51,19 +46,19 @@ char    *clear_quotes(char *str)
 				j++;
 			}
 			i--;
-        }
-        i++;
-    }
-    return (str);
+		}
+		i++;
+	}
+	return (str);
 }
 
-char    *parse_special_chars(char *str)
+char	*parse_special_chars(char *str)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 	int	quote;
 
-    i = -1;
+	i = -1;
 	quote = 0;
 	if (ft_strchr(str, '\\'))
 	{
@@ -80,35 +75,26 @@ char    *parse_special_chars(char *str)
 			}
 		}
 	}
-    return (str);
+	return (str);
 }
 
-int			quote_activer(int quote, char c)
+int		quote_activer(int quote, char c)
 {
-	return !quote ? is_quote(c, 0) : quote == is_quote(c, 0) ? 0 : quote;
+	if (!quote)
+		return (is_quote(c, 0));
+	else if (quote == is_quote(c, 0))
+		return (0);
+	else
+		return (quote);
 }
 
-int     is_quote(char c, int type)
+int		is_quote(char c, int type)
 {
-    if (type == 1 && c == '\'')
-        return (1);
-    if (type == 2 && c == '\"')
-        return (2);
-    if (type == 0 && (c == '\'' || c == '\"'))
-        return (c == '\'' ? 1 : 2);
-    return (0);
+	if (type == 1 && c == '\'')
+		return (1);
+	if (type == 2 && c == '\"')
+		return (2);
+	if (type == 0 && (c == '\'' || c == '\"'))
+		return (c == '\'' ? 1 : 2);
+	return (0);
 }
-
-// char	**clear_args(char **args)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (args[i])
-// 	{
-// 		if (ft_strchr(args[i] ,'\\'))
-// 			args[i] = parse_special_chars(args[i]);
-// 		i++;
-// 	}
-// 	return (args);
-// }

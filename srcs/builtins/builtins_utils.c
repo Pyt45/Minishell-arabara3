@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:31:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/07 11:38:27 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:13:30 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**ft_setenv(char *var, char *path, char **env)
 	int		i;
 	int		len;
 	char	*record;
-	
+
 	len = ft_strlen(var) + ft_strlen(path) + 2;
 	if (!(record = (char *)malloc(sizeof(char) * len)))
 		return (NULL);
@@ -52,7 +52,7 @@ char	**ft_setenv(char *var, char *path, char **env)
 	}
 	else
 		return (ft_add_to_arr(record, env));
-	return (env);	
+	return (env);
 }
 
 int		ft_isalnum_str(char *str)

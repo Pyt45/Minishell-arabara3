@@ -1,30 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 10:00:33 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/shell.h"
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
-    double  tstatus;
-    int     status;
-	int     i;
+	double	tstatus;
+	int		status;
+	int		i;
 
 	tstatus = 0;
 	status = 0;
 	i = -1;
 	if (cmds->args[1])
-    {
-        while (cmds->args[1][++i])
-            if (ft_isalpha((int)(cmds->args[1][i])))
-                tstatus = 1;
-        status = ft_atoi(cmds->args[1]);
-    }
-    end_terminal(&shell->config);
+	{
+		while (cmds->args[1][++i])
+			if (ft_isalpha((int)(cmds->args[1][i])))
+				tstatus = 1;
+		status = ft_atoi(cmds->args[1]);
+	}
+	end_terminal(&shell->config);
 	free_shell(shell);
 	free_config(&shell->config);
-    ft_free_arr(shell->env);
-    ft_putstr_fd("exit\n", 1);
+	ft_free_arr(shell->env);
+	ft_putstr_fd("exit\n", 1);
 	if (tstatus && !status)
 		print_error("exit", 33, 0);
-    exit(status);
-    return (0);
+	exit(status);
+	return (0);
 }
 
 char	*clear_str(char *str)
@@ -46,34 +58,36 @@ char	*clear_str(char *str)
 			i--;
 		}
 		else
-		 	break;
+			break ;
 	return (str);
 }
 
 char	*read_line(t_shell *shell)
 {
 	init_prompt(&shell->config, shell->ret);
-	while ((*shell->config.str && shell->config.tmp) || shell->config.buff || read(0, &shell->config.buff, sizeof(&shell->config.buff)))
+	while ((*shell->config.str && shell->config.tmp) ||
+		shell->config.buff || read(0, &shell->config.buff,
+			sizeof(&shell->config.buff)))
 	{
-		validate_cursor(&shell->config);
+		validate_cursor(&shell->config, shell);
 		handle_keys(&shell->config);
 		if (ft_isprint(shell->config.buff))
-            print_char(&shell->config);
+			print_char(&shell->config);
 		if (shell->config.buff == ENTER_BTN)
-    	{
+		{
 			shell->config.str = clear_str(shell->config.str);
 			shell->line = shell->config.str;
 			newline_config(&shell->config, 0);
 			end_terminal(&shell->config);
 			shell->config.buff = 0;
-			break;
-    	}
+			break ;
+		}
 		shell->config.buff = 0;
 	}
 	return (shell->line);
 }
 
-void		command_line(t_shell *shell)
+void	command_line(t_shell *shell)
 {
 	shell->ret = 0;
 	while ((shell->line = read_line(shell)))
@@ -91,7 +105,7 @@ void	sig_handle_ctrl_c(int sig)
 	ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
 }
 
-int     main(int argc, char **argv, char **envp)
+int		main(int argc, char **argv, char **envp)
 {
 	t_shell *shell;
 
@@ -104,5 +118,5 @@ int     main(int argc, char **argv, char **envp)
 		shell->env = ft_arrdup(envp);
 		command_line(shell);
 	}
-    return (0);
+	return (0);
 }

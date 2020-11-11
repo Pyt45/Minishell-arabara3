@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/10 12:22:31 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:06:39 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		*pipe_fds(int num_pipe, int *fds)
 
 int		*create_fds(t_cmds *cmds, int j, int *fds)
 {
-	if (j != 0 && !cmds->prev->append)
+	if (j != 0)
 	{
 		if (dup2(fds[j - 2], 0) < 0)
 		{
@@ -43,7 +43,7 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 			exit(1);
 		}
 	}
-	if (cmds->next && !cmds->append)
+	if (cmds->next && (cmds->p || (!cmds->next->end)))
 	{
 		if (dup2(fds[j + 1], 1) < 0)
 		{
@@ -57,10 +57,10 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 int		open_input(char *args)
 {
 	int			fd;
-	struct stat	fileStat;
+	struct stat	file_stat;
 
 	fd = 0;
-	if (stat(args, &fileStat) < 0)
+	if (stat(args, &file_stat) < 0)
 		print_error(args, errno, 0);
 	else if ((fd = open(args, O_RDONLY)) < 0)
 	{

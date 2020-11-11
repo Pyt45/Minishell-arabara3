@@ -192,7 +192,7 @@ char				**ft_split_quote(char const *s, char c);
 char				*replace_string(char *str, t_shell *shell);
 void				init_prompt(t_config *config, int err);
 void				reinit_cursor(t_config *config, int new_x, int new_y);
-void				validate_cursor(t_config *config);
+void				validate_cursor(t_config *config, t_shell *shell);
 char    			*parse_special_chars(char *str);
 void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
 t_cmds				*init_cmds(t_cmds   *prev);

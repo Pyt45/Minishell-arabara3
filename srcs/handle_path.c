@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:35:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/02 08:49:01 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 10:12:02 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,17 @@ char	*get_bin_path(char *filename, char **env)
 	return (filename);
 }
 
-int     ft_access(char *path, int mode)
+int		ft_access(char *path, int mode)
 {
-    struct stat fileStat;
+	struct stat	file_stat;
 
-    if(stat(path, &fileStat) < 0)
-        return (0);
-    if (mode == 1)
-        return (fileStat.st_mode & S_IXUSR ? 1 : 0);
-    else if (mode == 2)
-        return (fileStat.st_mode & S_IWUSR ? 1 : 0);
-    else if (mode == 4)
-        return (fileStat.st_mode & S_IRUSR ? 1 : 0);
-    return (0);
+	if (stat(path, &file_stat) < 0)
+		return (0);
+	if (mode == 1)
+		return (file_stat.st_mode & S_IXUSR ? 1 : 0);
+	else if (mode == 2)
+		return (file_stat.st_mode & S_IWUSR ? 1 : 0);
+	else if (mode == 4)
+		return (file_stat.st_mode & S_IRUSR ? 1 : 0);
+	return (0);
 }

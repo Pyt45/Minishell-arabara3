@@ -6,12 +6,11 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:36:08 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/27 10:36:52 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 09:36:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
-
 
 void	sig_handle_ctrl_c(int sig)
 {
@@ -19,4 +18,3 @@ void	sig_handle_ctrl_c(int sig)
 	ft_putstr_fd("\n", 1);
 	ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 }
-

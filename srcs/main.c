@@ -1,5 +1,16 @@
-#include "../includes/shell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 10:07:11 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../includes/shell.h"
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
@@ -25,8 +36,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	return (0);
 }
 
-
-int			command_line(t_shell *shell)
+int		command_line(t_shell *shell)
 {
 	int		r;
 	int		status;
@@ -46,13 +56,13 @@ int			command_line(t_shell *shell)
 void	sig_handle_ctrl_c(int sig)
 {
 	if (sig == SIGINT)
-	{	
+	{
 		ft_putstr_fd("\n", 1);
 		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 	}
 }
 
-int     main(int argc, char **argv, char **envp)
+int		main(int argc, char **argv, char **envp)
 {
 	t_shell *shell;
 
@@ -66,5 +76,5 @@ int     main(int argc, char **argv, char **envp)
 		while (command_line(shell))
 			;
 	}
-    return (0);
+	return (0);
 }
