@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 12:20:14 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/12 09:18:33 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		redirect_forward(t_cmds *tmp, t_cmds *cmd)
 			i++;
 		}
 	}
-	return open_output(tmp, tmp->append - 1);
+	return (open_output(tmp, tmp->append - 1));
 }
 
 int		redirect_backward(t_cmds *tmp)
@@ -36,7 +36,21 @@ int		redirect_backward(t_cmds *tmp)
 	i = -1;
 	while (tmp->next->args[++i])
 		file = tmp->next->args[i];
-	return open_input(file);
+	return (open_input(file));
+}
+
+void	dup_fds(t_shell *shell)
+{
+	if (shell->exec.fdin)
+	{
+		dup2(shell->exec.fdin, 0);
+		close(shell->exec.fdin);
+	}
+	if (shell->exec.fdout)
+	{
+		dup2(shell->exec.fdout, 1);
+		close(shell->exec.fdout);
+	}
 }
 
 void	exec_io_redi(t_shell *shell, t_cmds *cmd)
@@ -49,14 +63,16 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 		if (tmp->append > 0)
 		{
 			shell->exec.fdout = redirect_forward(tmp, cmd);
+			if (!shell->exec.fdout)
+				cmd->ret = 1;
 		}
 		else
 		{
-			shell->exec.fdout = dup(shell->exec.tmpout);
 			shell->exec.fdin = redirect_backward(tmp);
-			dup2(shell->exec.fdin, 0);
-			close(shell->exec.fdin);
+			if (!shell->exec.fdin)
+				cmd->ret = 1;
 		}
 		tmp = tmp->next;
 	}
+	dup_fds(shell);
 }

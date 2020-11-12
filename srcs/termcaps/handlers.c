@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handlers.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 09:42:57 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 09:42:58 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
 void	handle_control(t_config *config)
@@ -30,7 +42,6 @@ void	handle_btns(t_config *config)
 
 void	handle_keys(t_config *config)
 {
-	// write_to_file("CURSOR ", ft_itoa(config->buff), 1);
 	if (config->buff == ARRW_LEFT)
 		move_cursor(config, 1);
 	else if (config->buff == ARRW_RIGHT)

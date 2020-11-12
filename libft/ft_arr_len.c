@@ -6,13 +6,13 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:25:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/31 09:25:55 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 09:34:37 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int     ft_arr_len(char **arr)
+int		ft_arr_len(char **arr)
 {
 	int	i;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 11:10:57 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/11 13:21:20 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,34 @@ int		*pipe_fds(int num_pipe, int *fds)
 	int		i;
 
 	i = -1;
+	
+	if (!num_pipe)
+		return (NULL);
 	if (!(fds = (int *)malloc(sizeof(int) * 2 * num_pipe)))
-	{
-		print_error("malloc", 12, 0);
-		exit(1);
-	}
+		print_error("malloc ", 12, 0);
 	while (++i < num_pipe)
 	{
 		if (pipe(fds + i * 2) < 0)
-		{
-			print_error("pipe", 32, 0);
-			exit(1);
-		}
+			print_error("pipe error ", 32, 0);
 	}
 	return (fds);
 }
 
 int		*create_fds(t_cmds *cmds, int j, int *fds)
 {
-	if (j != 0 && !cmds->prev->append)
+	if (j != 0)
 	{
-		// write_to_file("1J ", ft_itoa(j), 1);
-		// dprintf(2, "1J %d | ", j);
 		if (dup2(fds[j - 2], 0) < 0)
 		{
-			print_error("Dup2", 2, 0);
+			print_error("Dup2 error", 2, 0);
 			exit(1);
 		}
 	}
-	if (cmds->next && !cmds->append)
+	if (cmds->next && (cmds->p || (!cmds->next->end)))
 	{
-		// dprintf(2, "J %d | ", j);
-		// write_to_file("J ", ft_itoa(j), 1);
 		if (dup2(fds[j + 1], 1) < 0)
 		{
-			print_error("Dup2", 2, 0);
+			print_error("Dup2 error", 2, 0);
 			exit(1);
 		}
 	}
@@ -60,9 +53,13 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 
 int		open_input(char *args)
 {
-	int		fd;
+	int			fd;
+	struct stat	file_stat;
 
-	if ((fd = open(args, O_RDONLY)) < 0)
+	fd = 0;
+	if (stat(args, &file_stat) < 0)
+		print_error(args, errno, 0);
+	else if ((fd = open(args, O_RDONLY)) < 0)
 	{
 		print_error(args, errno, 0);
 		exit(1);
@@ -76,6 +73,7 @@ int		open_output(t_cmds *cmd, int append)
 	int		flag;
 	int		flag_mode;
 
+	fd = 1;
 	flag = O_WRONLY | O_CREAT;
 	flag_mode = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
 	if (append)

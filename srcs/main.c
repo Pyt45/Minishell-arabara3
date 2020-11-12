@@ -1,5 +1,16 @@
-#include "../includes/shell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/12 10:52:23 by aaqlzim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../includes/shell.h"
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
@@ -13,13 +24,8 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds->args[1])
 	{
 		while (cmds->args[1][++i])
-		{
 			if (ft_isalpha((int)(cmds->args[1][i])))
-			{
 				tstatus = 1;
-				break ;
-			}
-		}
 		status = ft_atoi(cmds->args[1]);
 	}
 	free_shell(shell);
@@ -30,8 +36,21 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	return (0);
 }
 
+void	sig_handle_ctrl_c(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+	}
+	else if (sig == SIGQUIT)
+	{
+		ft_putendl_fd("Quit: 3", 1);
+		return ;
+	}
+}
 
-int			command_line(t_shell *shell)
+int		command_line(t_shell *shell)
 {
 	int		r;
 	int		status;
@@ -39,6 +58,7 @@ int			command_line(t_shell *shell)
 	status = 1;
 	while (status)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		if (shell->ret != 130)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 		r = get_next_line(0, &shell->line);
@@ -48,16 +68,8 @@ int			command_line(t_shell *shell)
 	return (status);
 }
 
-void	sig_handle_ctrl_c(int sig)
-{
-	if (sig == SIGINT)
-	{	
-		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
-	}
-}
 
-int     main(int argc, char **argv, char **envp)
+int		main(int argc, char **argv, char **envp)
 {
 	t_shell *shell;
 
@@ -71,5 +83,5 @@ int     main(int argc, char **argv, char **envp)
 		while (command_line(shell))
 			;
 	}
-    return (0);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:01:04 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/02 08:51:41 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 09:41:06 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	**ft_get_arr(char *value, char **arr)
 {
-	int	 i;
+	int		i;
 	char	**new_arr;
-	int	 len;
+	int		len;
 
 	i = -1;
 	new_arr = NULL;
@@ -35,6 +35,7 @@ char	**ft_get_arr(char *value, char **arr)
 char	**ft_add_to_arr(char *value, char **arr)
 {
 	char	**new_arr;
+
 	if (arr == NULL)
 	{
 		if (!(new_arr = (char **)malloc(sizeof(char *) * 2)))
@@ -75,7 +76,8 @@ char	**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len)
 	{
 		if (i != pos)
 		{
-			if (!(new_arr[j] = (char *)malloc(sizeof(char) * (ft_strlen(arr[i]) + 1))))
+			if (!(new_arr[j] = (char *)malloc(sizeof(char) *
+				(ft_strlen(arr[i]) + 1))))
 				return (NULL);
 			ft_strcpy(new_arr[j], arr[i]);
 			j++;

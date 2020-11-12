@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/02 08:49:38 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 13:25:51 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	if (ret == 0)
 	{
 		if (is_print)
-			print_error("OLDPWD not set" , errno, 0);
+			print_error("OLDPWD not set", errno, 0);
 		else
-			print_error(cmds->args[1] , errno, 0);
+			print_error(cmds->args[1], errno, 0);
 		ft_del(pwd);
 		return (!ret);
 	}

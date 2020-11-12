@@ -20,22 +20,23 @@
 
 typedef struct		s_exec
 {
-	int		tmpin;
-	int		tmpout;
+	int		backup[3];
 	int		fdin;
 	int		fdout;
+	int		j;
+	int		*fds;
 }					t_exec;
 
 typedef struct		s_cmds
 {
-	int				start;    //start command
-	int				end;      // end
-	int				p;         //pipes
-	int				r;		   //redirection
+	int				start;
+	int				end;
+	int				p;
 	int				append;
 	char			*cmd;
 	char			**args;
 	int				ret;
+	int				skip;
 	struct s_cmds	*prev;
 	struct s_cmds	*next;
 }					t_cmds;
@@ -79,6 +80,7 @@ typedef struct		s_shell
 	struct s_exec	exec;
 	int				num_pipe;
 	int				num_sp;
+	int				quit;
 }					t_shell;
 
 typedef struct		s_history
@@ -191,11 +193,11 @@ char				**ft_split_quote(char const *s, char c);
 char				*replace_string(char *str, t_shell *shell);
 void				init_prompt(t_config *config, int err);
 void				reinit_cursor(t_config *config, int new_x, int new_y);
-void				validate_cursor(t_config *config);
-char    			*parse_special_chars(char *str);
+void				validate_cursor(t_config *config, t_shell *shell);
+char				*parse_special_chars(char *str);
 void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
 t_cmds				*init_cmds(t_cmds   *prev);
-char     			*parse_env_var(char *str, t_shell *shell);
+char				*parse_env_var(char *str, t_shell *shell);
 void				quotes_checker(int *quote, int c);
 int					var_checker_pass(char c);
 int					quote_activer(int quote, char c);
@@ -203,6 +205,8 @@ void				free_shell(t_shell *shell);
 void				init_shell(t_shell *shell);
 void				free_config(t_config *config);
 int					valid_arg_name(char *val);
+void				exit_error(char *str, int status, t_shell *shell);
+char				*get_cursor_buff(t_config *config, int active);
 
 // debuging
 void				write_to_file(char *s, char *num, int end);

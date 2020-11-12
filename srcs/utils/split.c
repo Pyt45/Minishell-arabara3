@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 11:51:00 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 11:51:16 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
 char			**free_list_quote(char **split)
@@ -18,38 +30,25 @@ static int		count_strings(char *str)
 	int start;
 	int quote;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	quote = 0;
 	start = 0;
-	while (str[i])
-	{
+	while (str[++i])
 		if (is_quote(str[i], 0))
 		{
 			quote = quote_activer(quote, str[i]);
-			if (start && !quote)
-			{
-				j++;
-				start = 0;
-			}
-			else if (quote && !start)
-				start = 1;
+			j = start && !quote ? j + 1 : j;
+			start = start && !quote ? 0 : 1;
 		}
 		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
 		{
-			if (start == 1)
-			{
-				j++;
-				start = 0;
-			}
+			j = start == 1 ? j + 1 : j;
+			start = start == 1 ? 0 : start;
 		}
 		else if (str[i] != ' ')
 			start = 1;
-		i++;
-	}
-	if (start)
-		j++;
-	return (j);
+	return (start ? j + 1 : j);
 }
 
 static char		**ft_make_splits(char **split, char *str, char x)
@@ -90,7 +89,6 @@ char			**ft_split_quote(char const *s, char c)
 	if (!s)
 		return (0);
 	len = count_strings((char *)s);
-	// write_to_file(" LEN ", ft_itoa(len), 1);
 	r = NULL;
 	r = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!r)

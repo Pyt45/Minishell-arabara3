@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   history.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 09:43:00 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 09:43:37 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
 t_history	*new_history(t_history *prev)
@@ -28,8 +40,9 @@ void		free_next_history(t_history **history)
 
 t_config	*add_history(t_config *config)
 {
-	if (config->history->next){
-		while(config->history->next)
+	if (config->history->next)
+	{
+		while (config->history->next)
 			config->history = config->history->next;
 	}
 	if (ft_strlen(config->str))

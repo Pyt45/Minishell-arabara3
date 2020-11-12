@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 13:25:01 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 18:07:27 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/11 12:28:13 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,32 @@ void	print_char(t_config *config)
 		config->len = config->c;
 	}
 	display_content(config);
+}
+
+char	*get_cursor_buff(t_config *config, int active)
+{
+	char	*buff;
+	char	*tmp;
+
+	buff = malloc(sizeof(char) * 20);
+	ft_bzero(buff, sizeof(char) * 20);
+	ft_putstr_fd("\e[6n", 2);
+	while (buff[0] != '\e')
+	{
+		read(2, buff, sizeof(buff));
+		if (buff[0] != '\e' && !active)
+			ft_putstr_fd("\e[6n", 2);
+		else if (buff[0] != '\e' && active)
+		{
+			if (config->tmp)
+			{
+				tmp = config->tmp;
+				config->tmp = ft_strjoin(config->tmp, buff);
+				ft_del(tmp);
+			}
+			else
+				config->tmp = ft_strdup(buff);
+		}
+	}
+	return (buff);
 }

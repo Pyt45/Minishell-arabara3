@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/11 10:12:46 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/11 10:12:52 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/shell.h"
 
 int		print_error(char *cmd, int err, int iscmd)
@@ -13,4 +25,15 @@ int		print_error(char *cmd, int err, int iscmd)
 	}
 	ft_putchar_fd('\n', 2);
 	return (1);
+}
+
+void	exit_error(char *str, int status, t_shell *shell)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	if (status == 127)
+		ft_putstr_fd(": command not found", 2);
+	ft_putchar_fd('\n', 2);
+	shell->ret = status;
+	exit(status);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_commands1.c                                   :+:      :+:    :+:   */
+/*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/31 12:27:22 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 12:25:56 by aaqlzim          ###   ########.fr       */
+/*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/12 10:50:02 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,46 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	int		status;
 
 	status = 0;
+	close_pipes(shell->exec.fds, shell->num_pipe);
 	status = wait_child(shell, pid, status);
-	cmds->ret = get_status_number(status);
+	write_to_file("Status ", ft_itoa(status), 1);
+	//write_to_file("Status ", cmds->cmd, 1);
+	// if (status == 13)
+	// 	status = 1;
+	if (WIFEXITED(status))
+		cmds->ret = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		cmds->ret = WTERMSIG(status) + 128;
+	if (shell->num_pipe)
+		free(shell->exec.fds);
 }
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
-	while (cmds && cmds->append)
+	while (cmds && cmds->append > 0)
+	{
+		if (!cmds->next)
+			break ;
 		cmds = cmds->next;
+	}
 	return (cmds);
+}
+
+void			save_fds(int *fds)
+{
+	fds[0] = dup(0);
+	fds[1] = dup(1);
+	fds[2] = dup(2);
+}
+
+void			restore_fds(int *fds)
+{
+	dup2(fds[0], 0);
+	close(fds[0]);
+	dup2(fds[1], 1);
+	close(fds[1]);
+	dup2(fds[2], 2);
+	close(fds[2]);
 }
 
 t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
@@ -34,25 +65,22 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
-		shell->exec.tmpin = dup(0);
-		shell->exec.tmpout = dup(1);
-		if (cmds->append >= 0)
-			shell->exec.fdin = dup(shell->exec.tmpin);
+		shell->exec.fds = pipe_fds(shell->num_pipe, shell->exec.fds);
+		save_fds(shell->exec.backup);
 		while (cmds)
 		{
-			if (cmds->end && cmds->prev && cmds->prev->append)
-				break ;
-			pid = run_child(shell, cmds);
-			cmds = excute_loop_append(cmds);
-			if (cmds->end || !cmds->next)
+			if (!cmds->skip)
+			{
+				pid = run_child(shell, cmds);
+				cmds = excute_loop_append(cmds);
+				shell->exec.j += 2;
+			}
+			if (cmds->end)
 				break ;
 			else
 				cmds = cmds->next;
 		}
-		dup2(shell->exec.tmpin, 0);
-		dup2(shell->exec.tmpout, 1);
-		close(shell->exec.tmpin);
-		close(shell->exec.tmpout);
+		restore_fds(shell->exec.backup);
 		excute_cmd_help(shell, cmds, pid);
 	}
 	else if (cmds->cmd)
@@ -74,6 +102,8 @@ int				run_commands(t_shell *shell)
 		cmds = shell->cmds;
 		while (cmds)
 		{
+			signal(SIGQUIT, sig_handle_ctrl_c);
+			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
 			cmds = excute_command_by_order(shell, cmds);
 			shell->ret = cmds->ret;

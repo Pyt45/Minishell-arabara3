@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 13:45:09 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:35:30 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,61 +49,24 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 	return (ret);
 }
 
-static void	child_help(t_shell *shell, t_cmds *cmds)
-{
-	if (cmds->append >= 0)
-	{
-		// shell->exec.fdin = dup(shell->exec.tmpin);
-		dup2(shell->exec.fdin, 0);
-		//write_to_file("fdin1 ", ft_itoa(shell->exec.fdin), 1);
-		//write_to_file("fdin2 ", ft_itoa(shell->exec.fdin), 1);
-		close(shell->exec.fdin);
-	}
-	// if (cmds->append || (cmds->prev && cmds->prev->append))
-	if (cmds->append)
-	{
-		exec_io_redi(shell, cmds);
-		// for cat < out | echo a
-		if (cmds->append < 0)
-			cmds->next = cmds->next->next;
-		if (cmds->append < 0 && cmds->next)
-		{
-			write_to_file("PIPE ", cmds->cmd, 1);
-			int	fdpipe[2];
-			pipe(fdpipe);
-			shell->exec.fdout = fdpipe[1];
-			shell->exec.fdin = fdpipe[0];
-		}
-	}
-	else if (cmds->end)
-		shell->exec.fdout = dup(shell->exec.tmpout);
-	else if (cmds->next)
-	{
-		int	fdpipe[2];
-		pipe(fdpipe);
-		shell->exec.fdout = fdpipe[1];
-		shell->exec.fdin = fdpipe[0];
-	}
-	// write_to_file("IN ", ft_itoa(shell->exec.fdin), 1);
-	// write_to_file("OUT ", ft_itoa(shell->exec.fdout), 1);
-	dup2(shell->exec.fdout, 1);
-	close(shell->exec.fdout);
-}
-
 pid_t		run_child(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
-	
-	child_help(shell, cmds);
+
 	pid = fork();
 	if (pid == 0)
 	{
-		if (cmds->args && exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
-		{
-			print_error(cmds->cmd, errno, 1);
-			exit(1);
-		}
-		exit(0);
+		shell->exec.fdin = 0;
+		shell->exec.fdout = 0;
+		(shell->num_pipe) ? shell->exec.fds = create_fds(cmds, shell->exec.j,
+			shell->exec.fds) : 0;
+		close_pipes(shell->exec.fds, shell->num_pipe);
+		if (cmds->append)
+			exec_io_redi(shell, cmds);
+		if (cmds->args && !cmds->ret &&
+			exec_commands(shell, cmds) && !is_builtin(cmds->cmd))
+			exit_error(cmds->cmd, 127, shell);
+		exit(cmds->ret);
 	}
 	else if (pid < 0)
 	{

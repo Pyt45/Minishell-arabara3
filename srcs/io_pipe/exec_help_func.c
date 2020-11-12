@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_help_func.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:15:58 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/07 10:48:59 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/11 09:13:29 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ int		get_num_pipes(t_cmds *cmds)
 
 	i = 0;
 	tmp = cmds;
-	while (tmp->p)
+	while (tmp->p || tmp->append)
 	{
-		i++;
+		if (!tmp->append)
+			i++;
 		tmp = tmp->next;
 	}
 	return (i);
