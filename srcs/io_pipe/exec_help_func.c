@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:15:58 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/11 09:13:29 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:38:02 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,18 @@ int		get_status_number(int status)
 	return (status);
 }
 
-int		wait_child(t_shell *shell, pid_t pid, int st)
+int		wait_child(t_shell *shell, pid_t pid, int *pids)
 {
 	int		i;
+	int		status;
 
 	i = -1;
 	if (!shell->num_pipe)
-		waitpid(pid, &st, 0);
+		waitpid(pid, &status, 0);
 	else
 	{
-		while (++i < 2 * shell->num_pipe)
-			wait(&st);
+		while (++i < shell->num_pipe + 1)
+			waitpid(pids[i], &status, 0);
 	}
-	return (st);
+	return (status);
 }

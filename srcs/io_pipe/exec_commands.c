@@ -6,27 +6,26 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 13:50:21 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:36:21 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
+static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid, int *pids)
 {
 	int		status;
 
 	status = 0;
 	close_pipes(shell->exec.fds, shell->num_pipe);
-	status = wait_child(shell, pid, status);
-	write_to_file("Status ", ft_itoa(status), 1);
-	write_to_file("Status ", cmds->cmd, 1);
-	// if (status == 13)
-	// 	status = 1;
-	if (WIFEXITED(status))
-		cmds->ret = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		cmds->ret = WTERMSIG(status) + 128;
+	status = wait_child(shell, pid, pids);
+	
+	// if (WIFSIGNALED(status))
+	if (status == 2 || status == 3)
+		cmds->ret = (status & 0177) + 128;
+	else
+		cmds->ret = (status >> 8) & 0x000000ff;
+	write_to_file("Status ", ft_itoa(cmds->ret), 1);
 	if (shell->num_pipe)
 		free(shell->exec.fds);
 }
@@ -62,9 +61,13 @@ void			restore_fds(int *fds)
 t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
+	int		*pids;
+	int i;
 
+	i = 0;
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
+		pids = malloc(sizeof(int) * (shell->num_pipe + 1));
 		shell->exec.fds = pipe_fds(shell->num_pipe, shell->exec.fds);
 		save_fds(shell->exec.backup);
 		while (cmds)
@@ -72,6 +75,8 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 			if (!cmds->skip)
 			{
 				pid = run_child(shell, cmds);
+				write_to_file("PID ", ft_itoa(pid), 1);
+				pids[i++] = pid;
 				cmds = excute_loop_append(cmds);
 				shell->exec.j += 2;
 			}
@@ -81,7 +86,7 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 				cmds = cmds->next;
 		}
 		restore_fds(shell->exec.backup);
-		excute_cmd_help(shell, cmds, pid);
+		excute_cmd_help(shell, cmds, pid, pids);
 	}
 	else if (cmds->cmd)
 		cmds->ret = exec_commands(shell, cmds);

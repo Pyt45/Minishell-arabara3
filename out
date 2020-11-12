@@ -1,0 +1,12 @@
+Makefile
+debug.txt
+includes
+libft
+minishell
+minishell.a
+minishell.dSYM
+minishell_bonus.a
+out
+run.sh
+srcs
+tests

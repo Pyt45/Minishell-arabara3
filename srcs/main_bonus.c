@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 13:30:41 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 09:55:25 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 				tstatus = 1;
 		status = ft_atoi(cmds->args[1]);
 	}
-	end_terminal(&shell->config);
+	if (!shell->num_pipe)
+		end_terminal(&shell->config);
 	free_shell(shell);
 	free_config(&shell->config);
 	ft_free_arr(shell->env);

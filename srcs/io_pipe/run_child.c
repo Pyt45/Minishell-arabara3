@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/11 13:47:55 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:37:45 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 		exec_help(shell, cmds);
 	else
 		ret = 0;
+	cmds->ret = ret;
 	return (ret);
 }
 
