@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 12:11:21 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 14:37:37 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int		parse_pipes(t_cmds **cmds, int i, int pos, char *tmp)
 {
 	(*cmds)->cmd = get_cmd(tmp + pos, i - pos);
 	(*cmds)->args = get_args(tmp + pos, i - pos);
-	// debug_cmd(*cmds, i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
 	if (!(*cmds)->prev)
@@ -42,7 +41,6 @@ int		parse_semicolons(t_cmds **cmds, int i, int pos, char *tmp)
 		j = 1;
 	(*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
 	(*cmds)->args = get_args(tmp + pos, i - pos + j);
-	// debug_cmd((*cmds), i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
 	if (!(*cmds)->prev)
@@ -61,7 +59,6 @@ int		parse_redirections(t_cmds **cmds, int *i, int pos, char *tmp)
 {
 	(*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
 	(*cmds)->args = get_args(tmp + pos, *i - pos);
-	// debug_cmd(*cmds, *i, pos, tmp[*i]);
 	manage_redirections(cmds, i, tmp);
 	(*cmds)->next = init_cmds((*cmds));
 	(*cmds) = (*cmds)->next;

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 14:33:36 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 14:37:01 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,11 @@ void	free_shell(t_shell *shell)
 	{
 		while (shell->cmds)
 		{
-			i = 0;
+			i = -1;
 			if (shell->cmds->args)
 			{
-				while (shell->cmds->args[i])
-				{
+				while (shell->cmds->args[++i])
 					ft_del(shell->cmds->args[i]);
-					i++;
-				}
 				ft_del(shell->cmds->args);
 			}
 			ft_del(shell->cmds->cmd);
@@ -37,7 +34,8 @@ void	free_shell(t_shell *shell)
 			ft_del(shell->cmds);
 			shell->cmds = tmp;
 		}
-	} else if (shell->cmds)
+	}
+	else if (shell->cmds)
 		ft_del(shell->cmds);
 	shell->cmds = NULL;
 }
