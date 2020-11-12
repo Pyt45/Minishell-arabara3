@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 09:28:13 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 11:01:02 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	return (0);
 }
 
+void	sig_handle_ctrl_c(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+	}
+	else if (sig == SIGQUIT)
+	{
+		ft_putendl_fd("Quit: 3", 1);
+		return ;
+	}
+}
+
 int		command_line(t_shell *shell)
 {
 	int		r;
@@ -44,23 +58,17 @@ int		command_line(t_shell *shell)
 	status = 1;
 	while (status)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		if (shell->ret != 130)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 		r = get_next_line(0, &shell->line);
+		write_to_file("line ", shell->line, 1);
 		if (ft_strlen(shell->line))
 			status = run_commands(shell);
 	}
 	return (status);
 }
 
-void	sig_handle_ctrl_c(int sig)
-{
-	if (sig == SIGINT)
-	{
-		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
-	}
-}
 
 int		main(int argc, char **argv, char **envp)
 {

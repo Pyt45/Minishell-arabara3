@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 10:36:21 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 10:56:05 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int				run_commands(t_shell *shell)
 		cmds = shell->cmds;
 		while (cmds)
 		{
+			signal(SIGQUIT, sig_handle_ctrl_c);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
 			cmds = excute_command_by_order(shell, cmds);

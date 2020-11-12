@@ -80,6 +80,7 @@ typedef struct		s_shell
 	struct s_exec	exec;
 	int				num_pipe;
 	int				num_sp;
+	int				quit;
 }					t_shell;
 
 typedef struct		s_history
