@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 18:15:35 by zlayine           #+#    #+#             */
-/*   Updated: 2019/12/27 10:37:38 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 12:27:59 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	*new_str(void *str, void *data)
 {
-	if (str)
-		free(str);
+	ft_del(str);
 	str = data;
 	return (str);
 }

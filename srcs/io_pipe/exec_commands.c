@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 11:29:21 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/12 12:45:54 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 
 	status = 0;
 	close_pipes(shell->exec.fds, shell->num_pipe);
-	status = wait_child(shell, pid, status);
-	write_to_file("Status ", ft_itoa(status), 1);
-	//write_to_file("Status ", cmds->cmd, 1);
-	// if (status == 13)
-	// 	status = 1;
-	if (WIFEXITED(status))
-		cmds->ret = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		cmds->ret = WTERMSIG(status) + 128;
+	status = wait_child(shell, pid);
+	if (status == 2 || status == 3)
+		cmds->ret = (status & 0177) + 128;
+	else
+		cmds->ret = (status >> 8) & 0x000000ff;
 	if (shell->num_pipe)
-		free(shell->exec.fds);
+	{
+		ft_del(shell->exec.fds);
+		ft_del(shell->exec.pids);
+	}
 }
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
@@ -105,6 +104,8 @@ int				run_commands(t_shell *shell)
 			signal(SIGQUIT, sig_handle_ctrl_c);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
+			if (shell->num_pipe)
+				shell->exec.pids = malloc(sizeof(int) * (shell->num_pipe + 1));
 			cmds = excute_command_by_order(shell, cmds);
 			shell->ret = cmds->ret;
 			cmds = cmds->next;

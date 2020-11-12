@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/12 10:35:30 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/12 12:09:26 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 		exec_help(shell, cmds);
 	else
 		ret = 0;
+	cmds->ret = ret;
 	return (ret);
 }
 
@@ -70,8 +71,10 @@ pid_t		run_child(t_shell *shell, t_cmds *cmds)
 	}
 	else if (pid < 0)
 	{
-		print_error("fork", errno, 0);
+		print_error("Fork error ", errno, 0);
 		exit(1);
 	}
+	if (shell->num_pipe)
+		shell->exec.pids[shell->exec.j / 2] = pid;
 	return (pid);
 }
