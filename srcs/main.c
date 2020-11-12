@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 10:52:23 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/12 12:41:46 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	sig_handle_ctrl_c(int sig)
 int		command_line(t_shell *shell)
 {
 	int		r;
+	char	*line;
+	char	l[5];
 	int		status;
 
 	status = 1;

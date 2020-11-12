@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 18:13:34 by zlayine           #+#    #+#             */
-/*   Updated: 2019/12/27 10:41:54 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 12:44:55 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static int	free_bufs(char *b1, char *b2, int ret)
 {
