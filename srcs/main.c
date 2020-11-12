@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 11:01:02 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 12:32:31 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 1);
 	(tstatus && !status) ? print_error("exit", 33, 0) : 0;
+	ft_del(shell);
 	exit(status);
 	return (0);
 }
@@ -62,9 +63,9 @@ int		command_line(t_shell *shell)
 		if (shell->ret != 130)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 		r = get_next_line(0, &shell->line);
-		write_to_file("line ", shell->line, 1);
 		if (ft_strlen(shell->line))
 			status = run_commands(shell);
+		free_shell(shell);
 	}
 	return (status);
 }
