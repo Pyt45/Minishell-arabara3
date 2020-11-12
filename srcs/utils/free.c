@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 14:29:34 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/12 14:33:36 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	free_shell(t_shell *shell)
 	int		i;
 	t_cmds	*tmp;
 
-	// important for mandatory
-	// ft_del(shell->line);
 	shell->line = NULL;
 	if (shell->cmds && shell->cmds->cmd)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 14:17:31 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/12 14:33:58 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 				tstatus = 1;
 		status = ft_atoi(cmds->args[1]);
 	}
+	ft_del(shell->line);
 	free_shell(shell);
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 1);
@@ -67,6 +68,7 @@ int		command_line(t_shell *shell)
 			exit_builtin(shell, shell->cmds);
 		if (ft_strlen(shell->line))
 			status = run_commands(shell);
+		ft_del(shell->line);
 		free_shell(shell);
 	}
 	return (status);
