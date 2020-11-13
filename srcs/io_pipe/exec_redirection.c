@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/12 09:18:33 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/13 11:44:14 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ void	dup_fds(t_shell *shell)
 		dup2(shell->exec.fdout, 1);
 		close(shell->exec.fdout);
 	}
+}
+
+void	restore_fds(int *fds)
+{
+	dup2(fds[0], 0);
+	close(fds[0]);
+	dup2(fds[1], 1);
+	close(fds[1]);
+	dup2(fds[2], 2);
+	close(fds[2]);
 }
 
 void	exec_io_redi(t_shell *shell, t_cmds *cmd)

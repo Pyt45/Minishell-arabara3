@@ -115,6 +115,7 @@ char				*get_cmd(char *str, int n);
 char				**get_args(char *str, int n);
 t_shell				*parse_commands(t_shell *shell);
 t_shell				*get_comma_commands(t_shell *shell);
+void				restore_fds(int *fds);
 int					ft_access(char *path, int mode);
 int					ft_getenv(char *name, char **env);
 char				*try_path(char *filename, char *dir);

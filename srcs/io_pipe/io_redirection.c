@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/11 13:21:20 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/13 11:45:04 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		*pipe_fds(int num_pipe, int *fds)
 	int		i;
 
 	i = -1;
-	
 	if (!num_pipe)
 		return (NULL);
 	if (!(fds = (int *)malloc(sizeof(int) * 2 * num_pipe)))

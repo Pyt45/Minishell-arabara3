@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/12 14:38:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/13 11:55:37 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-static void	exec_help(t_shell *shell, t_cmds *cmds)
+static	void	exec_help(t_shell *shell, t_cmds *cmds)
 {
 	if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
 		execve(cmds->cmd, cmds->args, shell->env);
@@ -20,7 +20,7 @@ static void	exec_help(t_shell *shell, t_cmds *cmds)
 		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
 }
 
-int			exec_commands(t_shell *shell, t_cmds *cmds)
+int				exec_commands(t_shell *shell, t_cmds *cmds)
 {
 	int		ret;
 
@@ -50,7 +50,7 @@ int			exec_commands(t_shell *shell, t_cmds *cmds)
 	return (ret);
 }
 
-pid_t		run_child(t_shell *shell, t_cmds *cmds)
+pid_t			run_child(t_shell *shell, t_cmds *cmds)
 {
 	pid_t	pid;
 
