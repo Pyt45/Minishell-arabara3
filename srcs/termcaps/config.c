@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:42:22 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 12:29:17 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 09:51:11 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	display_tmp_data(t_config *config)
 		config->buff = config->tmp[i];
 		if (ft_isprint(config->buff))
 			print_char(config);
-		else if (config->buff == ENTER_BTN)
+		else if (config->buff == ENTER_BTN || config->buff == 4)
 			break ;
 	}
-	if (config->buff != ENTER_BTN)
+	if (config->buff != ENTER_BTN && config->buff != 4)
 	{
 		ft_del(config->tmp);
 		config->tmp = NULL;

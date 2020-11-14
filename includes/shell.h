@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
+/*   Updated: 2020/11/14 09:28:48 by zlayine          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef SHELL_H
 # define SHELL_H
@@ -198,7 +209,7 @@ void				reinit_cursor(t_config *config, int new_x, int new_y);
 void				validate_cursor(t_config *config, t_shell *shell);
 char				*parse_special_chars(char *str);
 void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
-t_cmds				*init_cmds(t_cmds   *prev);
+t_cmds				*init_cmds(t_cmds *prev);
 char				*parse_env_var(char *str, t_shell *shell);
 void				quotes_checker(int *quote, int c);
 int					var_checker_pass(char c);
@@ -209,10 +220,6 @@ void				free_config(t_config *config);
 int					valid_arg_name(char *val);
 void				exit_error(char *str, int status, t_shell *shell);
 char				*get_cursor_buff(t_config *config, int active);
-
-// debuging
-void				write_to_file(char *s, char *num, int end);
-void				debug_cmd(t_cmds *cmds, int i, int pos, char c);
-void				erase_file_debug();
+char				*clear_str(char *str);
 
 #endif

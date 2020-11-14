@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:15:58 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/12 12:04:19 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 09:36:23 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,11 @@ int		wait_child(t_shell *shell, pid_t pid)
 	else
 	{
 		while (++i < shell->num_pipe + 1)
+		{
 			waitpid(shell->exec.pids[i], &status, 0);
+			if (status == 2)
+				break ;
+		}
 	}
 	return (status);
 }

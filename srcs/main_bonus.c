@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 14:35:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 09:50:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,6 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 		print_error("exit", 33, 0);
 	exit(status);
 	return (0);
-}
-
-char	*clear_str(char *str)
-{
-	int i;
-	int j;
-
-	i = -1;
-	j = 0;
-	while (str[++i])
-		if (str[i] == ' ')
-		{
-			j = i;
-			while (str[j])
-			{
-				str[j] = str[j + 1];
-				j++;
-			}
-			i--;
-		}
-		else
-			break ;
-	return (str);
 }
 
 char	*read_line(t_shell *shell)
@@ -95,10 +72,10 @@ void	command_line(t_shell *shell)
 	shell->ret = 0;
 	while ((shell->line = read_line(shell)))
 	{
-		signal(SIGQUIT, SIG_IGN);
 		if (ft_strlen(shell->line))
 			run_commands(shell);
 		free_shell(shell);
+		signal(SIGQUIT, SIG_IGN);
 	}
 }
 
@@ -107,7 +84,7 @@ void	sig_handle_ctrl_c(int sig)
 	if (sig == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -121,7 +98,6 @@ int		main(int argc, char **argv, char **envp)
 	t_shell *shell;
 
 	shell = malloc(sizeof(t_shell));
-	erase_file_debug();
 	signal(SIGINT, sig_handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	if (argc && argv)

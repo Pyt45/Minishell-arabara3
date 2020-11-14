@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:01:04 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 09:41:06 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 09:28:16 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,27 @@ char	**ft_copy_arr_without(int pos, char **arr, char **new_arr, int len)
 	}
 	new_arr[j] = NULL;
 	return (new_arr);
+}
+
+char	*clear_str(char *str)
+{
+	int i;
+	int j;
+
+	i = -1;
+	j = 0;
+	while (str[++i])
+		if (str[i] == ' ')
+		{
+			j = i;
+			while (str[j])
+			{
+				str[j] = str[j + 1];
+				j++;
+			}
+			i--;
+		}
+		else
+			break ;
+	return (str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/13 11:55:37 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/14 09:34:15 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 {
 	int		ret;
 
-	ret = 1;
+	ret = 0;
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
@@ -42,10 +42,8 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 		ret = unset_builtin(shell, cmds);
 	else if (!ft_strcmp(cmds->cmd, "echo"))
 		ret = echo_builtin(cmds);
-	else if (!cmds->prev || !cmds->prev->append)
-		exec_help(shell, cmds);
 	else
-		ret = 0;
+		exec_help(shell, cmds);
 	cmds->ret = ret;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 14:33:58 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 09:24:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,11 @@ int		command_line(t_shell *shell)
 	return (status);
 }
 
-
 int		main(int argc, char **argv, char **envp)
 {
 	t_shell *shell;
 
 	shell = malloc(sizeof(t_shell));
-	erase_file_debug();
 	signal(SIGINT, sig_handle_ctrl_c);
 	if (argc && argv)
 	{
