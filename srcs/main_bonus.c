@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:27:50 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:38:17 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	sig_handle(int sig)
 int		main(int argc, char **argv, char **envp)
 {
 	t_shell *shell;
+	int		i;
 
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
@@ -104,6 +105,8 @@ int		main(int argc, char **argv, char **envp)
 	{
 		init_shell(shell);
 		shell->env = ft_arrdup(envp);
+		if ((i = ft_getenv("OLDPWD", shell->env)) >= 0)
+			shell->env = ft_remove_from_arr(i, shell->env);
 		command_line(shell);
 	}
 	return (0);
