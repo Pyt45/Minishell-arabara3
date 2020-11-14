@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 11:51:00 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 09:28:19 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 12:40:36 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,16 @@ char			**ft_split_quote(char const *s, char c)
 		return (NULL);
 	r[len] = 0;
 	return (r);
+}
+
+t_parser		*init_parser(t_shell *shell)
+{
+	t_parser *parser;
+
+	parser = malloc(sizeof(t_parser));
+	parser->ignore = 0;
+	parser->pos = 0;
+	parser->quote = 0;
+	parser->str = replace_string(ft_strdup(shell->line), shell);
+	return (parser);
 }

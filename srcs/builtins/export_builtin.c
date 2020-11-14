@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/07 11:41:45 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/14 13:04:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char		**ft_sort_export(char **env)
 	return (env);
 }
 
-static char		*ft_get_first(const char *s, int c)
+char			*ft_get_first(const char *s, int c)
 {
 	char	r;
 	int		i;
@@ -50,12 +50,12 @@ static char		*ft_get_first(const char *s, int c)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == r || s[i + 1] == '\0')
+		if (s[i] == r)
+			return (ft_substr(s, 0, i));
+		else if (s[i + 1] == '\0')
 			return (ft_substr(s, 0, i + 1));
 		i++;
 	}
-	if (r == '\0')
-		return ((char *)s);
 	return (0);
 }
 
@@ -72,6 +72,7 @@ static void		ft_print_export(char **arr)
 			ft_putstr_fd(ft_get_first(arr[i], '='), 1);
 			if (ft_strchr(arr[i], '='))
 			{
+				ft_putstr_fd("=", 1);
 				ft_putchar_fd('"', 1);
 				ft_putstr_fd(ft_strchr(arr[i], '=') + 1, 1);
 				ft_putchar_fd('"', 1);
@@ -115,7 +116,7 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 	{
 		while (cmds->args[i])
 		{
-			if (valid_arg_name(cmds->args[i]) ||
+			if (!valid_arg_name(cmds->args[i]) ||
 				!ft_export_cmd(shell, ft_strdup(cmds->args[i])))
 				err = print_error("invalid identifier", errno, 0);
 			i++;

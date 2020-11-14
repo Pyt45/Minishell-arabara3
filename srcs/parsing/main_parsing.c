@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 14:37:37 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 12:43:40 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,28 +83,30 @@ int		manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp)
 
 t_shell	*parse_commands(t_shell *shell)
 {
-	t_cmds	*cmds;
-	int		i;
-	int		pos;
-	char	*tmp;
-	int		quote;
+	t_cmds		*cmds;
+	t_parser	*parser;
+	int			i;
 
-	pos = 0;
-	i = -1;
-	quote = 0;
-	tmp = replace_string(ft_strdup(shell->line), shell);
+	parser = init_parser(shell);
 	cmds = init_cmds(NULL);
 	shell->cmds = cmds;
-	while (tmp[++i] && pos != -1)
+	i = -1;
+	while (parser->str[++i] && parser->pos != -1)
 	{
-		if (is_quote(tmp[i], 0))
-			quote = quote_activer(quote, tmp[i]);
-		if (!quote)
-			pos = manage_parsing(&cmds, &i, pos, tmp);
-		shell->parse_err = pos;
+		if (parser->str[i] == '\\' || parser->ignore)
+			parser->ignore = parser->ignore ? 0 : 1;
+		else if (!parser->ignore)
+		{
+			if (is_quote(parser->str[i], 0) && !parser->ignore)
+				parser->quote = quote_activer(parser->quote, parser->str[i]);
+			if (!parser->quote)
+				parser->pos = manage_parsing(&cmds, &i,
+					parser->pos, parser->str);
+		}
+		shell->parse_err = parser->pos;
 	}
-	if (quote)
-		shell->parse_err = -1;
-	ft_del(tmp);
+	shell->parse_err = parser->quote ? -1 : 0;
+	ft_del(parser->str);
+	ft_del(parser);
 	return (shell);
 }

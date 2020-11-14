@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:35:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 10:12:02 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 13:05:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,24 @@ int		ft_getenv(char *name, char **env)
 	char	*search;
 	int		i;
 	int		len;
+	char	*tmp;
 
 	search = NULL;
-	len = ft_strlen(name) + 2;
+	len = ft_strlen(name) + 1;
 	if (!(search = (char *)malloc(sizeof(char) * len)))
 		return (-1);
 	ft_strcpy(search, name);
-	ft_strcat(search, "=");
 	i = 0;
 	while (env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], search, ft_strlen(name)) == 0)
+		tmp = ft_get_first(env[i], '=');
+		if (ft_strcmp(tmp, search) == 0)
 		{
 			ft_del(search);
+			ft_del(tmp);
 			return (i);
 		}
+		ft_del(tmp);
 		i++;
 	}
 	ft_del(search);

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 09:28:48 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 12:50:41 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ typedef struct		s_exec
 	int		*fds;
 	int		*pids;
 }					t_exec;
+
+typedef struct		s_parser
+{
+	char		*str;
+	int			pos;
+	int			quote;
+	int			ignore;
+}					t_parser;
 
 typedef struct		s_cmds
 {
@@ -221,5 +229,6 @@ int					valid_arg_name(char *val);
 void				exit_error(char *str, int status, t_shell *shell);
 char				*get_cursor_buff(t_config *config, int active);
 char				*clear_str(char *str);
-
+t_parser			*init_parser(t_shell *shell);
+char				*ft_get_first(const char *s, int c);
 #endif

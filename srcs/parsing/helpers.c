@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 10:22:39 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 12:42:21 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,26 @@ char	*clear_quotes(char *str)
 	int		j;
 	int		i;
 	int		quote;
+	int		ignore;
 
-	i = 0;
+	i = -1;
 	quote = 0;
-	str = parse_special_chars(str);
-	while (str[i])
+	ignore = 0;
+	while (str[++i])
 	{
-		if ((!quote && is_quote(str[i], 0)) ||
-			(quote && is_quote(str[i], 0) == quote))
+		if (str[i] == '\\' || ignore)
+			ignore = ignore ? 0 : 1;
+		else if (((!quote && is_quote(str[i], 0)) ||
+			(quote && is_quote(str[i], 0) == quote)) && !ignore)
 		{
 			quote = !quote ? is_quote(str[i], 0) : 0;
-			j = i;
-			while (str[j])
-			{
+			j = i - 1;
+			while (str[++j])
 				str[j] = str[j + 1];
-				j++;
-			}
 			i--;
 		}
-		i++;
 	}
-	return (str);
+	return (parse_special_chars(str));
 }
 
 char	*parse_special_chars(char *str)
