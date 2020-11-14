@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:13:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/10/30 14:41:47 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:17:53 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		pwd_builtin(void)
 	{
 		ft_putstr_fd(buff, 1);
 		ft_putstr_fd("\n", 1);
-		free(buff);
+		ft_del(buff);
 	}
 	return (0);
 }

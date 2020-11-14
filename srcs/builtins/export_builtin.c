@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 13:04:32 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:33:10 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ char			*ft_get_first(const char *s, int c)
 
 static void		ft_print_export(char **arr)
 {
-	int	i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	if (arr)
@@ -69,7 +70,9 @@ static void		ft_print_export(char **arr)
 		while (arr[i] != NULL)
 		{
 			ft_putstr_fd("decalre -x ", 1);
-			ft_putstr_fd(ft_get_first(arr[i], '='), 1);
+			tmp = ft_get_first(arr[i], '=');
+			ft_putstr_fd(tmp, 1);
+			ft_del(tmp);
 			if (ft_strchr(arr[i], '='))
 			{
 				ft_putstr_fd("=", 1);
@@ -127,6 +130,7 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 		env_sort = ft_arrdup(shell->env);
 		new_env = ft_sort_export(env_sort);
 		ft_print_export(new_env);
+		ft_free_arr(env_sort);
 	}
 	return (err);
 }

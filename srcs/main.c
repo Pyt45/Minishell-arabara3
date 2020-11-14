@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 09:24:38 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:16:08 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int		main(int argc, char **argv, char **envp)
 	{
 		init_shell(shell);
 		shell->env = ft_arrdup(envp);
-		while (command_line(shell))
-			;
+		command_line(shell);
 	}
+	ft_free_arr(shell->env);
 	return (0);
 }
