@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 09:52:13 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:07:11 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_cmds	*init_cmds(t_cmds *prev)
 
 	cmds = malloc(sizeof(t_cmds));
 	cmds->start = 0;
+	cmds->cmd = NULL;
+	cmds->args = NULL;
 	cmds->end = 0;
 	cmds->p = 0;
 	cmds->skip = 0;
