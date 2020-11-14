@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2020/11/14 14:33:10 by aaqlzim          ###   ########.fr       */
-=======
-/*   Updated: 2020/11/14 14:29:43 by zlayine          ###   ########.fr       */
->>>>>>> cb7ce75da6bea0e06279348be90a3418e8c0cf3e
+/*   Updated: 2020/11/14 16:55:44 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +95,15 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	if (value[0] == '=')
 		return (0);
 	argv = ft_split(value, '=');
-	if (argv[1] && (i = ft_getenv(argv[0], shell->env)) >= 0)
+	if ((i = ft_getenv(argv[0], shell->env)) >= 0)
 	{
-		free(shell->env[i]);
-		shell->env[i] = value;
+		if (argv[1])
+		{
+			free(shell->env[i]);
+			shell->env[i] = value;
+		}
+		else
+			ft_del(value);
 	}
 	else
 		shell->env = ft_add_to_arr(value, shell->env);
