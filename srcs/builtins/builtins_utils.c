@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:31:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/11 10:13:30 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:42:40 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_old_dir(t_shell *shell)
 
 	i = 0;
 	if ((i = ft_getenv("OLDPWD", shell->env)) >= 0)
-		return (ft_strdup(shell->env[i]));
+		return (ft_strdup(shell->env[i] + 7));
 	return (NULL);
 }
 
