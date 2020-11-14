@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 16:35:06 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:29:42 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	return (0);
 }
 
-void	sig_handle_ctrl_c(int sig)
+void	sig_handle(int sig)
 {
 	if (sig == SIGINT)
 	{
+		g_ret = 1;
 		ft_putstr_fd("\n", 1);
 		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 	}
@@ -52,7 +53,7 @@ void	sig_handle_ctrl_c(int sig)
 	}
 }
 
-int		command_line(t_shell *shell)
+void	command_line(t_shell *shell)
 {
 	int		r;
 	int		status;
@@ -67,11 +68,11 @@ int		command_line(t_shell *shell)
 		if (r == 0)
 			exit_builtin(shell, shell->cmds);
 		if (ft_strlen(shell->line))
-			status = run_commands(shell);
+			run_commands(shell);
 		ft_del(shell->line);
 		free_shell(shell);
+		g_ret = 0;
 	}
-	return (status);
 }
 
 int		main(int argc, char **argv, char **envp)
@@ -79,7 +80,8 @@ int		main(int argc, char **argv, char **envp)
 	t_shell *shell;
 
 	shell = malloc(sizeof(t_shell));
-	signal(SIGINT, sig_handle_ctrl_c);
+	signal(SIGINT, sig_handle);
+	g_ret = 0;
 	if (argc && argv)
 	{
 		init_shell(shell);

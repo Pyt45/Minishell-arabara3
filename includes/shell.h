@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 14:36:28 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:28:29 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ typedef struct		s_history
 # define SIG_D 4
 # define SIG_SL 28
 
+int					g_ret;
+
 char				*get_cmd(char *str, int n);
 char				**get_args(char *str, int n);
 t_shell				*parse_commands(t_shell *shell);
@@ -157,7 +159,7 @@ void				do_redirect(t_cmds *cmd, int *fd);
 void				exec_io_redi(t_shell *shell, t_cmds *cmd);
 int					open_output(t_cmds *cmd, int append);
 int					exec_commands(t_shell *shell, t_cmds *cmds);
-int					run_commands(t_shell *shell);
+void				run_commands(t_shell *shell);
 int					cd_builtin(t_shell *shell, t_cmds *cmds);
 int					exit_builtin(t_shell *shell, t_cmds *cmds);
 char				*get_home_dir(t_shell *shell);
@@ -169,7 +171,7 @@ char				**ft_arrdup(char **arr);
 void				ft_print_env_arr(char **arr);
 int					ft_free_arr(char **arr);
 int					env_builtin(t_cmds *cmd, char **env);
-void				sig_handle_ctrl_c();
+void				sig_handle(int sig);
 char				**ft_setenv(char *var, char *path, char **env);
 int					pwd_builtin();
 int					ft_export_cmd(t_shell *shell, char *value);

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 16:59:24 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:27:50 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	command_line(t_shell *shell)
 	}
 }
 
-void	sig_handle_ctrl_c(int sig)
+void	sig_handle(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -98,7 +98,7 @@ int		main(int argc, char **argv, char **envp)
 	t_shell *shell;
 
 	shell = malloc(sizeof(t_shell));
-	signal(SIGINT, sig_handle_ctrl_c);
+	signal(SIGINT, sig_handle);
 	signal(SIGQUIT, SIG_IGN);
 	if (argc && argv)
 	{

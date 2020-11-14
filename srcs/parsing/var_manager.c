@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:23:39 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 12:25:19 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:24:41 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ char	*parse_variable_name(char *str, int len, t_shell *shell)
 	var = NULL;
 	tmp = (char *)malloc(sizeof(char) * len);
 	ft_strlcpy(tmp, str, len);
+	if (g_ret == 1)
+	{
+		shell->ret = !shell->ret ? 1 : shell->ret;
+		g_ret = 0;
+	}
 	if (tmp[0] == '?')
 	{
 		if (shell->ret == 0)

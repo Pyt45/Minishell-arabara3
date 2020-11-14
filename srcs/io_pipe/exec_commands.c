@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:04:06 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:27:35 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 	return (cmds);
 }
 
-int				run_commands(t_shell *shell)
+void			run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
 
@@ -94,7 +94,7 @@ int				run_commands(t_shell *shell)
 		cmds = shell->cmds;
 		while (cmds)
 		{
-			signal(SIGQUIT, sig_handle_ctrl_c);
+			signal(SIGQUIT, sig_handle);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
 			if (shell->num_pipe)
@@ -104,5 +104,4 @@ int				run_commands(t_shell *shell)
 			cmds = cmds->next;
 		}
 	}
-	return (1);
 }
