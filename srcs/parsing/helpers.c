@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 12:42:21 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:35:49 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*clear_quotes(char *str)
 		if (str[i] == '\\' || ignore)
 			ignore = ignore ? 0 : 1;
 		else if (((!quote && is_quote(str[i], 0)) ||
-			(quote && is_quote(str[i], 0) == quote)) && !ignore)
+			(quote && is_quote(str[i], 0) == quote)))
 		{
 			quote = !quote ? is_quote(str[i], 0) : 0;
 			j = i - 1;
@@ -47,8 +47,15 @@ char	*clear_quotes(char *str)
 				str[j] = str[j + 1];
 			i--;
 		}
+		if (ignore && (((str[i + 1] == '$' || str[i + 1] == '"' || str[i + 1] == '\\') && quote == 2) || !quote))
+		{
+			j = i - 1;
+			while (str[++j])
+				str[j] = str[j + 1];
+			i--;
+		}
 	}
-	return (parse_special_chars(str));
+	return (str);
 }
 
 char	*parse_special_chars(char *str)
