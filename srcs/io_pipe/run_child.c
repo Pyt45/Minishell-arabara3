@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/14 09:34:15 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 10:20:43 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 {
 	int		ret;
 
-	ret = 0;
+	ret = 1;
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
