@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 14:06:00 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/14 17:04:06 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ int				run_commands(t_shell *shell)
 	shell->parse_err = 0;
 	shell = parse_commands(shell);
 	if (shell->parse_err == -1)
+	{
 		print_error("syntax error", 0, 0);
+		shell->ret = 258;
+	}
 	else
 	{
 		cmds = shell->cmds;

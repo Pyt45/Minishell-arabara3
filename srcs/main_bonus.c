@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 09:50:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 16:59:24 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	int		i;
 
 	tstatus = 0;
-	status = 0;
+	status = shell->ret;
 	i = -1;
 	if (cmds && cmds->args[1])
 	{
