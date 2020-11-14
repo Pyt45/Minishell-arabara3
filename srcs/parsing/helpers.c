@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:19:16 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 14:35:49 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:39:27 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,18 @@ void	quotes_checker(int *quote, int c)
 		*quote = 0;
 }
 
-char	*clear_quotes(char *str)
+char	*str_quotes_replacer(char *str, int i)
 {
 	int		j;
+
+	j = i - 1;
+	while (str[++j])
+		str[j] = str[j + 1];
+	return (str);
+}
+
+char	*clear_quotes(char *str)
+{
 	int		i;
 	int		quote;
 	int		ignore;
@@ -42,44 +51,11 @@ char	*clear_quotes(char *str)
 			(quote && is_quote(str[i], 0) == quote)))
 		{
 			quote = !quote ? is_quote(str[i], 0) : 0;
-			j = i - 1;
-			while (str[++j])
-				str[j] = str[j + 1];
-			i--;
+			str = str_quotes_replacer(str, i--);
 		}
-		if (ignore && (((str[i + 1] == '$' || str[i + 1] == '"' || str[i + 1] == '\\') && quote == 2) || !quote))
-		{
-			j = i - 1;
-			while (str[++j])
-				str[j] = str[j + 1];
-			i--;
-		}
-	}
-	return (str);
-}
-
-char	*parse_special_chars(char *str)
-{
-	int	i;
-	int	j;
-	int	quote;
-
-	i = -1;
-	quote = 0;
-	if (ft_strchr(str, '\\'))
-	{
-		while (str[++i])
-		{
-			if (is_quote(str[i], 0))
-				quote = quote_activer(quote, str[i]);
-			if (str[i] == '\\' && !quote)
-			{
-				j = i - 1;
-				while (str[++j])
-					str[j] = str[j + 1];
-				str[j] = '\0';
-			}
-		}
+		if (ignore && (((str[i + 1] == '$' || str[i + 1] == '"'
+			|| str[i + 1] == '\\') && quote == 2) || !quote))
+			str = str_quotes_replacer(str, i--);
 	}
 	return (str);
 }

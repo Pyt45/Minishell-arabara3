@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 12:50:41 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/14 14:36:28 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,6 @@ char				*replace_string(char *str, t_shell *shell);
 void				init_prompt(t_config *config, int err);
 void				reinit_cursor(t_config *config, int new_x, int new_y);
 void				validate_cursor(t_config *config, t_shell *shell);
-char				*parse_special_chars(char *str);
 void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
 t_cmds				*init_cmds(t_cmds *prev);
 char				*parse_env_var(char *str, t_shell *shell);
