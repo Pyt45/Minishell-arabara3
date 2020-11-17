@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/17 17:20:25 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/17 18:18:14 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC = srcs/termcaps/config.c \
 		srcs/builtins/builtins_utils.c \
 		srcs/utils/split.c \
 		srcs/utils/free.c \
+		srcs/utils/debug.c \
 		srcs/utils/array_helpers.c \
 		srcs/parsing/main_parsing.c \
 		srcs/parsing/helpers.c \

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 16:54:42 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 18:18:03 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int		main(int argc, char **argv, char **envp)
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
 	signal(SIGQUIT, SIG_IGN);
+	erase_file_debug();
 	if (argc && argv)
 	{
 		init_shell(shell);
