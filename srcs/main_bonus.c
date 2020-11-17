@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:38:17 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 16:54:42 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ void	sig_handle(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
+		ft_putstr_fd("\n", 2);
+		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putendl_fd("Quit: 3", 1);
+		ft_putendl_fd("Quit: 3", 2);
 		return ;
 	}
 }

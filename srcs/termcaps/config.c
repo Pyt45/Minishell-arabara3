@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:42:22 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 09:51:11 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 16:54:49 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	init_prompt(t_config *config, int err)
 	if (tcsetattr(0, 0, &config->term) == -1)
 		print_error("Terminal error", 0, 0);
 	if (err != 130)
-		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 1);
+		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
 	get_cursor_pos(config);
 	config->x = config->o_x - 1;
 	config->y = config->o_y;

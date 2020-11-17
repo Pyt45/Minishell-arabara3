@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:03:45 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/13 11:44:14 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:09:43 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,20 @@ int		redirect_forward(t_cmds *tmp, t_cmds *cmd)
 
 int		redirect_backward(t_cmds *tmp)
 {
-	int		i;
-	char	*file;
+	int			i;
+	char		*file;
+	struct stat	file_stat;
 
 	i = -1;
 	while (tmp->next->args[++i])
+	{
 		file = tmp->next->args[i];
+		if (stat(file, &file_stat) < 0)
+		{
+			print_error(file, errno, 0);
+			exit(1);
+		}
+	}
 	return (open_input(file));
 }
 

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:27:35 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:02:19 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,22 @@
 static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 {
 	int		status;
+	float	shift;
 
 	status = 0;
 	close_pipes(shell->exec.fds, shell->num_pipe);
 	status = wait_child(shell, pid);
 	if (status == 2 || status == 3)
-		cmds->ret = (status & 0177) + 128;
+		cmds->ret = status + 128;
 	else
-		cmds->ret = (status >> 8) & 0x000000ff;
+	{
+		shift = (status) / (ft_pow(2, 8));
+        cmds->ret = (int)shift & 255;
+	}
+	// if (status == 2 || status == 3)
+	// 	cmds->ret = (status & 0177) + 128;
+	// else
+	// 	cmds->ret = (status >> 8) & 0x000000ff;
 	if (shell->num_pipe)
 	{
 		ft_del(shell->exec.fds);

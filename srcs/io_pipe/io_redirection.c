@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:03 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/13 11:45:04 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:09:28 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,9 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 int		open_input(char *args)
 {
 	int			fd;
-	struct stat	file_stat;
 
 	fd = 0;
-	if (stat(args, &file_stat) < 0)
-		print_error(args, errno, 0);
-	else if ((fd = open(args, O_RDONLY)) < 0)
+	if ((fd = open(args, O_RDONLY)) < 0)
 	{
 		print_error(args, errno, 0);
 		exit(1);
