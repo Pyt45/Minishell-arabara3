@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 16:46:05 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 18:04:55 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,19 @@ int		manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp)
 	return (pos);
 }
 
+int		create_cmd_line(t_cmds **cmds, char *tmp, int start, int end)
+{
+	char *s = ft_substr(tmp, start, end - start);
+	printf("CMD %s\n", s);
+}
+
 t_shell	*parse_commands(t_shell *shell)
 {
 	t_cmds		*cmds;
 	t_parser	*parser;
 	int			i;
 
-	parser = init_parser(shell);
+	parser = init_parser(shell, shell->line, 0);
 	cmds = init_cmds(NULL);
 	shell->cmds = cmds;
 	i = -1;
@@ -99,9 +105,9 @@ t_shell	*parse_commands(t_shell *shell)
 		{
 			if (is_quote(parser->str[i], 0) && !parser->ignore)
 				parser->quote = quote_activer(parser->quote, parser->str[i]);
-			if (!parser->quote)
-				parser->pos = manage_parsing(&cmds, &i,
-					parser->pos, parser->str);
+			if (!parser->quote && parser->str[i] == ';' || parser->str[i + 1] == '\0')
+				parser->pos = create_cmd_line(&cmds, parser->str, parser->pos, i);
+			// parser->pos = manage_parsing(&cmds, &i, parser->pos, parser->str);
 		}
 	}
 	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;

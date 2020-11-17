@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:28:29 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:54:19 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct		s_cmds
 	int				end;
 	int				p;
 	int				append;
+	char			*line;
 	char			*cmd;
 	char			**args;
 	int				ret;
@@ -230,6 +231,6 @@ int					valid_arg_name(char *val);
 void				exit_error(char *str, int status, t_shell *shell);
 char				*get_cursor_buff(t_config *config, int active);
 char				*clear_str(char *str);
-t_parser			*init_parser(t_shell *shell);
+t_parser			*init_parser(t_shell *shell, char *line, int var);
 char				*ft_get_first(const char *s, int c);
 #endif
