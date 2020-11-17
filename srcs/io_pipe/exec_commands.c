@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 18:02:38 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 19:18:48 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,32 +85,6 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 	return (cmds);
 }
 
-t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
-{
-	t_parser	*parser;
-	int			i;
-
-	parser = init_parser(shell, cmds->line, 1);
-	i = -1;
-	while (parser->str[++i] && parser->pos != -1)
-	{
-		if (parser->str[i] == '\\' || parser->ignore)
-			parser->ignore = parser->ignore ? 0 : 1;
-		else if (!parser->ignore)
-		{
-			if (is_quote(parser->str[i], 0) && !parser->ignore)
-				parser->quote = quote_activer(parser->quote, parser->str[i]);
-			if (!parser->quote)
-				parser->pos = manage_parsing(&cmds, &i,
-					parser->pos, parser->str);
-		}
-	}
-	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
-	ft_del(parser->str);
-	ft_del(parser);
-	return (shell);
-}
-
 void			run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
@@ -118,27 +92,23 @@ void			run_commands(t_shell *shell)
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
 	shell = parse_commands(shell);
-	// if (shell->parse_err == -1)
-	// {
-	// 	print_error("syntax error", 0, 0);
-	// 	shell->ret = 258;
-	// }
-	// else
-	// {
-	// 	cmds = shell->cmds;
-	// 	while (cmds)
-	// 	{
-	// 		cmds = parse_command(shell, cmds);
-	// 		signal(SIGQUIT, sig_handle);
-	// 		shell->exec.j = 0;
-	// 		shell->num_pipe = get_num_pipes(cmds);
-	// 		if (shell->num_pipe)
-	// 			shell->exec.pids = malloc(sizeof(int) * (shell->num_pipe + 1));
-	// 		cmds = excute_command_by_order(shell, cmds);
-	// 		shell->ret = cmds->ret;
-	// 		cmds = cmds->next;
-	// 		int i = ft_getenv("OLDPWD", shell->env);
-	// 		printf("mine: %s\n", shell->env[i]);
-	// 	}
-	// }
+	if (check_parsing(shell))
+	{
+		cmds = shell->cmds;
+		while (cmds)
+		{
+			if (cmds->line)
+				cmds = parse_command(shell, cmds);
+			if (!check_parsing(shell))
+				break ;
+			signal(SIGQUIT, sig_handle);
+			shell->exec.j = 0;
+			shell->num_pipe = get_num_pipes(cmds);
+			if (shell->num_pipe)
+				shell->exec.pids = malloc(sizeof(int) * (shell->num_pipe + 1));
+			cmds = excute_command_by_order(shell, cmds);
+			shell->ret = cmds->ret;
+			cmds = cmds->next;
+		}
+	}
 }

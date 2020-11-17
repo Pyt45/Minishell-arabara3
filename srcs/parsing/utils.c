@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 14:07:11 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 19:01:26 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_cmds	*init_cmds(t_cmds *prev)
 
 	cmds = malloc(sizeof(t_cmds));
 	cmds->start = 0;
+	cmds->line = NULL;
 	cmds->cmd = NULL;
 	cmds->args = NULL;
 	cmds->end = 0;
@@ -26,7 +27,7 @@ t_cmds	*init_cmds(t_cmds *prev)
 	cmds->append = 0;
 	cmds->ret = 0;
 	cmds->prev = prev ? prev : NULL;
-	cmds->next = NULL;
+	cmds->next = prev && prev->next ? prev->next : NULL;
 	return (cmds);
 }
 
