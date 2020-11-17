@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:05:01 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 16:46:05 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_shell	*parse_commands(t_shell *shell)
 					parser->pos, parser->str);
 		}
 	}
-	shell->parse_err = parser->quote ? -1 : parser->pos;
+	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
 	ft_del(parser->str);
 	ft_del(parser);
 	return (shell);
