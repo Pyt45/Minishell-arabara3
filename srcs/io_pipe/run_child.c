@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/18 13:21:59 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 14:06:17 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,19 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
-	if (!ft_strcmp(cmds->cmd, "env"))
+	if (!ft_strcmp(ft_strlower(cmds->cmd), "env"))
 		ret = env_builtin(cmds, shell->env);
-	else if (!ft_strcmp(cmds->cmd, "cd"))
+	else if (!ft_strcmp(ft_strlower(cmds->cmd), "cd"))
 		ret = cd_builtin(shell, cmds);
-	else if (!ft_strcmp(cmds->cmd, "pwd"))
+	else if (!ft_strcmp(ft_strlower(cmds->cmd), "pwd"))
 		ret = pwd_builtin();
-	else if (!ft_strcmp(cmds->cmd, "exit"))
+	else if (!ft_strcmp(ft_strlower(cmds->cmd), "exit"))
 		ret = exit_builtin(shell, cmds);
-	else if (!ft_strcmp(cmds->cmd, "export"))
+	else if (!ft_strcmp(ft_strlower(cmds->cmd), "export"))
 		ret = export_builtin(shell, cmds);
-	else if (!ft_strcmp(cmds->cmd, "unset"))
+	else if (!ft_strcmp(ft_strlower(cmds->cmd), "unset"))
 		ret = unset_builtin(shell, cmds);
-	else if (!ft_strcmp(cmds->cmd, "echo"))
+	else if (!ft_strcmp(ft_strlower(cmds->cmd), "echo"))
 		ret = echo_builtin(cmds);
 	else
 		exec_help(shell, cmds);

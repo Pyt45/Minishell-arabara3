@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 09:48:59 by zlayine           #+#    #+#              #
-#    Updated: 2020/10/31 09:29:29 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/18 14:05:42 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRC = ft_atoi.c \
 	ft_strcpy.c \
 	ft_strcat.c \
 	ft_arr_dup.c \
+	ft_strlower.c \
 	ft_arr_len.c
 
 BONUS_C = ft_lstadd_back_bonus.c \

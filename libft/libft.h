@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 10:54:07 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/12 12:53:17 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/18 14:04:20 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void			*new_str(void *str, void *data);
 int				get_next_line(int fd, char **line);
 char			**ft_arrdup(char **arr);
 int				ft_arr_len(char **arr);
+char			*ft_strlower(char *s);
 
 typedef struct	s_list
 {
