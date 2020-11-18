@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:37:57 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:35:38 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ void	sig_handle(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_ret = 1;
 		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+		//if (g_ret == 0)
+			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+		g_ret = 1;
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -62,8 +63,10 @@ void	command_line(t_shell *shell)
 	while (status)
 	{
 		signal(SIGQUIT, SIG_IGN);
-		if (shell->ret != 130)
+		signal(SIGINT, sig_handle);
+		if (shell->ret != 130 && shell->signal != 1)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+		shell->signal = 0;
 		r = get_next_line(0, &shell->line);
 		if (r == 0)
 			exit_builtin(shell, shell->cmds);
@@ -74,6 +77,7 @@ void	command_line(t_shell *shell)
 		g_ret = 0;
 	}
 }
+
 
 int		main(int argc, char **argv, char **envp)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:28:29 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:35:18 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct		s_shell
 	struct s_cmds	*cmds;
 	struct s_config	config;
 	struct s_exec	exec;
+	int				signal;
 	int				num_pipe;
 	int				num_sp;
 	int				quit;

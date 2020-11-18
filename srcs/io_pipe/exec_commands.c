@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:27:35 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:35:53 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 {
 	int		status;
+	//double	shift;
 
 	status = 0;
 	close_pipes(shell->exec.fds, shell->num_pipe);
 	status = wait_child(shell, pid);
 	if (status == 2 || status == 3)
-		cmds->ret = (status & 0177) + 128;
+		cmds->ret = status + 128;
 	else
-		cmds->ret = (status >> 8) & 0x000000ff;
+		cmds->ret = (status >> 8) & 255;
 	if (shell->num_pipe)
 	{
 		ft_del(shell->exec.fds);
@@ -34,6 +35,7 @@ static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
 	while (cmds && cmds->append > 0)
 	{
+		// Emmm it do nothing
 		if (!cmds->next)
 			break ;
 		cmds = cmds->next;
