@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 17:26:10 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 19:56:26 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int		move_to_dir(char *path, int *is_print)
 {
 	if (!path && *is_print)
 		return (0);
+	if (!ft_strlen(path))
+		return (1);
 	if (chdir(get_dir(path)))
 	{
 		ft_del(path);
