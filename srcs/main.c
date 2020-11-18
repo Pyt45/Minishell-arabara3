@@ -6,33 +6,77 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:40:12 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/18 15:03:08 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/shell.h"
 
+int		valid_status(char *arg, long l)
+{
+	int i;
+
+	if (l > INT32_MAX || l < INT32_MIN)
+		return (0);
+	i = -1;
+	while (arg[++i] && ft_isdigit(arg[i]))
+		;
+	return (arg[i] == '\0');
+}
+
+long			ft_atoi_l(const char *str)
+{
+	int		i;
+	long	long n;
+	int		sign;
+
+	i = 0;
+	n = 0;
+	sign = 1;
+	while (str[i] == '\t' || str[i] == ' ' || str[i] == '\n' ||
+		str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
+	{
+		n = n * 10 + (str[i] - 48);
+		i++;
+	}
+	n = n * sign;
+	return (n);
+}
+
+
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
 	double	tstatus;
-	int		status;
+	long	status;
 	int		i;
 
-	tstatus = 0;
+	if (ft_arr_len(cmds->args) != 1)
+	{
+		print_error("exit", 7, 0);
+		return (1);
+	}
+	tstatus = 1;
 	status = 0;
 	i = -1;
 	if (cmds && cmds->args[1])
 	{
-		while (cmds->args[1][++i])
-			if (ft_isalpha((int)(cmds->args[1][i])))
-				tstatus = 1;
-		status = ft_atoi(cmds->args[1]);
+		status = ft_atoi_l(cmds->args[1]);
+		tstatus = valid_status(cmds->args[1], status);
 	}
 	ft_del(shell->line);
 	free_shell(shell);
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 2);
-	(tstatus && !status) ? print_error("exit", 33, 0) : 0;
+	((!tstatus && !status) || (status && !tstatus)) ?
+	print_error("exit", 33, 0) : 0;
 	ft_del(shell);
 	exit(status);
 	return (0);
