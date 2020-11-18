@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 10:42:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 11:47:02 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ t_shell	*parse_commands(t_shell *shell)
 	i = -1;
 	while (parser->str[++i] && parser->pos != -1)
 	{
-		if (parser->str[i] == '\\' || parser->ignore)
+		if (parser->str[i] == '\\')
 			parser->ignore = parser->ignore ? 0 : 1;
-		else if (!parser->ignore)
-		{
-			if (is_quote(parser->str[i], 0) && !parser->ignore)
-				parser->quote = quote_activer(parser->quote, parser->str[i]);
-			if (!parser->quote && (parser->str[i] == ';' || parser->str[i + 1] == '\0'))
+		if (is_quote(parser->str[i], 0) && !parser->ignore)
+			parser->quote = quote_activer(parser->quote, parser->str[i]);
+		if (!parser->quote && (parser->str[i] == ';' || parser->str[i + 1] == '\0'))
 				parser->pos = create_cmd_line(&cmds, parser->str, parser->pos, i);
-		}
+		if (parser->ignore && parser->str[i] != '\\')
+			parser->ignore = 0;
 	}
 	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
 	ft_del(parser->str);
@@ -60,17 +59,14 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 	i = -1;
 	while (parser->str[++i] && parser->pos != -1)
 	{
-		if (parser->str[i] == '\\' || parser->ignore)
+		if (parser->str[i] == '\\')
 			parser->ignore = parser->ignore ? 0 : 1;
-		else if (!parser->ignore)
-		{
-			if (is_quote(parser->str[i], 0))
-			{
-				parser->quote = quote_activer(parser->quote, parser->str[i]);
-			}
-			if (!parser->quote)
-				parser->pos = manage_parsing(&cmds, &i, parser->pos, parser->str);
-		}
+		if (is_quote(parser->str[i], 0) && !parser->ignore)
+			parser->quote = quote_activer(parser->quote, parser->str[i]);
+		if (!parser->quote)
+			parser->pos = manage_parsing(&cmds, &i, parser->pos, parser->str);
+		if (parser->ignore && parser->str[i] != '\\')
+			parser->ignore = 0;
 	}
 	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
 	ft_del(parser->str);
