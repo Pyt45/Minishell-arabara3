@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_help_func.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 11:15:58 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/14 09:36:23 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:32:50 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ int		wait_child(t_shell *shell, pid_t pid)
 		{
 			waitpid(shell->exec.pids[i], &status, 0);
 			if (status == 2)
-				break ;
+			{
+				if (i != shell->num_pipe)
+					shell->signal = 1;
+			}
 		}
 	}
 	return (status);

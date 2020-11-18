@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 08:33:00 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:43:12 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct		s_shell
 	struct s_cmds	*cmds;
 	struct s_config	config;
 	struct s_exec	exec;
+	int				signal;
 	int				num_pipe;
 	int				num_sp;
 	int				quit;
