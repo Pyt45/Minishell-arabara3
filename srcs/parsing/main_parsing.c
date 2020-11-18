@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 19:18:14 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:44:02 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-int		check_parsing(t_shell *shell)
+int				check_parsing(t_shell *shell)
 {
 	if (shell->parse_err == -1)
 	{
@@ -23,7 +23,7 @@ int		check_parsing(t_shell *shell)
 	return (1);
 }
 
-t_shell	*parse_commands(t_shell *shell)
+t_shell			*parse_commands(t_shell *shell)
 {
 	t_cmds		*cmds;
 	t_parser	*parser;
@@ -67,7 +67,7 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 			if (is_quote(parser->str[i], 0) && !parser->ignore)
 				parser->quote = quote_activer(parser->quote, parser->str[i]);
 			if (!parser->quote)
-				parser->pos = manage_parsing(&cmds, &i, parser->pos, parser->str);
+				parser->pos =  manage_parsing(&cmds, &i, parser->pos, parser->str);
 		}
 	}
 	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
