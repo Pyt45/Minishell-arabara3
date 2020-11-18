@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 19:13:25 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 19:57:05 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:50:09 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int		validate_line(char *str)
 			tmp = get_args(str, ft_strlen(str + pos) - 1);
 			if (!tmp)
 				return (0);
-			// write_to_file("ARGx ", tmp[0], 1);
 			pos = i;
 			ft_del(tmp);
 		}
