@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:35:18 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:37:12 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct		s_cmds
 	int				end;
 	int				p;
 	int				append;
+	char			*line;
 	char			*cmd;
 	char			**args;
 	int				ret;
@@ -231,6 +232,15 @@ int					valid_arg_name(char *val);
 void				exit_error(char *str, int status, t_shell *shell);
 char				*get_cursor_buff(t_config *config, int active);
 char				*clear_str(char *str);
-t_parser			*init_parser(t_shell *shell);
+t_parser			*init_parser(t_shell *shell, char *line, int var);
 char				*ft_get_first(const char *s, int c);
+t_cmds				*parse_command(t_shell *shell, t_cmds *cmds);
+int					check_parsing(t_shell *shell);
+int					create_cmd_line(t_cmds **cmds, char *tmp, int start, int end);
+
+//debugging
+void	erase_file_debug();
+void	write_to_file(char *s, char *num, int end);
+void    debug_cmd(t_cmds *cmds, int i, int pos, char c);
+
 #endif

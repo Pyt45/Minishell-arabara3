@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 11:51:00 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 12:40:36 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:54:14 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char			**ft_split_quote(char const *s, char c)
 	return (r);
 }
 
-t_parser		*init_parser(t_shell *shell)
+t_parser		*init_parser(t_shell *shell, char *line, int var)
 {
 	t_parser *parser;
 
@@ -109,6 +109,9 @@ t_parser		*init_parser(t_shell *shell)
 	parser->ignore = 0;
 	parser->pos = 0;
 	parser->quote = 0;
-	parser->str = replace_string(ft_strdup(shell->line), shell);
+	if (var)
+		parser->str = replace_string(ft_strdup(line), shell);
+	else
+		parser->str = ft_strdup(line);
 	return (parser);
 }

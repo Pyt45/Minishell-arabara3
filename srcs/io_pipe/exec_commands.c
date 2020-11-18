@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:35:53 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/18 09:37:21 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 {
 	int		status;
-	//double	shift;
+	float	shift;
 
 	status = 0;
 	close_pipes(shell->exec.fds, shell->num_pipe);
@@ -23,7 +23,36 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	if (status == 2 || status == 3)
 		cmds->ret = status + 128;
 	else
-		cmds->ret = (status >> 8) & 255;
+	{
+		shift = (status) / (ft_pow(2, 8));
+        cmds->ret = (int)shift & 255;
+	}
+	// if (status == 2 || status == 3)
+	// 	cmds->ret = (status & 0177) + 128;
+	// else
+	// 	cmds->ret = (status >> 8) & 0x000000ff;
+	// else
+	// {
+	// 	shift = (status) / (ft_pow(2, 8));
+	// 	cmds->ret = (int)shift & 255;
+	// }
+	// if ((status & 127) != 127 && (status & 127) != 0)
+	// 	cmds->ret = status + 128;
+	// else if ((status & 127) == 0)
+	// {
+	// 	shift = (status) / (ft_pow(2, 8));
+	// 	cmds->ret = (int)shift & 255;
+	// }
+	// if (WIFEXITED(status)) 
+    //     cmds->ret = WEXITSTATUS(status);
+	// else
+	// {
+	// 	//cmds->ret = (status & 127) + 128;
+	// 	if (WIFSIGNALED(status))
+	// 		cmds->ret = WTERMSIG(status) + 128;
+	// 	// else
+	// 	// 	cmds->ret = status;
+	// }
 	if (shell->num_pipe)
 	{
 		ft_del(shell->exec.fds);
@@ -86,16 +115,15 @@ void			run_commands(t_shell *shell)
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
 	shell = parse_commands(shell);
-	if (shell->parse_err == -1)
-	{
-		print_error("syntax error", 0, 0);
-		shell->ret = 258;
-	}
-	else
+	if (check_parsing(shell))
 	{
 		cmds = shell->cmds;
 		while (cmds)
 		{
+			if (cmds->line)
+				cmds = parse_command(shell, cmds);
+			if (!check_parsing(shell))
+				break ;
 			signal(SIGQUIT, sig_handle);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);

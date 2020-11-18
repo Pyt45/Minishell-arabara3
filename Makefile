@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/14 14:24:25 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/17 19:20:28 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,11 @@ SRC = srcs/termcaps/config.c \
 		srcs/builtins/builtins_utils.c \
 		srcs/utils/split.c \
 		srcs/utils/free.c \
+		srcs/utils/debug.c \
 		srcs/utils/array_helpers.c \
 		srcs/parsing/main_parsing.c \
 		srcs/parsing/helpers.c \
+		srcs/parsing/parsing_utils.c \
 		srcs/parsing/var_manager.c \
 		srcs/parsing/utils.c \
 		srcs/io_pipe/exec_commands.c \
@@ -71,16 +73,16 @@ $(LIBFT_LIB):
 
 $(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
-	@gcc -lncurses $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS!"
+	@gcc $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
+	@echo "SUCCESS! NO WWW ADDED"
 
 $(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
 	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS!"
+	@echo "SUCCESS! NO WWW ADDED"
 
 %.o: %.c
-	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
+	@gcc -c $< -o $@ -I $(INC)
 
 clean:
 	@make clean -C $(LIBFT)
@@ -93,3 +95,5 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
+
+#	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
