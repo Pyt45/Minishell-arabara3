@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 11:16:33 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 14:18:44 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,41 @@ char	*replace_string(char *str, t_shell *shell)
 
 void	manage_redirections(t_cmds **cmds, int *i, char *tmp)
 {
+	int j;
+
 	if (!(*cmds)->prev)
 		(*cmds)->start = 1;
 	if (tmp[*i] == '>')
 		(*cmds)->append = 1;
 	else if (tmp[*i] == '<')
 		(*cmds)->append = -1;
-	if (tmp[*i + 1] == '>')
+	while (tmp[*i + 1] == '>')
 	{
 		(*cmds)->append++;
 		(*i)++;
 	}
-	else if (tmp[*i + 1] == '<')
+	while (tmp[*i + 1] == '<')
 	{
 		(*cmds)->append--;
 		(*i)++;
 	}
+	j = *i + 1;
+	while (tmp[j])
+	{
+		printf("%s \n", tmp);
+		if (tmp[j] == '>' || tmp[j] == '<')
+			(*cmds)->append = 20;
+		if (ft_isprint(tmp[j]))
+			break ;
+	}
+	// if (tmp[*i + 1] == '>')
+	// {
+	// 	(*cmds)->append++;
+	// 	(*i)++;
+	// }
+	// else if (tmp[*i + 1] == '<')
+	// {
+	// 	(*cmds)->append--;
+	// 	(*i)++;
+	// }
 }

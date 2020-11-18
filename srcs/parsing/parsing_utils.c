@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 19:13:25 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 13:53:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 14:12:23 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int		parse_redirections(t_cmds **cmds, int *i, int pos, char *tmp)
 	(*cmds)->args = get_args(tmp + pos, *i - pos);
 	manage_redirections(cmds, i, tmp);
 	// debug_cmd((*cmds), *i, pos, tmp[*i]);
+	if ((*cmds)->append > 2 || (*cmds)->append < -2)
+		return (-1);
 	(*cmds)->next = init_cmds((*cmds));
 	(*cmds) = (*cmds)->next;
 	if (!tmp[*i + 1])
