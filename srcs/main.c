@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 10:16:57 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:51:31 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	command_line(t_shell *shell)
 		g_ret = 0;
 	}
 }
-
 
 int		main(int argc, char **argv, char **envp)
 {

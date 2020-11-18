@@ -6,13 +6,42 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 11:47:02 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:54:24 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-int		check_parsing(t_shell *shell)
+int				validate_line(char *str)
+{
+	int		i;
+	char	**tmp;
+	int		pos;
+	int		j;
+
+	i = ft_strlen(str);
+	while (str[--i] == ' ')
+		str[i] = '\0';
+	i = -1;
+	pos = 0;
+	while (str[++i])
+		if ((str[i] == '>' || str[i] == '<') && !str[i + 1])
+			return (0);
+		else if (str[i] == ';' || str[i] == '|')
+		{
+			tmp = get_args(str, ft_strlen(str + pos) - 1);
+			if (!tmp)
+				return (0);
+			pos = i;
+			j = -1;
+			while (tmp[++j])
+				ft_del(tmp[j]);
+			ft_del(tmp);
+		}
+	return (1);
+}
+
+int				check_parsing(t_shell *shell)
 {
 	if (shell->parse_err == -1)
 	{
@@ -23,7 +52,7 @@ int		check_parsing(t_shell *shell)
 	return (1);
 }
 
-t_shell	*parse_commands(t_shell *shell)
+t_shell			*parse_commands(t_shell *shell)
 {
 	t_cmds		*cmds;
 	t_parser	*parser;
@@ -39,8 +68,10 @@ t_shell	*parse_commands(t_shell *shell)
 			parser->ignore = parser->ignore ? 0 : 1;
 		if (is_quote(parser->str[i], 0) && !parser->ignore)
 			parser->quote = quote_activer(parser->quote, parser->str[i]);
-		if (!parser->quote && (parser->str[i] == ';' || parser->str[i + 1] == '\0'))
-				parser->pos = create_cmd_line(&cmds, parser->str, parser->pos, i);
+		if (!parser->quote && (parser->str[i] == ';' ||
+			parser->str[i + 1] == '\0'))
+			parser->pos = create_cmd_line(&cmds,
+				parser->str, parser->pos, i);
 		if (parser->ignore && parser->str[i] != '\\')
 			parser->ignore = 0;
 	}
@@ -64,7 +95,8 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 		if (is_quote(parser->str[i], 0) && !parser->ignore)
 			parser->quote = quote_activer(parser->quote, parser->str[i]);
 		if (!parser->quote)
-			parser->pos = manage_parsing(&cmds, &i, parser->pos, parser->str);
+			parser->pos = manage_parsing(&cmds, &i,
+				parser->pos, parser->str);
 		if (parser->ignore && parser->str[i] != '\\')
 			parser->ignore = 0;
 	}

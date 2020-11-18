@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 13:33:59 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:55:03 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
 	while (cmds && cmds->append > 0)
 	{
-		// Emmm it do nothing
 		if (!cmds->next)
 			break ;
 		cmds = cmds->next;
@@ -85,7 +84,6 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
-
 		shell->exec.fds = pipe_fds(shell->num_pipe, shell->exec.fds);
 		save_fds(shell->exec.backup);
 		while (cmds)
@@ -109,16 +107,6 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 	return (cmds);
 }
 
-void		print_cmds(t_cmds *cmds)
-{
-	while(cmds)
-	{
-		write_to_file(" CMD: ", cmds->cmd, 0);
-		cmds = cmds->next;
-	}
-	write_to_file("", "", 1);
-}
-
 void			run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
@@ -135,7 +123,6 @@ void			run_commands(t_shell *shell)
 				parse_command(shell, cmds);
 			if (!check_parsing(shell))
 				break ;
-			// print_cmds(cmds);
 			signal(SIGQUIT, sig_handle);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
