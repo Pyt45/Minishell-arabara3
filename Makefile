@@ -6,11 +6,13 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/17 19:20:28 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/18 10:07:59 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
+
+NAME_BONUS = minishell_bonus
 
 SRC = srcs/termcaps/config.c \
 		srcs/termcaps/controls.c \
@@ -64,21 +66,21 @@ NORMAL = $(MINI_LIB)
 
 BONUS = $(MINI_LIB_BONUS)
 
-all: $(NORMAL)
+all: $(NAME)
 
-bonus: $(BONUS)
+bonus: $(NAME_BONUS)
 
 $(LIBFT_LIB):
 	@make -C $(LIBFT)
 
-$(NORMAL): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
+$(NAME): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
 	@echo "SUCCESS! NO WWW ADDED"
 
-$(BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
+$(NAME_BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
-	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME)
+	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME_BONUS)
 	@echo "SUCCESS! NO WWW ADDED"
 
 %.o: %.c

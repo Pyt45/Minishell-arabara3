@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:23:39 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:24:41 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 11:22:24 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ char	*parse_variable_name(char *str, int len, t_shell *shell)
 	else if ((i = ft_getenv(tmp, shell->env)) >= 0)
 		var = shell->env[i] + ft_strlen(tmp) + 1;
 	ft_del(tmp);
-	if (var)
-		return (var);
-	return (NULL);
+	return (var ? var : NULL);
 }
 
 void	replace_in_string(char *src, char *dest, int *inc)
@@ -87,6 +85,8 @@ char	*parse_env_var(char *str, t_shell *shell)
 	quote = 0;
 	while (str[++i])
 	{
+		if (quote != 1 && str[i] == '$' && str[i - 1] != '\\')
+			var = i;
 		if (quote != 1 && var != -1 && var_checker_pass(str[i + 1]))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
@@ -95,8 +95,6 @@ char	*parse_env_var(char *str, t_shell *shell)
 			var = -1;
 		}
 		quotes_checker(&quote, str[i]);
-		if (quote != 1 && str[i] == '$' && str[i - 1] != '\\')
-			var = i;
 		if (str[i] == '$' && str[i + 1] == '\\')
 			break ;
 	}
@@ -105,8 +103,9 @@ char	*parse_env_var(char *str, t_shell *shell)
 
 int		var_checker_pass(char c)
 {
-	if (!c || is_quote(c, 0) || !ft_isalnum(c) || c == ' '
-		|| c == '$' || c == '}')
+	if (c == '?')
+		return (0);
+	if ((!c || is_quote(c, 0) || !ft_isalnum(c) || c == ' ' || c == '$'))
 		return (1);
 	return (0);
 }

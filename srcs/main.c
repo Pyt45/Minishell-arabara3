@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:51:50 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 10:16:57 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	free_shell(shell);
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 2);
-	(tstatus && !status) ? print_error("exit", 33, 0) : 0;
+	((tstatus && !status) || status < 0) ? print_error("exit", 33, 0) : 0;
 	ft_del(shell);
 	exit(status);
 	return (0);

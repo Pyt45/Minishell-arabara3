@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 19:13:25 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:50:09 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 10:13:21 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int		parse_pipes(t_cmds **cmds, int i, int pos, char *tmp)
 {
 	(*cmds)->cmd = get_cmd(tmp + pos, i - pos);
 	(*cmds)->args = get_args(tmp + pos, i - pos);
+	// debug_cmd((*cmds), i, pos, tmp[i]);
 	if (!(*cmds)->args)
 		return (-1);
 	if (!(*cmds)->prev)
@@ -61,6 +62,7 @@ int		parse_redirections(t_cmds **cmds, int *i, int pos, char *tmp)
 	(*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
 	(*cmds)->args = get_args(tmp + pos, *i - pos);
 	manage_redirections(cmds, i, tmp);
+	// debug_cmd((*cmds), *i, pos, tmp[*i]);
 	(*cmds)->next = init_cmds((*cmds));
 	(*cmds) = (*cmds)->next;
 	if (!tmp[*i + 1])
@@ -110,16 +112,12 @@ int		validate_line(char *str)
 
 int		create_cmd_line(t_cmds **cmds, char *tmp, int start, int end)
 {
-	int		i;
-
-	i = 0;
 	if ((*cmds)->line)
 	{
 		(*cmds)->next = init_cmds(*cmds);
 		(*cmds) = (*cmds)->next;
 	}
 	(*cmds)->line = ft_substr(tmp, start, end - start + 1);
-	// write_to_file("CMD ", (*cmds)->line, 1);
 	if (!validate_line((*cmds)->line))
 		return (-1);
 	return (end + 1);

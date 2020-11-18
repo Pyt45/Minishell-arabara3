@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:43:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 11:17:27 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,10 @@ t_cmds				*parse_command(t_shell *shell, t_cmds *cmds);
 int					check_parsing(t_shell *shell);
 int					create_cmd_line(t_cmds **cmds, char *tmp, int start, int end);
 int					manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp);
+char	*parse_env_variable(char *str, t_shell *shell);
+
+
+
 //debugging
 void	erase_file_debug();
 void	write_to_file(char *s, char *num, int end);

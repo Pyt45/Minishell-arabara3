@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:44 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 19:18:14 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 10:42:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 			parser->ignore = parser->ignore ? 0 : 1;
 		else if (!parser->ignore)
 		{
-			if (is_quote(parser->str[i], 0) && !parser->ignore)
+			if (is_quote(parser->str[i], 0))
+			{
 				parser->quote = quote_activer(parser->quote, parser->str[i]);
+			}
 			if (!parser->quote)
 				parser->pos = manage_parsing(&cmds, &i, parser->pos, parser->str);
 		}
