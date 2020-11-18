@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:37:21 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:33:59 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 
 	if ((cmds->next && !cmds->end) || !is_builtin(cmds->cmd))
 	{
+
 		shell->exec.fds = pipe_fds(shell->num_pipe, shell->exec.fds);
 		save_fds(shell->exec.backup);
 		while (cmds)
@@ -108,6 +109,16 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 	return (cmds);
 }
 
+void		print_cmds(t_cmds *cmds)
+{
+	while(cmds)
+	{
+		write_to_file(" CMD: ", cmds->cmd, 0);
+		cmds = cmds->next;
+	}
+	write_to_file("", "", 1);
+}
+
 void			run_commands(t_shell *shell)
 {
 	t_cmds	*cmds;
@@ -121,9 +132,10 @@ void			run_commands(t_shell *shell)
 		while (cmds)
 		{
 			if (cmds->line)
-				cmds = parse_command(shell, cmds);
+				parse_command(shell, cmds);
 			if (!check_parsing(shell))
 				break ;
+			// print_cmds(cmds);
 			signal(SIGQUIT, sig_handle);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);

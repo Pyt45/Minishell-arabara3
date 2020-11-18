@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 19:13:25 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 12:23:36 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 13:39:14 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ int		validate_line(char *str)
 	i = -1;
 	pos = 0;
 	while(str[++i])
-	{
-		if (str[i] == ';' || str[i] == '|')
+		if ((str[i] == '>' || str[i] == '<') && !str[i + 1])
+			return (0);
+		else if (str[i] == ';' || str[i] == '|')
 		{
 			tmp = get_args(str, ft_strlen(str + pos) - 1);
 			if (!tmp)
@@ -109,7 +110,6 @@ int		validate_line(char *str)
 				ft_del(tmp[j]);
 			ft_del(tmp);
 		}
-	}
 	return (1);
 }
 
@@ -121,6 +121,7 @@ int		create_cmd_line(t_cmds **cmds, char *tmp, int start, int end)
 		(*cmds) = (*cmds)->next;
 	}
 	(*cmds)->line = ft_substr(tmp, start, end - start + 1);
+	// write_to_file("CR CMD ", (*cmds)->line, 1);
 	if (!validate_line((*cmds)->line))
 		return (-1);
 	return (end + 1);
