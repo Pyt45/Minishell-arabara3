@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/17 17:37:58 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/17 20:00:48 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 static	void	exec_help(t_shell *shell, t_cmds *cmds)
 {
+	struct stat	file_stat;
+
 	if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
+	{
+		if (stat(cmds->cmd, &file_stat) < 0)
+		{
+			print_error(cmds->cmd, errno, 0);
+			exit(1);
+		}
 		execve(cmds->cmd, cmds->args, shell->env);
+	}
 	else
 		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
 }
