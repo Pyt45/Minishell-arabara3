@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:23:39 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 11:58:43 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 12:04:34 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ char	*parse_env_var(char *str, t_shell *shell)
 		if (quote != 1 && var != -1 && var_checker_pass(str[i + 1]))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
-			if (ft_strlen(tmp))
+			if (ft_strlen(tmp) || i - var > 0)
 				str = replace_var_string(str, var, tmp, i - var);
-			i = ft_strlen(tmp) ? var + ft_strlen(tmp) - 1 : i;
+			i = ft_strlen(tmp) || i - var > 0 ? var + ft_strlen(tmp) - 1 : i;
 			var = -1;
 		}
 		quotes_checker(&quote, str[i]);

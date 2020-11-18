@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 19:13:25 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 11:47:16 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/18 12:23:36 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ int		manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp)
 
 int		validate_line(char *str)
 {
-	int	i;
+	int		i;
 	char	**tmp;
-	int		err;
 	int		pos;
+	int		j;
 
 	i = ft_strlen(str);
 	while(str[--i] == ' ')
@@ -104,6 +104,9 @@ int		validate_line(char *str)
 			if (!tmp)
 				return (0);
 			pos = i;
+			j = -1;
+			while (tmp[++j])
+				ft_del(tmp[j]);
 			ft_del(tmp);
 		}
 	}
