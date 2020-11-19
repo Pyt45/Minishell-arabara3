@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:31:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/19 10:02:58 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 11:53:11 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ char	*get_home_dir(t_shell *shell)
 
 	i = 0;
 	if ((i = ft_getenv("HOME", shell->env)) >= 0)
+	{
+		write_to_file("I ", ft_itoa(i), 1);
+		write_to_file("I ENV ", shell->env[i], 1);
 		return (ft_strdup(shell->env[i]));
+	}
 	return (NULL);
 }
 

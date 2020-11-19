@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/19 11:12:29 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 12:06:41 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	command_line(t_shell *shell)
 	status = 1;
 	while (status)
 	{
-		write_to_file("OK", "", 1);
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_handle);
 		if (shell->ret != 130 && shell->signal != 1)

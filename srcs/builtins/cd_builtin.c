@@ -6,47 +6,38 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/19 11:29:34 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 12:03:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-char	*get_dir(char *path)
+char	*get_dir(char **path)
 {
 	char	*tmp;
 
-	if (ft_strchr(path, '='))
+	if (ft_strchr(*path, '='))
 	{
-
-		// tmp = ft_strdup(ft_strchr(path, '=') + 1);
-		// ft_del(path);
-		write_to_file("ENDx ", path, 1);
-		return (ft_strchr(path, '=') + 1);
+		tmp = ft_strdup(ft_strchr(*path, '=') + 1);
+		ft_del(*path);
+		*path = tmp;
+		return (*path);
 	}
-	return (path);
+	return (*path);
 }
 
-int		move_to_dir(char *path, int *is_print)
+int		move_to_dir(char **path, int *is_print)
 {
-	char *tmp;
 	
-	if (!path && *is_print)
+	if (!*path && *is_print)
 		return (0);
-	if (!ft_strlen(path))
+	if (!ft_strlen(*path))
 		return (1);
-	// if (chdir(get_dir(path)))
-	// if (chdir("/Users/zlayine/Desktop"))
-	// {
-	// 	write_to_file("END ", path, 1);
-	// 	// ft_del(path);
-	// 	return (0);
-	// }
-	tmp = get_dir(path);
-	write_to_file("TMP ", tmp, 1);
-	chdir(tmp);
-	write_to_file("END1 ", tmp, 1);
-	printf("hello\n");
+	if (chdir(get_dir(path)))
+	{
+		ft_del(path);
+		return (0);
+	}
 	return (1);
 }
 
@@ -57,7 +48,7 @@ char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 	else if (!ft_strcmp(path, "~"))
 		path = get_home_dir(shell);
 	else if (path[0] == '~' && path[1] == '/')
-		path = ft_strcat(get_home_dir(shell), path + 1);
+		path = ft_strjoin(get_home_dir(shell), path + 1);
 	else if (!ft_strcmp(path, "-"))
 	{
 		path = get_old_dir(shell);
@@ -89,8 +80,7 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	is_print = 0;
 	pwd = getcwd(NULL, 0);
 	path = manage_path_cd(shell, cmds->args[1], &is_print);
-	write_to_file("PATH ", path, 1);
-	ret = move_to_dir(path, &is_print);
+	ret = move_to_dir(&path, &is_print);
 	(ret && is_print) ? ft_putendl_fd(path, 1) : 0;
 	if (ret == 0)
 	{
@@ -98,12 +88,10 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 			print_error("OLDPWD not set", errno, 0);
 		else
 			print_error(cmds->args[1], errno, 0);
-		ft_del(path);
 		ft_del(pwd);
 		return (!ret);
 	}
 	set_pwd(shell, pwd);
 	ft_del(path);
-	write_to_file("END ", "", 1);
 	return (!ret);
 }
