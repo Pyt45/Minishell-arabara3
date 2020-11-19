@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 16:55:44 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 10:35:39 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,9 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	if (value[0] == '=')
 		return (0);
 	argv = ft_split(value, '=');
-	if ((i = ft_getenv(argv[0], shell->env)) >= 0)
+	if (ft_strcmp(argv[0], "_") && (i = ft_getenv(argv[0], shell->env)) >= 0)
 	{
+		write_to_file("here","",1);
 		if (argv[1])
 		{
 			free(shell->env[i]);
@@ -105,7 +106,7 @@ int				ft_export_cmd(t_shell *shell, char *value)
 		else
 			ft_del(value);
 	}
-	else
+	else if (ft_strcmp(argv[0], "_"))
 		shell->env = ft_add_to_arr(value, shell->env);
 	ft_free_arr(argv);
 	return (1);
