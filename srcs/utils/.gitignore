@@ -1,2 +1,2 @@
 !.gitignore
-./debug.c
+debug.c
