@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/17 18:18:03 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 13:52:39 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
 	double	tstatus;
-	int		status;
+	long	status;
 	int		i;
 
-	tstatus = 0;
-	status = shell->ret;
+	if (!check_len(cmds))
+		return (1);
+	tstatus = 1;
+	status = 0;
 	i = -1;
 	if (cmds && cmds->args[1])
 	{
-		while (cmds->args[1][++i])
-			if (ft_isalpha((int)(cmds->args[1][i])))
-				tstatus = 1;
-		status = ft_atoi(cmds->args[1]);
+		status = ft_atoi_l(cmds->args[1]);
+		tstatus = valid_status(cmds->args[1], status);
 	}
 	if (!shell->num_pipe)
 		end_terminal(&shell->config);
@@ -34,8 +34,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	free_config(&shell->config);
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 1);
-	if (tstatus && !status)
-		print_error("exit", 33, 0);
+	(!tstatus) ? print_error("exit", 33, 0) : 0;
 	exit(status);
 	return (0);
 }

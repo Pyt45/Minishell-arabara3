@@ -6,24 +6,43 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/19 10:57:55 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 14:56:38 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
+void			check_file(char *file, int cas, t_shell *shell)
+{
+	struct stat	file_stat;
+	
+	if (cas == 1)
+	{
+		if (stat(file, &file_stat) < 0)
+			exit_error(strerror(errno), 1, shell);
+		if (!ft_access(file, 1))
+			exit_error("Permission denied", 1, shell);
+	}
+	else if (cas == 2)
+	{
+		stat(file, &file_stat);
+		if (file_stat.st_mode == 16877)
+			exit_error("its a directory", 1, shell);
+		if (stat(file, &file_stat) < 0)
+			exit_error(strerror(errno), 1, shell);
+	}
+}
+
 static void		exec_help(t_shell *shell, t_cmds *cmds)
 {
 	char		*cmd;
-	struct stat	file_stat;
-
-	if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
+	
+	if ((cmds->cmd[0] == '.' && cmds->cmd[1] == '/') || ft_strchr(cmds->cmd, '/'))
 	{
-		if (stat(cmds->cmd, &file_stat) < 0 || !ft_access(cmds->cmd, 1))
-		{
-			print_error(cmds->cmd, errno, 0);
-			exit(1);
-		}
+		if (cmds->cmd[ft_strlen(cmds->cmd) - 1] == '/')
+			check_file(cmds->cmd, 2, shell);
+		else
+			check_file(cmds->cmd, 1, shell);
 		execve(cmds->cmd, cmds->args, shell->env);
 	}
 	else
