@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:10:41 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 14:18:44 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 09:32:03 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,33 +98,21 @@ void	manage_redirections(t_cmds **cmds, int *i, char *tmp)
 		(*cmds)->append = 1;
 	else if (tmp[*i] == '<')
 		(*cmds)->append = -1;
-	while (tmp[*i + 1] == '>')
+	while ((*cmds)->append > 0 && tmp[*i + 1] == '>')
 	{
 		(*cmds)->append++;
 		(*i)++;
 	}
-	while (tmp[*i + 1] == '<')
+	while ((*cmds)->append < 0 && tmp[*i + 1] == '<')
 	{
 		(*cmds)->append--;
 		(*i)++;
 	}
-	j = *i + 1;
-	while (tmp[j])
-	{
-		printf("%s \n", tmp);
-		if (tmp[j] == '>' || tmp[j] == '<')
+	j = *i;
+	while (tmp[++j])
+		if ((tmp[j] == '>' && (*cmds)->append < 0) || (tmp[j] == '<' &&
+			(*cmds)->append > 0) || tmp[j] == '<' || tmp[j] == '>')
 			(*cmds)->append = 20;
-		if (ft_isprint(tmp[j]))
+		else if (ft_isprint(tmp[j]) && tmp[j] != ' ')
 			break ;
-	}
-	// if (tmp[*i + 1] == '>')
-	// {
-	// 	(*cmds)->append++;
-	// 	(*i)++;
-	// }
-	// else if (tmp[*i + 1] == '<')
-	// {
-	// 	(*cmds)->append--;
-	// 	(*i)++;
-	// }
 }
