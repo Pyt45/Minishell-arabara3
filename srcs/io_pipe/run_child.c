@@ -6,19 +6,20 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/19 10:38:22 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 10:57:55 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-static	void	exec_help(t_shell *shell, t_cmds *cmds)
+static void		exec_help(t_shell *shell, t_cmds *cmds)
 {
+	char		*cmd;
 	struct stat	file_stat;
 
 	if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
 	{
-		if (stat(cmds->cmd, &file_stat) < 0)
+		if (stat(cmds->cmd, &file_stat) < 0 || !ft_access(cmds->cmd, 1))
 		{
 			print_error(cmds->cmd, errno, 0);
 			exit(1);
@@ -26,7 +27,11 @@ static	void	exec_help(t_shell *shell, t_cmds *cmds)
 		execve(cmds->cmd, cmds->args, shell->env);
 	}
 	else
-		execve(get_bin_path(cmds->cmd, shell->env), cmds->args, shell->env);
+	{
+		cmd = get_bin_path(cmds->cmd, shell->env);
+		ft_del(cmd);
+		execve(cmd, cmds->args, shell->env);
+	}
 }
 
 int				exec_commands(t_shell *shell, t_cmds *cmds)

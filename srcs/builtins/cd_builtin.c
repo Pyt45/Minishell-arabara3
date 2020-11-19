@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 12:11:14 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 11:29:34 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,39 @@
 
 char	*get_dir(char *path)
 {
+	char	*tmp;
+
 	if (ft_strchr(path, '='))
+	{
+
+		// tmp = ft_strdup(ft_strchr(path, '=') + 1);
+		// ft_del(path);
+		write_to_file("ENDx ", path, 1);
 		return (ft_strchr(path, '=') + 1);
+	}
 	return (path);
 }
 
 int		move_to_dir(char *path, int *is_print)
 {
+	char *tmp;
+	
 	if (!path && *is_print)
 		return (0);
 	if (!ft_strlen(path))
 		return (1);
-	if (chdir(get_dir(path)))
-	{
-		ft_del(path);
-		return (0);
-	}
+	// if (chdir(get_dir(path)))
+	// if (chdir("/Users/zlayine/Desktop"))
+	// {
+	// 	write_to_file("END ", path, 1);
+	// 	// ft_del(path);
+	// 	return (0);
+	// }
+	tmp = get_dir(path);
+	write_to_file("TMP ", tmp, 1);
+	chdir(tmp);
+	write_to_file("END1 ", tmp, 1);
+	printf("hello\n");
 	return (1);
 }
 
@@ -72,6 +89,7 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	is_print = 0;
 	pwd = getcwd(NULL, 0);
 	path = manage_path_cd(shell, cmds->args[1], &is_print);
+	write_to_file("PATH ", path, 1);
 	ret = move_to_dir(path, &is_print);
 	(ret && is_print) ? ft_putendl_fd(path, 1) : 0;
 	if (ret == 0)
@@ -80,10 +98,12 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 			print_error("OLDPWD not set", errno, 0);
 		else
 			print_error(cmds->args[1], errno, 0);
+		ft_del(path);
 		ft_del(pwd);
 		return (!ret);
 	}
 	set_pwd(shell, pwd);
 	ft_del(path);
+	write_to_file("END ", "", 1);
 	return (!ret);
 }

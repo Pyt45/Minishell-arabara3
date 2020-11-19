@@ -8,3 +8,4 @@ minishell*
 debug.txt
 txt*
 out*
+srcs/utils/debug.c
