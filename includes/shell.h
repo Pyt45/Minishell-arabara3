@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 09:43:12 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 12:24:25 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,8 @@ t_cmds				*parse_command(t_shell *shell, t_cmds *cmds);
 int					check_parsing(t_shell *shell);
 int					create_cmd_line(t_cmds **cmds, char *tmp, int start, int end);
 int					manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp);
+long				ft_atoi_l(const char *str);
+int					valid_status(char *arg, long l);
 //debugging
 void	erase_file_debug();
 void	write_to_file(char *s, char *num, int end);

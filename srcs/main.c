@@ -6,63 +6,34 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 15:03:08 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/19 12:29:58 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/shell.h"
 
-int		valid_status(char *arg, long l)
+static	int	check_len(t_cmds *cmds)
 {
-	int i;
-
-	if (l > INT32_MAX || l < INT32_MIN)
-		return (0);
-	i = -1;
-	while (arg[++i] && ft_isdigit(arg[i]))
-		;
-	return (arg[i] == '\0');
+	if (cmds && cmds->args)
+	{
+		if (ft_arr_len(cmds->args) > 2)
+		{
+			ft_putstr_fd("exit\n", 2);
+			print_error("exit", 7, 0);
+			return (0);
+		}
+	}
+	return (1);
 }
 
-long			ft_atoi_l(const char *str)
-{
-	int		i;
-	long	long n;
-	int		sign;
-
-	i = 0;
-	n = 0;
-	sign = 1;
-	while (str[i] == '\t' || str[i] == ' ' || str[i] == '\n' ||
-		str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
-	{
-		n = n * 10 + (str[i] - 48);
-		i++;
-	}
-	n = n * sign;
-	return (n);
-}
-
-
-int		exit_builtin(t_shell *shell, t_cmds *cmds)
+int			exit_builtin(t_shell *shell, t_cmds *cmds)
 {
 	double	tstatus;
 	long	status;
 	int		i;
 
-	if (ft_arr_len(cmds->args) != 1)
-	{
-		print_error("exit", 7, 0);
+	if (!check_len(cmds))
 		return (1);
-	}
 	tstatus = 1;
 	status = 0;
 	i = -1;
@@ -75,14 +46,14 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	free_shell(shell);
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 2);
-	((!tstatus && !status) || (status && !tstatus)) ?
+	(!tstatus) ?
 	print_error("exit", 33, 0) : 0;
 	ft_del(shell);
 	exit(status);
 	return (0);
 }
 
-void	sig_handle(int sig)
+void		sig_handle(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -97,7 +68,7 @@ void	sig_handle(int sig)
 	}
 }
 
-void	command_line(t_shell *shell)
+void		command_line(t_shell *shell)
 {
 	int		r;
 	int		status;
@@ -121,8 +92,7 @@ void	command_line(t_shell *shell)
 	}
 }
 
-
-int		main(int argc, char **argv, char **envp)
+int			main(int argc, char **argv, char **envp)
 {
 	t_shell *shell;
 	int		i;

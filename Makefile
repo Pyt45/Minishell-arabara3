@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
+#    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/17 19:20:28 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/19 12:25:16 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC = srcs/termcaps/config.c \
 		srcs/utils/free.c \
 		srcs/utils/debug.c \
 		srcs/utils/array_helpers.c \
+		srcs/utils/utils_func.c \
 		srcs/parsing/main_parsing.c \
 		srcs/parsing/helpers.c \
 		srcs/parsing/parsing_utils.c \
