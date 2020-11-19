@@ -6,25 +6,11 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/19 12:29:58 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/19 13:50:10 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/shell.h"
-
-static	int	check_len(t_cmds *cmds)
-{
-	if (cmds && cmds->args)
-	{
-		if (ft_arr_len(cmds->args) > 2)
-		{
-			ft_putstr_fd("exit\n", 2);
-			print_error("exit", 7, 0);
-			return (0);
-		}
-	}
-	return (1);
-}
 
 int			exit_builtin(t_shell *shell, t_cmds *cmds)
 {
