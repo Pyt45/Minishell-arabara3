@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:31:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 17:42:40 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 10:02:58 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		ft_isalnum_str(char *str)
 	int i;
 
 	i = 0;
-	while (ft_isalnum(str[i]) || str[i] == '=')
+	while (ft_isalnum(str[i]) || str[i] == '=' || str[i] == '_')
 		i++;
 	if (!str[i])
 		return (1);

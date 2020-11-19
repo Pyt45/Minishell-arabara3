@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 18:23:39 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 12:04:34 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/19 10:01:43 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*parse_env_var(char *str, t_shell *shell)
 
 int		var_checker_pass(char c)
 {
-	if (c == '?')
+	if (c == '?' || c == '_')
 		return (0);
 	if ((!c || is_quote(c, 0) || !ft_isalnum(c) || c == ' ' || c == '$'))
 		return (1);

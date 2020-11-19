@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:14:56 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/14 14:35:02 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/19 09:56:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ int		unset_builtin(t_shell *shell, t_cmds *cmds)
 	err = 0;
 	while (cmds->args[i])
 	{
-		if (!valid_arg_name(cmds->args[i]))
+		if (!valid_arg_name(cmds->args[i]) || ft_strchr(cmds->args[i], '='))
 			err = print_error("invalid identifier", errno, 0);
-		shell->env = ft_unset_cmd(shell, cmds->args[i]);
+		else
+			shell->env = ft_unset_cmd(shell, cmds->args[i]);
 		i++;
 	}
 	return (err);
