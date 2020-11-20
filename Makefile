@@ -6,7 +6,7 @@
 #    By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/20 09:46:44 by aaqlzim          ###   ########.fr        #
+#    Updated: 2020/11/20 10:19:45 by aaqlzim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,5 +95,6 @@ fclean: clean
 	@rm -rf $(MINI_LIB)
 	@rm -rf $(MINI_LIB_BONUS)
 	@rm -rf $(NAME)
+	@rm -rf $(NAME_BONUS)
 
 re: fclean all
