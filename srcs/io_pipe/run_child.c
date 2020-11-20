@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/20 09:20:32 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 10:19:26 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void		exec_help(t_shell *shell, t_cmds *cmds)
 	else
 	{
 		cmd = get_bin_path(cmds->cmd, shell->env);
-		ft_del(cmd);
 		execve(cmd, cmds->args, shell->env);
 	}
 }
