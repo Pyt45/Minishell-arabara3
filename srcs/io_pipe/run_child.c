@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/19 14:56:38 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:20:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void			check_file(char *file, int cas, t_shell *shell)
 {
 	struct stat	file_stat;
-	
+
 	if (cas == 1)
 	{
 		if (stat(file, &file_stat) < 0)
@@ -36,8 +36,9 @@ void			check_file(char *file, int cas, t_shell *shell)
 static void		exec_help(t_shell *shell, t_cmds *cmds)
 {
 	char		*cmd;
-	
-	if ((cmds->cmd[0] == '.' && cmds->cmd[1] == '/') || ft_strchr(cmds->cmd, '/'))
+
+	if ((cmds->cmd[0] == '.' && cmds->cmd[1] == '/') ||
+		ft_strchr(cmds->cmd, '/'))
 	{
 		if (cmds->cmd[ft_strlen(cmds->cmd) - 1] == '/')
 			check_file(cmds->cmd, 2, shell);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_func.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 12:23:17 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/19 13:50:14 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:21:08 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
-int			check_len(t_cmds *cmds)
+int		check_len(t_cmds *cmds)
 {
 	if (cmds && cmds->args)
 	{
@@ -28,9 +28,9 @@ int			check_len(t_cmds *cmds)
 
 long	ft_atoi_l(const char *str)
 {
-	int		i;
-	long	long n;
-	int		sign;
+	int			i;
+	long long	n;
+	int			sign;
 
 	i = 0;
 	n = 0;

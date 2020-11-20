@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 13:55:03 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:21:32 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,8 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 	else
 	{
 		shift = (status) / (ft_pow(2, 8));
-        cmds->ret = (int)shift & 255;
+		cmds->ret = (int)shift & 255;
 	}
-	// if (status == 2 || status == 3)
-	// 	cmds->ret = (status & 0177) + 128;
-	// else
-	// 	cmds->ret = (status >> 8) & 0x000000ff;
-	// else
-	// {
-	// 	shift = (status) / (ft_pow(2, 8));
-	// 	cmds->ret = (int)shift & 255;
-	// }
-	// if ((status & 127) != 127 && (status & 127) != 0)
-	// 	cmds->ret = status + 128;
-	// else if ((status & 127) == 0)
-	// {
-	// 	shift = (status) / (ft_pow(2, 8));
-	// 	cmds->ret = (int)shift & 255;
-	// }
-	// if (WIFEXITED(status)) 
-    //     cmds->ret = WEXITSTATUS(status);
-	// else
-	// {
-	// 	//cmds->ret = (status & 127) + 128;
-	// 	if (WIFSIGNALED(status))
-	// 		cmds->ret = WTERMSIG(status) + 128;
-	// 	// else
-	// 	// 	cmds->ret = status;
-	// }
 	if (shell->num_pipe)
 	{
 		ft_del(shell->exec.fds);
