@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_child.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/20 10:19:26 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 10:23:12 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void		exec_help(t_shell *shell, t_cmds *cmds)
 	{
 		cmd = get_bin_path(cmds->cmd, shell->env);
 		execve(cmd, cmds->args, shell->env);
+		ft_del(cmd);
 	}
 }
 
