@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/19 13:52:39 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:28:56 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	ft_free_arr(shell->env);
 	ft_putstr_fd("exit\n", 1);
 	(!tstatus) ? print_error("exit", 33, 0) : 0;
+	ft_del(shell);
 	exit(status);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/20 09:18:50 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:31:02 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,18 @@ int		move_to_dir(char **path, int *is_print)
 
 char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 {
+	char	*tmp;
+
 	if (!path && !*is_print)
 		path = get_home_dir(shell);
 	else if (!ft_strcmp(path, "~"))
 		path = get_home_dir(shell);
 	else if (path[0] == '~' && path[1] == '/')
-		path = ft_strjoin(get_home_dir(shell), path + 1);
+	{
+		tmp = get_home_dir(shell);
+		path = ft_strjoin(tmp, path + 1);
+		ft_del(tmp);
+	}
 	else if (!ft_strcmp(path, "-"))
 	{
 		path = get_old_dir(shell);

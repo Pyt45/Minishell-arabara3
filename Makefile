@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/19 14:18:27 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/20 09:22:22 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,15 +77,15 @@ $(LIBFT_LIB):
 $(NAME): $(OBJ) $(MAIN) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB) $(OBJ)
 	@gcc $(MAIN) $(MINI_LIB) $(LIBFT_LIB) -o $(NAME)
-	@echo "SUCCESS! NO WWW ADDED"
+	@echo "SUCCESS!"
 
 $(NAME_BONUS): $(OBJ) $(MAIN_BONUS) $(LIBFT_LIB) $(INC)/shell.h
 	@ar rcs $(MINI_LIB_BONUS) $(OBJ)
 	@gcc -lncurses $(MAIN_BONUS) $(MINI_LIB_BONUS) $(LIBFT_LIB) -o $(NAME_BONUS)
-	@echo "SUCCESS! NO WWW ADDED"
+	@echo "SUCCESS!"
 
 %.o: %.c
-	@gcc -c $< -o $@ -I $(INC)
+	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
 
 clean:
 	@make clean -C $(LIBFT)
@@ -98,5 +98,3 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
-
-#	@gcc -Wall -Wextra -Werror -c $< -o $@ -I $(INC)
