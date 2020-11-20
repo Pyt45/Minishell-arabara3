@@ -6,7 +6,7 @@
 /*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/20 09:20:07 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:50:29 by zlayine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,10 +244,5 @@ long				ft_atoi_l(const char *str);
 int					valid_status(char *arg, long l);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
-//debugging
-void	erase_file_debug();
-void	write_to_file(char *s, char *num, int end);
-void    debug_cmd(t_cmds *cmds, int i, int pos, char c);
-void	print_cmds(t_cmds *cmds);
 
 #endif

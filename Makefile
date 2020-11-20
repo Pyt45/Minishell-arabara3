@@ -6,7 +6,7 @@
 #    By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/14 12:07:00 by zlayine           #+#    #+#              #
-#    Updated: 2020/11/20 09:22:22 by zlayine          ###   ########.fr        #
+#    Updated: 2020/11/20 09:48:20 by zlayine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ SRC = srcs/termcaps/config.c \
 		srcs/builtins/builtins_utils.c \
 		srcs/utils/split.c \
 		srcs/utils/free.c \
-		srcs/utils/debug.c \
 		srcs/utils/array_helpers.c \
 		srcs/utils/utils_func.c \
 		srcs/parsing/main_parsing.c \
@@ -96,5 +95,6 @@ fclean: clean
 	@rm -rf $(MINI_LIB)
 	@rm -rf $(MINI_LIB_BONUS)
 	@rm -rf $(NAME)
+	@rm -rf $(NAME_BONUS)
 
 re: fclean all
