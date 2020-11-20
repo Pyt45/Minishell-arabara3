@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/20 09:28:48 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:47:19 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int			main(int argc, char **argv, char **envp)
 
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
-	erase_file_debug();
 	g_ret = 0;
 	if (argc && argv)
 	{

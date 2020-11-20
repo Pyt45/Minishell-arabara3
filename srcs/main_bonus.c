@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 09:59:19 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/20 09:28:56 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/20 09:49:43 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int		main(int argc, char **argv, char **envp)
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
 	signal(SIGQUIT, SIG_IGN);
-	erase_file_debug();
 	if (argc && argv)
 	{
 		init_shell(shell);
