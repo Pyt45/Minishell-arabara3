@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:10:18 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/20 11:20:17 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/21 12:36:19 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
 	while (cmds && cmds->append > 0)
+	{
+		if (!cmds->next)
+			break ;
 		cmds = cmds->next;
+	}
 	return (cmds);
 }
 
