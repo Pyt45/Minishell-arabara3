@@ -64,7 +64,7 @@ t_shell			*parse_commands(t_shell *shell)
 	i = -1;
 	while (parser->str[++i] && parser->pos != -1)
 	{
-		if (parser->str[i] == '\\')
+		if (parser->str[i] == '\\' && parser->quote != 1)
 			parser->ignore = parser->ignore ? 0 : 1;
 		if (is_quote(parser->str[i], 0) && !parser->ignore)
 			parser->quote = quote_activer(parser->quote, parser->str[i]);
@@ -90,7 +90,7 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 	i = -1;
 	while (parser->str[++i] && parser->pos != -1)
 	{
-		if (parser->str[i] == '\\')
+		if (parser->str[i] == '\\' && parser->quote != 1)
 			parser->ignore = parser->ignore ? 0 : 1;
 		if (is_quote(parser->str[i], 0) && !parser->ignore)
 			parser->quote = quote_activer(parser->quote, parser->str[i]);

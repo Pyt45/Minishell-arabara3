@@ -77,6 +77,7 @@ char	**get_args(char *str, int n)
 			tmp[n - i] = '\0';
 		if (*tmp)
 			return (ft_split_quote(tmp, ' '));
+		ft_del(tmp);
 	}
 	return (NULL);
 }

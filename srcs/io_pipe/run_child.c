@@ -50,7 +50,6 @@ static void		exec_help(t_shell *shell, t_cmds *cmds)
 	{
 		cmd = get_bin_path(cmds->cmd, shell->env);
 		execve(cmd, cmds->args, shell->env);
-		ft_del(cmd);
 	}
 }
 
