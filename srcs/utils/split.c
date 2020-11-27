@@ -29,25 +29,24 @@ static int		count_strings(char *str)
 	int j;
 	int start;
 	int quote;
+	int	ignore;
 
 	i = -1;
 	j = 0;
 	quote = 0;
 	start = 0;
+	ignore = 0;
 	while (str[++i])
-		if (is_quote(str[i], 0))
-		{
+	{
+		if ((str[i] == '\\') && quote != 1)
+			ignore = ignore ? 0 : 1;
+		if (is_quote(str[i], 0) && !ignore)
 			quote = quote_activer(quote, str[i]);
-			j = start && !quote ? j + 1 : j;
-			start = start && !quote ? 0 : 1;
-		}
-		else if (str[i] == ' ' && !quote && str[i - 1] != '\\')
-		{
-			j = start == 1 ? j + 1 : j;
-			start = start == 1 ? 0 : start;
-		}
-		else if (str[i] != ' ')
-			start = 1;
+		j = str[i] == ' ' && !quote && !ignore && start ? j + 1 : j;
+		start = str[i] == ' ' && !quote && !ignore && start ? 0 : start;
+		start = str[i] != ' ' && !ignore ? 1 : start;
+		ignore = ignore && str[i] != '\\' ? 0 : ignore;
+	}
 	return (start ? j + 1 : j);
 }
 

@@ -43,7 +43,6 @@ char	*clear_quotes(char *str)
 	i = -1;
 	quote = 0;
 	ignore = 0;
-	// printf("parse quotes %s \n", str);
 	while (str[++i])
 	{
 		if ((str[i] == '\\' || ignore) && quote != 1)
@@ -58,7 +57,6 @@ char	*clear_quotes(char *str)
 			|| str[i + 1] == '\\') && quote == 2) || !quote))
 			str = str_quotes_replacer(str, i--);
 	}
-	// printf("parse end quotes %s \n", str);
 	return (str);
 }
 
