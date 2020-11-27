@@ -91,10 +91,14 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	int		i;
 	char	**argv;
 
-	i = 0;
 	if (value[0] == '=')
 		return (0);
 	argv = ft_split(value, '=');
+	if (!valid_arg_name(argv[0]))
+	{
+		ft_free_arr(argv);
+		return (0);
+	}
 	if (ft_strcmp(argv[0], "_") && (i = ft_getenv(argv[0], shell->env)) >= 0)
 	{
 		if (argv[1])
@@ -124,8 +128,7 @@ int				export_builtin(t_shell *shell, t_cmds *cmds)
 	{
 		while (cmds->args[i])
 		{
-			if (!valid_arg_name(cmds->args[i]) ||
-				!ft_export_cmd(shell, ft_strdup(cmds->args[i])))
+			if (!ft_export_cmd(shell, ft_strdup(cmds->args[i])))
 				err = print_error("invalid identifier", errno, 0);
 			i++;
 		}
