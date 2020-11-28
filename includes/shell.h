@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/28 18:32:57 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/28 18:52:14 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int					ft_free_arr(char **arr);
 int					env_builtin(t_cmds *cmd, char **env);
 void				sig_handle(int sig);
 char				**ft_setenv(char *var, char *path, char **env);
-int					pwd_builtin(t_shell *shell);
+int					pwd_builtin();
 int					ft_export_cmd(t_shell *shell, char *value);
 int					export_builtin(t_shell *shell, t_cmds *cmds);
 char				**ft_add_to_arr(char *value, char **arr);
