@@ -84,7 +84,7 @@ char	*parse_env_var(char *str, t_shell *shell)
 		if (quote != 1 && var != -1 && var_checker_pass(str[i + 1]))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
-			if (!quote ||ft_strlen(tmp) || i - var > 0)
+			if (!quote || ft_strlen(tmp) || i - var > 0)
 				str = replace_var_string(str, var, tmp, i - var);
 			i = ft_strlen(tmp) || i - var > 0 ? var + ft_strlen(tmp) - 1 : i;
 			ft_del(tmp);
