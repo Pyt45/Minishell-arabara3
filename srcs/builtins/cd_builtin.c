@@ -97,7 +97,6 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 		else if (!is_print)
 			print_error(cmds->args[1], errno, 0);
 		ft_del(pwd);
-		puts("here");
 		return (!ret);
 	}
 	if (ret == 1 && is_print == 2)
