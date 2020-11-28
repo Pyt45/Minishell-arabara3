@@ -44,7 +44,7 @@ static int		count_strings(char *str)
 			quote = quote_activer(quote, str[i]);
 		j = str[i] == ' ' && !quote && !ignore && start ? j + 1 : j;
 		start = str[i] == ' ' && !quote && !ignore && start ? 0 : start;
-		start = str[i] != ' ' && !ignore ? 1 : start;
+		start = str[i] != ' ' ? 1 : start;
 		ignore = ignore && str[i] != '\\' ? 0 : ignore;
 	}
 	return (start ? j + 1 : j);
