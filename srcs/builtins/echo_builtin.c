@@ -44,21 +44,17 @@ int			echo_builtin(t_cmds *cmd)
 	int	i;
 	int	n;
 
-	i = 0;
+	i = 1;
 	n = 0;
-	if (!cmd->args[1])
+	while (cmd->args[i] && check_n_flag(cmd->args[i], &n))
+		i++;
+	while (cmd->args[i])
 	{
+		if (cmd->args[i])
+			echo_print(cmd->args, i);
+		i++;
+	}
+	if (!n)
 		ft_putchar_fd('\n', 1);
-		return (0);
-	}
-	while (cmd->args[++i])
-	{
-		if (!n)
-			while (cmd->args[i] && check_n_flag(cmd->args[i], &n))
-				i++;
-		echo_print(cmd->args, i);
-		if (!cmd->args[i + 1] && !n)
-			ft_putchar_fd('\n', 1);
-	}
 	return (0);
 }
