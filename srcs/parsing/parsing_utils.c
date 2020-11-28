@@ -94,8 +94,7 @@ int		manage_parsing(t_cmds **cmds, t_parser *prs)
 	else if ((prs->str[prs->c] == '>' || prs->str[prs->c] == '<') &&
 		!prs->ignore)
 		prs->pos = parse_redirections(cmds, prs);
-	else if ((prs->str[prs->c] == ';' && !prs->ignore) ||
-		prs->str[prs->c + 1] == '\0')
+	else if ((prs->str[prs->c] == ';' && !prs->ignore))
 		prs->pos = parse_semicolons(cmds, prs);
 	else if (prs->str[prs->c + 1] == '\0')
 		prs->pos = parse_full(cmds, prs);
