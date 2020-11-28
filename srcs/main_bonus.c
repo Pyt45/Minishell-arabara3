@@ -70,6 +70,7 @@ char	*read_line(t_shell *shell)
 void	command_line(t_shell *shell)
 {
 	shell->ret = 0;
+	shell->config.history = NULL;
 	while ((shell->line = read_line(shell)))
 	{
 		if (ft_strlen(shell->line))

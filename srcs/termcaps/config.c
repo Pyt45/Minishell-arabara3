@@ -45,7 +45,7 @@ void	init_prompt(t_config *config, int err)
 	if (config && config->history)
 		config = add_history(config);
 	else
-		init_config_data(config);
+	init_config_data(config);
 	ft_bzero(config->str, 512 * sizeof(char));
 	config->c = 0;
 	config->len = 0;

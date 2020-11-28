@@ -27,14 +27,9 @@ char	*parse_variable_name(char *str, int len, t_shell *shell)
 		g_ret = 0;
 	}
 	if (tmp[0] == '?')
-	{
-		if (shell->ret == 0)
-			var = ft_strdup("0");
-		else
-			var = ft_itoa(shell->ret);
-	}
+		var = ft_itoa(shell->ret);
 	else if ((i = ft_getenv(tmp, shell->env)) >= 0)
-		var = shell->env[i] + ft_strlen(tmp) + 1;
+		var = ft_strdup(shell->env[i] + ft_strlen(tmp) + 1);
 	ft_del(tmp);
 	return (var ? var : NULL);
 }
@@ -85,14 +80,14 @@ char	*parse_env_var(char *str, t_shell *shell)
 	quote = 0;
 	while (str[++i])
 	{
-		if (quote != 1 && str[i] == '$' && str[i - 1] != '\\')
-			var = i;
+		var = quote != 1 && str[i] == '$' && str[i - 1] != '\\' ? i : var;
 		if (quote != 1 && var != -1 && var_checker_pass(str[i + 1]))
 		{
 			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
-			if (ft_strlen(tmp) || i - var > 0)
+			if (!quote ||ft_strlen(tmp) || i - var > 0)
 				str = replace_var_string(str, var, tmp, i - var);
 			i = ft_strlen(tmp) || i - var > 0 ? var + ft_strlen(tmp) - 1 : i;
+			ft_del(tmp);
 			var = -1;
 		}
 		quotes_checker(&quote, str[i]);

@@ -32,7 +32,6 @@ SRC = srcs/termcaps/config.c \
 		srcs/builtins/builtins_utils.c \
 		srcs/utils/split.c \
 		srcs/utils/free.c \
-		srcs/utils/debug.c \
 		srcs/utils/array_helpers.c \
 		srcs/utils/utils_func.c \
 		srcs/parsing/main_parsing.c \
