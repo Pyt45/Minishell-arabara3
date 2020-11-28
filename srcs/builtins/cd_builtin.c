@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:41:47 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/21 12:40:50 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/11/28 12:42:20 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ char	*get_dir(char **path)
 
 int		move_to_dir(char **path, int *is_print)
 {
-	if (!*path && *is_print)
+	if (!*path && *is_print == 1)
 		return (0);
-	if (!ft_strlen(*path))
+	if (!ft_strlen(*path) && *is_print == 2)
 		return (1);
 	if (chdir(get_dir(path)))
 	{
@@ -45,7 +45,10 @@ char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 	char	*tmp;
 
 	if (!path && !*is_print)
-		path = get_home_dir(shell);
+	{
+		if (!(path = get_home_dir(shell)))
+			*is_print = 2;
+	}
 	else if (!ft_strcmp(path, "~"))
 		path = get_home_dir(shell);
 	else if (path[0] == '~' && path[1] == '/')
@@ -89,12 +92,18 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	(ret && is_print) ? ft_putendl_fd(path, 1) : 0;
 	if (ret == 0)
 	{
-		if (is_print)
+		if (is_print == 1)
 			print_error("OLDPWD not set", errno, 0);
-		else
+		else if (!is_print)
 			print_error(cmds->args[1], errno, 0);
 		ft_del(pwd);
+		puts("here");
 		return (!ret);
+	}
+	if (ret == 1 && is_print == 2)
+	{
+		print_error("cd: HOME not set", errno, 0);
+		return (ret);
 	}
 	set_pwd(shell, pwd);
 	ft_del(path);
