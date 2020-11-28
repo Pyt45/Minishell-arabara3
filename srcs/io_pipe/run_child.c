@@ -61,11 +61,11 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
 	cmds->cmd = clear_quotes(cmds->cmd);
-	if (!ft_strcmp(ft_strlower(cmds->cmd), "env"))
+	if (!ft_strcmp(cmds->cmd, "env"))
 		ret = env_builtin(cmds, shell->env);
 	else if (!ft_strcmp(cmds->cmd, "cd"))
 		ret = cd_builtin(shell, cmds);
-	else if (!ft_strcmp(ft_strlower(cmds->cmd), "pwd"))
+	else if (!ft_strcmp(cmds->cmd, "pwd"))
 		ret = pwd_builtin();
 	else if (!ft_strcmp(cmds->cmd, "exit"))
 		ret = exit_builtin(shell, cmds);
@@ -73,7 +73,7 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 		ret = export_builtin(shell, cmds);
 	else if (!ft_strcmp(cmds->cmd, "unset"))
 		ret = unset_builtin(shell, cmds);
-	else if (!ft_strcmp(ft_strlower(cmds->cmd), "echo"))
+	else if (!ft_strcmp(cmds->cmd, "echo"))
 		ret = echo_builtin(cmds);
 	else
 		exec_help(shell, cmds);
