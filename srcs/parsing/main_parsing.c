@@ -49,6 +49,8 @@ int				check_parsing(t_shell *shell)
 		shell->ret = 258;
 		return (0);
 	}
+	else if (shell->parse_err == -2)
+		return (0);
 	return (1);
 }
 
@@ -75,7 +77,7 @@ t_shell			*parse_commands(t_shell *shell)
 		if (parser->ignore && parser->str[i] != '\\')
 			parser->ignore = 0;
 	}
-	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
+	shell->parse_err = parser->quote || parser->ignore ? shell->bonus ? -2 : -1 : parser->pos;
 	ft_del(parser->str);
 	ft_del(parser);
 	return (shell);

@@ -75,17 +75,22 @@ void	get_cursor_pos(t_config *config)
 		i++;
 	config->o_x = ft_atoi(buff + i + 1);
 	ft_del(buff);
+	// write_to_file("OX ", ft_itoa(config->o_x), 1);
+	// write_to_file("OY ", ft_itoa(config->o_y), 1);
 }
 
-void	reinit_cursor(t_config *config, int new_x, int new_y)
+void	reinit_cursor(t_config *config, int new_x, int new_y, int reinit)
 {
 	config->o_x = new_x;
 	config->o_y = new_y;
 	config->x = config->o_x;
 	config->y = config->o_y - 1;
-	config->c = 0;
-	config->len = 0;
-	ft_bzero(config->str, 512 * sizeof(char));
+	if (reinit)
+	{
+		config->c = 0;
+		config->len = 0;
+		ft_bzero(config->str, 512 * sizeof(char));
+	}
 	move_cursor(config, 3);
 }
 
@@ -105,11 +110,17 @@ void	validate_cursor(t_config *config, t_shell *shell)
 		i++;
 	new_x = ft_atoi(buff + i + 1);
 	ft_del(buff);
-	if (new_y > config->y || (new_y == config->y && new_x ==
+	// if (new_y > config->y)
+	// 	write_to_file("CASE 1 ", ft_itoa(new_y > config->y), 1);
+	// if (new_y == config->y && new_x == config->o_x && !shell->mutli && (config->len < config->width - 1))
+	// 	write_to_file("CASE 2 ", ft_itoa((new_y == config->y && new_x == config->o_x && !shell->mutli && (config->len < config->width - 1))), 1);
+	// if (config->o_x == new_x && config->len == config->width)
+	// 	write_to_file("CASE 3 ", ft_itoa((config->o_x == new_x && config->len == config->width)), 1);
+	if ((new_y > config->y || (new_y == config->y && new_x ==
 		config->o_x && (config->len < config->width - 1)) || (config->o_x ==
-		new_x && config->len == config->width))
+		new_x && config->len == config->width)))
 	{
 		shell->ret = 1;
-		reinit_cursor(config, new_x, new_y);
+		reinit_cursor(config, new_x, new_y, 1);
 	}
 }

@@ -47,13 +47,10 @@ void	init_prompt(t_config *config, int err)
 	else
 		init_config_data(config);
 	ft_bzero(config->str, 512 * sizeof(char));
-	config->c = 0;
-	config->len = 0;
-	config->buff = 0;
-	config->term.c_lflag &= ~(ICANON | ECHO);
-	config->cursor = tgetstr("cm", NULL);
-	if (tcsetattr(0, 0, &config->term) == -1)
-		print_error("Terminal error", 0, 0);
+	// config->c = 0;
+	// config->len = 0;
+	// config->buff = 0;
+	init_terminal(config);
 	if (err != 130)
 		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
 	get_cursor_pos(config);
@@ -84,6 +81,17 @@ void	init_config_data(t_config *config)
 	config->tmp = NULL;
 	config->o_x = 0;
 	config->o_y = 0;
+}
+
+void	init_terminal(t_config *config)
+{
+	config->c = 0;
+	config->len = 0;
+	config->buff = 0;
+	config->term.c_lflag &= ~(ICANON | ECHO);
+	config->cursor = tgetstr("cm", NULL);
+	if (tcsetattr(0, 0, &config->term) == -1)
+		print_error("Terminal error", 0, 0);
 }
 
 void	end_terminal(t_config *config)
