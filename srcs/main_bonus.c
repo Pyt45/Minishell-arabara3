@@ -40,47 +40,9 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	return (0);
 }
 
-char	*make_str(char *str)
-{
-	return (str);
-}
-
-char	**add_multi_line(t_config *config)
-{
-	char	**tmp;
-	int		len;
-	int		i;
-
-	i = 0;
-	len = ft_arr_len(config->multi);
-	tmp = malloc(sizeof(char*) * (len + 2));
-	while (config->multi && config->multi[i])
-	{
-		tmp[i] = malloc(sizeof(char) * (ft_strlen(config->multi[i]) + 1));
-		tmp[i] = ft_strcpy(tmp[i], config->multi[i]);
-		ft_del(config->multi[i]);
-		write_to_file("COPIED ", tmp[i], 1);
-		i++;
-	}
-	tmp[i] = malloc(sizeof(char) * (ft_strlen(config->str) + 1));
-	tmp[i] = ft_strcpy(tmp[i], config->str);
-	write_to_file("ADDED ", tmp[i], 1);
-	tmp[++i] = 0;
-	ft_del(config->multi);
-	return (tmp);
-}
-
 char	*read_line(t_shell *shell)
 {
-	if (shell->parse_err != -2)
-		init_prompt(&shell->config, shell->ret);
-	else
-	{
-		init_terminal(&shell->config);
-		shell->config.multi = add_multi_line(&shell->config);
-		ft_putstr_fd("\033[1;32m>\033[0m", 2);
-		get_cursor_pos(&shell->config);
-	}
+	init_prompt(&shell->config, shell->ret);
 	while ((*shell->config.str && shell->config.tmp) ||
 		shell->config.buff || read(0, &shell->config.buff,
 			sizeof(&shell->config.buff)))
@@ -91,21 +53,15 @@ char	*read_line(t_shell *shell)
 		handle_keys(&shell->config);
 		if (ft_isprint(shell->config.buff))
 			print_char(&shell->config);
-		if (shell->config.buff == '\\' || shell->ignore)
-			shell->ignore = shell->ignore ? 0 : 1;
 		if (shell->config.buff == ENTER_BTN)
 		{
 			shell->config.str = clear_str(shell->config.str);
-			shell->line = make_str(shell->config.str);
+			shell->line = shell->config.str;
 			newline_config(&shell->config, 0);
-			// if (!shell->ignore)
-				break ;
-			// shell->config.multi = add_multi_line(&shell->config);
-			// ft_putstr_fd("\033[1;32m>\033[0m", 2);
-			// get_cursor_pos(&shell->config);
+			end_terminal(&shell->config);
+			shell->config.buff = 0;
+			break ;
 		}
-		if (shell->config.buff == '\\' || shell->ignore)
-			shell->ignore = shell->ignore ? 0 : 1;
 		shell->config.buff = 0;
 	}
 	return (shell->line);
@@ -116,15 +72,8 @@ void	command_line(t_shell *shell)
 	shell->ret = 0;
 	while ((shell->line = read_line(shell)))
 	{
-		end_terminal(&shell->config);
-		shell->config.buff = 0;
 		if (ft_strlen(shell->line))
 			run_commands(shell);
-		if (shell->parse_err != -2)
-		{
-			shell->ignore = 0;
-			shell->config.multi = NULL;
-		}
 		free_shell(shell);
 		signal(SIGQUIT, SIG_IGN);
 	}
@@ -152,12 +101,10 @@ int		main(int argc, char **argv, char **envp)
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
 	signal(SIGQUIT, SIG_IGN);
-	erase_file_debug();
 	if (argc && argv)
 	{
 		init_shell(shell);
 		shell->env = ft_arrdup(envp);
-		shell->bonus = 1;
 		if ((i = ft_getenv("OLDPWD", shell->env)) >= 0)
 			shell->env = ft_remove_from_arr(i, shell->env);
 		command_line(shell);

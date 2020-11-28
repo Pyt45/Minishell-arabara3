@@ -86,7 +86,6 @@ typedef struct		s_config
 	int					len;
 	int					cmd;
 	char				*tmp;
-	char				**multi;
 	struct s_history	*history;
 	struct s_control	control;
 }					t_config;
@@ -102,8 +101,8 @@ typedef struct		s_shell
 	struct s_exec	exec;
 	int				signal;
 	int				num_pipe;
-	int				bonus;
-	int				ignore;
+	int				num_sp;
+	int				quit;
 }					t_shell;
 
 typedef struct		s_history
@@ -218,8 +217,7 @@ int					is_quote(char c, int type);
 char				**ft_split_quote(char const *s, char c);
 char				*replace_string(char *str, t_shell *shell);
 void				init_prompt(t_config *config, int err);
-void				reinit_cursor(t_config *config, int new_x, int new_y,
-	int reinit);
+void				reinit_cursor(t_config *config, int new_x, int new_y);
 void				validate_cursor(t_config *config, t_shell *shell);
 void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
 t_cmds				*init_cmds(t_cmds *prev);
@@ -246,14 +244,5 @@ long				ft_atoi_l(const char *str);
 int					valid_status(char *arg, long l);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
-void				init_terminal(t_config *config);
-
-
-
-//debugging
-void	erase_file_debug();
-void	write_to_file(char *s, char *num, int end);
-void    debug_cmd(t_cmds *cmds, int i, int pos, char c);
-void	print_cmds(t_cmds *cmds);
 
 #endif
