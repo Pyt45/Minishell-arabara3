@@ -96,7 +96,7 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 			parser->ignore = parser->ignore ? 0 : 1;
 		if (is_quote(parser->str[i], 0) && !parser->ignore)
 			parser->quote = quote_activer(parser->quote, parser->str[i]);
-		if (!parser->quote)
+		if (!parser->quote && !parser->ignore)
 			parser->pos = manage_parsing(&cmds, &i,
 				parser->pos, parser->str);
 		if (parser->ignore && parser->str[i] != '\\')
