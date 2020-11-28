@@ -105,9 +105,14 @@ t_parser		*init_parser(t_shell *shell, char *line, int var)
 	t_parser *parser;
 
 	parser = malloc(sizeof(t_parser));
-	parser->ignore = 0;
 	parser->pos = 0;
+	parser->start = 0;
+	parser->end = 0;
+	parser->c = 0;
+	parser->move = 0;
+	parser->ignore = 0;
 	parser->quote = 0;
+	parser->tmp = NULL;
 	if (var)
 		parser->str = replace_string(ft_strdup(line), shell);
 	else

@@ -57,53 +57,49 @@ int				check_parsing(t_shell *shell)
 t_shell			*parse_commands(t_shell *shell)
 {
 	t_cmds		*cmds;
-	t_parser	*parser;
+	t_parser	*prs;
 	int			i;
 
-	parser = init_parser(shell, shell->line, 0);
+	prs = init_parser(shell, shell->line, 0);
 	cmds = init_cmds(NULL);
 	shell->cmds = cmds;
 	i = -1;
-	while (parser->str[++i] && parser->pos != -1)
+	while (prs->str[++i] && prs->pos != -1)
 	{
-		if (parser->str[i] == '\\' && parser->quote != 1)
-			parser->ignore = parser->ignore ? 0 : 1;
-		if (is_quote(parser->str[i], 0) && !parser->ignore)
-			parser->quote = quote_activer(parser->quote, parser->str[i]);
-		if (!parser->quote && (parser->str[i] == ';' ||
-			parser->str[i + 1] == '\0'))
-			parser->pos = create_cmd_line(&cmds,
-				parser->str, parser->pos, i);
-		if (parser->ignore && parser->str[i] != '\\')
-			parser->ignore = 0;
+		if (prs->str[i] == '\\' && prs->quote != 1)
+			prs->ignore = prs->ignore ? 0 : 1;
+		if (is_quote(prs->str[i], 0) && !prs->ignore)
+			prs->quote = quote_activer(prs->quote, prs->str[i]);
+		if (!prs->quote && (prs->str[i] == ';' || prs->str[i + 1] == '\0'))
+			prs->pos = create_cmd_line(&cmds, prs->str, prs->pos, i);
+		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 	}
-	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
-	ft_del(parser->str);
-	ft_del(parser);
+	shell->parse_err = prs->quote || prs->ignore ? -1 : prs->pos;
+	ft_del(prs->str);
+	ft_del(prs);
 	return (shell);
 }
 
 t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 {
-	t_parser	*parser;
+	t_parser	*prs;
 	int			i;
 
-	parser = init_parser(shell, cmds->line, 1);
+	prs = init_parser(shell, cmds->line, 1);
 	i = -1;
-	while (parser->str[++i] && parser->pos != -1)
+	while (prs->str[++i] && prs->pos != -1)
 	{
-		if (parser->str[i] == '\\' && parser->quote != 1)
-			parser->ignore = parser->ignore ? 0 : 1;
-		if (is_quote(parser->str[i], 0) && !parser->ignore)
-			parser->quote = quote_activer(parser->quote, parser->str[i]);
-		if (!parser->quote && (!parser->ignore || parser->str[i + 1] == '\0'))
-			parser->pos = manage_parsing(&cmds, &i,
-				parser->pos, parser->str);
-		if (parser->ignore && parser->str[i] != '\\')
-			parser->ignore = 0;
+		prs->c = i;
+		if (prs->str[i] == '\\' && prs->quote != 1)
+			prs->ignore = prs->ignore ? 0 : 1;
+		if (is_quote(prs->str[i], 0) && !prs->ignore)
+			prs->quote = quote_activer(prs->quote, prs->str[i]);
+		if (!prs->quote)
+			i = manage_parsing(&cmds, prs);
+		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 	}
-	shell->parse_err = parser->quote || parser->ignore ? -1 : parser->pos;
-	ft_del(parser->str);
-	ft_del(parser);
+	shell->parse_err = prs->quote || prs->ignore ? -1 : prs->pos;
+	ft_del(prs->str);
+	ft_del(prs);
 	return (cmds);
 }

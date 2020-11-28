@@ -12,15 +12,15 @@
 
 #include "../../includes/shell.h"
 
-int		parse_pipes(t_cmds **cmds, int i, int pos, char *tmp)
+int		parse_pipes(t_cmds **cmds, t_parser *prs)
 {
-	(*cmds)->cmd = get_cmd(tmp + pos, i - pos);
-	(*cmds)->args = get_args(tmp + pos, i - pos);
+	(*cmds)->cmd = get_cmd(prs->str + prs->pos, prs->len);
+	(*cmds)->args = get_args(prs->str + prs->pos, prs->len);
 	if (!(*cmds)->args)
 		return (-1);
 	if (!(*cmds)->prev)
 		(*cmds)->start = 1;
-	if (tmp[i + 1] != '\0')
+	if (prs->str[prs->c + 1] != '\0')
 	{
 		(*cmds)->p = 1;
 		(*cmds)->next = init_cmds(*cmds);
@@ -28,59 +28,80 @@ int		parse_pipes(t_cmds **cmds, int i, int pos, char *tmp)
 	}
 	else
 		return (-1);
-	pos = i + 1;
-	return (pos);
+	return (prs->c + 1);
 }
 
-int		parse_semicolons(t_cmds **cmds, int i, int pos, char *tmp)
+int		parse_semicolons(t_cmds **cmds, t_parser *prs)
 {
 	int	j;
 
 	j = 0;
-	if (tmp[i + 1] == '\0' && tmp[i] != ';')
+	if (prs->str[prs->c + 1] == '\0' && prs->str[prs->c] != ';')
 		j = 1;
-	(*cmds)->cmd = get_cmd(tmp + pos, i - pos + j);
-	(*cmds)->args = get_args(tmp + pos, i - pos + j);
+	prs->len += j;
+	(*cmds)->cmd = get_cmd(prs->str + prs->pos, prs->len);
+	(*cmds)->args = get_args(prs->str + prs->pos, prs->len);
 	if (!(*cmds)->args)
 		return (-1);
 	if (!(*cmds)->prev)
 		(*cmds)->start = 1;
 	(*cmds)->end = 1;
-	if (tmp[i + 1] != '\0')
+	if (prs->str[prs->c + 1])
 	{
 		(*cmds)->next = init_cmds(*cmds);
 		(*cmds) = (*cmds)->next;
 	}
-	pos = i + 1;
-	return (pos);
+	return (prs->c + 1);
 }
 
-int		parse_redirections(t_cmds **cmds, int *i, int pos, char *tmp)
+int		parse_redirections(t_cmds **cmds, t_parser *prs)
 {
-	(*cmds)->cmd = get_cmd(tmp + pos, *i - pos);
-	(*cmds)->args = get_args(tmp + pos, *i - pos);
-	manage_redirections(cmds, i, tmp);
+	(*cmds)->cmd = get_cmd(prs->str + prs->pos, prs->len);
+	(*cmds)->args = get_args(prs->str + prs->pos, prs->len);
+	manage_redirections(cmds, &prs->c, prs->str);
 	if ((*cmds)->append > 2 || (*cmds)->append < -2)
 		return (-1);
 	(*cmds)->next = init_cmds((*cmds));
 	(*cmds) = (*cmds)->next;
-	if (!tmp[*i + 1])
+	if (!prs->str[prs->c + 1])
 		return (-1);
-	pos = *i + 1;
-	return (pos);
+	return (prs->c + 1);
 }
 
-int		manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp)
+int		parse_full(t_cmds **cmds, t_parser *prs)
 {
-	if (tmp[*i] == '|')
-		pos = parse_pipes(cmds, *i, pos, tmp);
-	else if (tmp[*i] == '>' || tmp[*i] == '<')
-		pos = parse_redirections(cmds, i, pos, tmp);
-	else if (tmp[*i] == ';' || tmp[*i + 1] == '\0')
-		pos = parse_semicolons(cmds, *i, pos, tmp);
+	prs->len += 1;
+	(*cmds)->cmd = get_cmd(prs->str + prs->pos, prs->len);
+	(*cmds)->args = get_args(prs->str + prs->pos, prs->len);
+	if (!(*cmds)->args)
+		return (-1);
+	if (!(*cmds)->prev)
+		(*cmds)->start = 1;
+	(*cmds)->end = 1;
+	if (prs->str[prs->c + 1])
+	{
+		(*cmds)->next = init_cmds(*cmds);
+		(*cmds) = (*cmds)->next;
+	}
+	return (prs->c + 1);
+}
+
+int		manage_parsing(t_cmds **cmds, t_parser *prs)
+{
+	prs->len = prs->c - prs->pos;
+	if (prs->str[prs->c] == '|' && !prs->ignore)
+		prs->pos = parse_pipes(cmds, prs);
+	else if ((prs->str[prs->c] == '>' || prs->str[prs->c] == '<') &&
+		!prs->ignore)
+		prs->pos = parse_redirections(cmds, prs);
+	else if ((prs->str[prs->c] == ';' && !prs->ignore) ||
+		prs->str[prs->c + 1] == '\0')
+		prs->pos = parse_semicolons(cmds, prs);
+	else if (prs->str[prs->c + 1] == '\0')
+		prs->pos = parse_full(cmds, prs);
 	if ((*cmds)->prev && (*cmds)->prev->append < 0)
 		(*cmds)->skip = 1;
-	return (pos);
+	return (prs->c);
 }
 
 int		create_cmd_line(t_cmds **cmds, char *tmp, int start, int end)

@@ -42,7 +42,13 @@ typedef struct		s_exec
 typedef struct		s_parser
 {
 	char		*str;
+	char		*tmp;
 	int			pos;
+	int			start;
+	int			end;
+	int			c;
+	int			len;
+	int			move;
 	int			quote;
 	int			ignore;
 }					t_parser;
@@ -238,7 +244,7 @@ t_cmds				*parse_command(t_shell *shell, t_cmds *cmds);
 int					check_parsing(t_shell *shell);
 int					create_cmd_line(t_cmds **cmds, char *tmp,
 	int start, int end);
-int					manage_parsing(t_cmds **cmds, int *i, int pos, char *tmp);
+int					manage_parsing(t_cmds **cmds, t_parser *parser);
 int					validate_line(char *str);
 long				ft_atoi_l(const char *str);
 int					valid_status(char *arg, long l);
