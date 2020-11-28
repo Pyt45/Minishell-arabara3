@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:34:20 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/20 10:23:12 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/28 18:34:27 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 	else if (!ft_strcmp(cmds->cmd, "cd"))
 		ret = cd_builtin(shell, cmds);
 	else if (!ft_strcmp(cmds->cmd, "pwd"))
-		ret = pwd_builtin();
+		ret = pwd_builtin(shell);
 	else if (!ft_strcmp(cmds->cmd, "exit"))
 		ret = exit_builtin(shell, cmds);
 	else if (!ft_strcmp(cmds->cmd, "export"))

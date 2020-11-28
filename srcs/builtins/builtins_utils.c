@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:31:48 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/28 12:43:18 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/11/28 18:35:12 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	**ft_setenv(char *var, char *path, char **env)
 	len = ft_strlen(var) + ft_strlen(path) + 2;
 	if (!(record = (char *)malloc(sizeof(char) * len)))
 		return (NULL);
+	path = (!ft_strcmp(path, "/")) ? ft_strjoin(path, "/") : path;
 	ft_strcpy(record, var);
 	ft_strcat(record, "=");
 	ft_strcat(record, path);
