@@ -89,6 +89,7 @@ int			main(int argc, char **argv, char **envp)
 	{
 		init_shell(shell);
 		shell->env = ft_arrdup(envp);
+		shell->bonus = 0;
 		if ((i = ft_getenv("OLDPWD", shell->env)) >= 0)
 			shell->env = ft_remove_from_arr(i, shell->env);
 		command_line(shell);

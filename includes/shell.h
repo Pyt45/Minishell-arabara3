@@ -101,8 +101,8 @@ typedef struct		s_shell
 	struct s_exec	exec;
 	int				signal;
 	int				num_pipe;
-	int				num_sp;
-	int				quit;
+	int				bonus;
+	int				ignore;
 }					t_shell;
 
 typedef struct		s_history
@@ -244,5 +244,11 @@ long				ft_atoi_l(const char *str);
 int					valid_status(char *arg, long l);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
+
+//debugging
+void	erase_file_debug();
+void	write_to_file(char *s, char *num, int end);
+void    debug_cmd(t_cmds *cmds, int i, int pos, char c);
+void	print_cmds(t_cmds *cmds);
 
 #endif
