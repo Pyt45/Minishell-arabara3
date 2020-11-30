@@ -229,7 +229,7 @@ void				manage_redirections(t_cmds **cmds, int *i, char *tmp);
 t_cmds				*init_cmds(t_cmds *prev);
 char				*parse_env_var(char *str, t_shell *shell);
 void				quotes_checker(int *quote, int c);
-int					var_checker_pass(char c);
+int					var_checker_pass(t_parser *parser, int start);
 int					quote_activer(int quote, char c);
 void				free_shell(t_shell *shell);
 void				init_shell(t_shell *shell);

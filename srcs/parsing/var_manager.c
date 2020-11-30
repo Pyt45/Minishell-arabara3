@@ -39,14 +39,16 @@ char	*get_variable_name(t_parser *prs, t_shell *shell)
 	int	i;
 	char	*tmp;
 
+	i = 0;
 	tmp = NULL;
 	if (g_ret == 1)
 	{
 		shell->ret = !shell->ret ? 1 : shell->ret;
 		g_ret = 0;
 	}
-	prs->tmp[prs->c - prs->pos + 1] = '\0';
-	if (*(prs->tmp + 1) == '?')
+	prs->tmp[prs->c - prs->pos] = '\0';
+	// printf("%d %d %s", prs->c, prs->pos, prs->tmp);
+	if (*(prs->tmp) == '?')
 		tmp = ft_itoa(shell->ret);
 	else if ((i = ft_getenv(prs->tmp, shell->env)) >= 0)
 		tmp = ft_strdup(shell->env[i] + ft_strlen(prs->tmp) + 1);
@@ -54,56 +56,84 @@ char	*get_variable_name(t_parser *prs, t_shell *shell)
 	return (tmp);
 }
 
-void	replace_in_string(char *src, char *dest, int *inc)
-{
-	*src = *dest;
-	*inc = *inc + 1;
-}
+// void	replace_in_string(char *src, char *dest)
+// {
+// 	*dest = *src;
+// }
 
-char	*replace_var_string(char *src, int i, char *var, int len)
-{
-	char	*tmp;
-	int		j;
-	int		c_src;
-	int		c_var;
-	int		tlen;
+// char	*replace_var_string(char *src, int i, char *var, int len)
+// {
+// 	char	*tmp;
+// 	int		j;
+// 	int		c_src;
+// 	int		c_var;
+// 	int		tlen;
 
-	j = 0;
-	c_var = 0;
-	c_src = 0;
-	tlen = ft_strlen(src) + ft_strlen(var) - len;
-	tmp = (char *)malloc(sizeof(char) * tlen);
-	while (j < tlen - 1)
-		if (j == i)
-		{
-			c_src = c_src + len + 1;
-			while (var && var[c_var])
-				replace_in_string(tmp + j, var + c_var++, &j);
-			i = -1;
-		}
-		else
-			replace_in_string(tmp + j, src + c_src++, &j);
-	ft_del(src);
-	tmp[j] = '\0';
-	return (tmp);
-}
+// 	j = 0;
+// 	c_var = 0;
+// 	c_src = 0;
+// 	tlen = ft_strlen(src) + ft_strlen(var) - len;
+// 	tmp = (char *)malloc(sizeof(char) * tlen);
+// 	while (j < tlen - 1)
+// 		if (j == i)
+// 		{
+// 			c_src = c_src + len + 1;
+// 			while (var && var[c_var])
+// 				replace_in_string(tmp + j, var + c_var++, &j);
+// 			i = -1;
+// 		}
+// 		else
+// 			replace_in_string(tmp + j, src + c_src++, &j);
+// 	ft_del(src);
+// 	tmp[j] = '\0';
+// 	return (tmp);
+// }
 
 char	*replace_var_str(t_parser *prs)
 {
 	int		tlen;
 	char	*tmp;
+	char	*src;
 
-	tlen = ft_strlen(prs->str) + ft_strlen(prs->tmp) - (prs->c - prs->pos);
+	prs->len = ft_strlen(prs->tmp);
+	tlen = ft_strlen(prs->str) + prs->len - (prs->c - prs->pos);
 	tmp = (char *)malloc(sizeof(char) * tlen);
-	while (--tlen)
+	src = prs->str;
+	while (*src)
 	{
-		if (tlen == prs->pos)
-		{
-
-		}
-		else
-			replace_in_string(tmp + tlen, src + c_src, &j);
+		prs->start = prs->move == prs->pos ? prs->move : prs->start;
+		src = prs->move == prs->pos ? src + prs->c - prs->pos + 1 : src;
+		prs->move = prs->move == prs->pos ? prs->move + prs->len : prs->move;
+		*(tmp + prs->move) = *src;
+		prs->move++;
+		src++;
 	}
+	tmp[tlen] = '\0';
+	src = prs->tmp;
+	prs->move = -1;
+	while (++prs->move < prs->len)
+		*(tmp + prs->start + prs->move) = *(src + prs->move);
+	ft_del(prs->str);
+	return (tmp);
+}
+
+int		var_checker_pass(t_parser *prs, int start)
+{
+	if (start == 0 && prs->str[prs->c] == '$' &&
+		prs->quote && is_quote(prs->str[prs->c + 1], 0) == prs->quote)
+		return (0);
+	if (start == 0 && prs->quote != 1 && prs->str[prs->c] == '$' &&
+		!prs->ignore)
+		return (1);
+	if (start == 1 && (prs->str[prs->c + 1] == '?' ||
+		prs->str[prs->c + 1] == '_'))
+		return (0);
+	if (((!prs->str[prs->c + 1] || is_quote(prs->str[prs->c + 1], 0) ||
+		!ft_isalnum(prs->str[prs->c + 1]) || prs->str[prs->c + 1] == ' '
+		|| prs->str[prs->c + 1] == '$'))
+		&& prs->quote != 1 && prs->tmp && start == 1)
+		return (1);
+	return (0);
 }
 
 
@@ -111,52 +141,31 @@ char	*parse_env_var(char *str, t_shell *shell)
 {
 	t_parser	*prs;
 	int		i;
-	int		quote;
-	int		var;
-	char	*tmp;
 
 	prs = init_parser(shell, str, 0);
 	i = -1;
-	var = -1;
 	while (prs->str[++i])
 	{
 		prs->c = i;
 		if (prs->str[i] == '\\' && prs->quote != 1)
 			prs->ignore = prs->ignore ? 0 : 1;
-		if (prs->quote != 1 && prs->str[i] == '&' && !prs->ignore)
+		if (var_checker_pass(prs, 0))
 		{
-			prs->tmp = ft_strdup(prs->str + i);
+			prs->tmp = ft_strdup(prs->str + i + 1);
 			prs->pos = i;
 		}
-		if (prs->quote != 1 && prs->tmp && var_checker_pass(str[i + 1]))
+		if (var_checker_pass(prs, 1))
 		{
 			prs->tmp = get_variable_name(prs, shell);
-			if (!quote || ft_strlen(prs->tmp))
+			if (prs->quote != 1 ||ft_strlen(prs->tmp))
 				prs->str = replace_var_str(prs);
+			ft_del(prs->tmp);
 			prs->tmp = NULL;
 		}
-
-		if (quote != 1 && var != -1 && var_checker_pass(str[i + 1]))
-		{
-			tmp = parse_variable_name(str + var + 1, i - var + 1, shell);
-			if (!quote || ft_strlen(tmp) || i - var > 0)
-				str = replace_var_string(str, var, tmp, i - var);
-			i = ft_strlen(tmp) || i - var > 0 ? var + ft_strlen(tmp) - 1 : i;
-			ft_del(tmp);
-			var = -1;
-		}
-		quotes_checker(&prs->quote, prs->str);
-		if (str[i] == '$' && str[i + 1] == '\\')
+		quotes_checker(&prs->quote, *prs->str);
+		if (prs->str[i] == '$' && prs->str[i + 1] == '\\')
 			break ;
 	}
-	return (str);
+	return (prs->str);
 }
 
-int		var_checker_pass(char c)
-{
-	if (c == '?' || c == '_')
-		return (0);
-	if ((!c || is_quote(c, 0) || !ft_isalnum(c) || c == ' ' || c == '$'))
-		return (1);
-	return (0);
-}
