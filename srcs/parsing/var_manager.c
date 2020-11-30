@@ -62,7 +62,7 @@ char	*replace_var_str(t_parser *prs)
 	char	*src;
 
 	prs->len = ft_strlen(prs->tmp);
-	tlen = ft_strlen(prs->str) + prs->len - (prs->c - prs->pos);
+	tlen = ft_strlen(prs->str) + prs->len - (prs->c - prs->pos) - 1;
 	tmp = (char *)malloc(sizeof(char) * tlen);
 	src = prs->str;
 	while (*src)
