@@ -65,7 +65,7 @@ int		var_checker_pass(t_parser *prs, int start)
 {
 	if (start == 0 && prs->str[prs->c] == '$' &&
 		((prs->quote && is_quote(prs->str[prs->c + 1], 0) == prs->quote)
-		|| !prs->str[prs->c + 1]))
+		|| !prs->str[prs->c + 1] || prs->str[prs->c + 1] == '/'))
 		return (0);
 	if (start == 0 && prs->quote != 1 && prs->str[prs->c] == '$' &&
 		!prs->ignore)

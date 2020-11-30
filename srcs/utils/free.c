@@ -22,8 +22,8 @@ void	free_shell(t_shell *shell)
 	{
 		while (shell->cmds)
 		{
-			ft_del(shell->cmds->line);
 			i = -1;
+			ft_del(shell->cmds->line);
 			while (shell->cmds->args && shell->cmds->args[++i])
 				ft_del(shell->cmds->args[i]);
 			ft_del(shell->cmds->args);
