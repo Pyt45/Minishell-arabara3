@@ -14,30 +14,21 @@
 
 int		ft_getenv(char *name, char **env)
 {
-	char	*search;
 	int		i;
-	int		len;
 	char	*tmp;
 
-	search = NULL;
-	len = ft_strlen(name) + 1;
-	if (!(search = (char *)malloc(sizeof(char) * len)))
-		return (-1);
-	ft_strcpy(search, name);
 	i = 0;
-	while (env[i] != NULL)
+	while (env[i])
 	{
 		tmp = ft_get_first(env[i], '=');
-		if (ft_strcmp(tmp, search) == 0)
+		if (ft_strcmp(tmp, name) == 0)
 		{
-			ft_del(search);
 			ft_del(tmp);
 			return (i);
 		}
 		ft_del(tmp);
 		i++;
 	}
-	ft_del(search);
 	return (-1);
 }
 

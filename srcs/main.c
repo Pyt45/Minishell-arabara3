@@ -59,21 +59,25 @@ void		command_line(t_shell *shell)
 	int		status;
 
 	status = 1;
+	r = 1;
 	while (status)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_handle);
-		if (shell->ret != 130 && shell->signal != 1)
+		if (shell->ret != 130 && shell->signal != 1 && r != 0)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
 		shell->signal = 0;
 		r = get_next_line(0, &shell->line);
-		if (r == 0)
+		if (r == 0 && !ft_strlen(shell->line))
 			exit_builtin(shell, shell->cmds);
-		if (ft_strlen(shell->line))
-			run_commands(shell);
-		ft_del(shell->line);
-		free_shell(shell);
-		g_ret = 0;
+		else if (r != 0)
+		{
+			if (ft_strlen(shell->line))
+				run_commands(shell);
+			ft_del(shell->line);
+			free_shell(shell);
+			g_ret = 0;
+		}
 	}
 }
 

@@ -18,7 +18,7 @@ void	free_shell(t_shell *shell)
 	t_cmds	*tmp;
 
 	shell->line = NULL;
-	if (shell->cmds && shell->cmds->cmd)
+	if (shell->cmds && shell->cmds->line)
 	{
 		while (shell->cmds)
 		{
