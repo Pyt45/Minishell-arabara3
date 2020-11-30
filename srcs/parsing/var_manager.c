@@ -62,7 +62,7 @@ char	*replace_var_str(t_parser *prs)
 	char	*src;
 
 	prs->len = ft_strlen(prs->tmp);
-	tlen = ft_strlen(prs->str) + prs->len - (prs->c - prs->pos) - 1;
+	tlen = ft_strlen(prs->str) + prs->len - (prs->c - prs->pos) + 1;
 	tmp = (char *)malloc(sizeof(char) * tlen);
 	src = prs->str;
 	while (*src)
@@ -86,22 +86,23 @@ char	*replace_var_str(t_parser *prs)
 int		var_checker_pass(t_parser *prs, int start)
 {
 	if (start == 0 && prs->str[prs->c] == '$' &&
-		prs->quote && is_quote(prs->str[prs->c + 1], 0) == prs->quote)
+		((prs->quote && is_quote(prs->str[prs->c + 1], 0) == prs->quote)
+		|| !prs->str[prs->c + 1]))
 		return (0);
 	if (start == 0 && prs->quote != 1 && prs->str[prs->c] == '$' &&
 		!prs->ignore)
 		return (1);
-	if (start == 1 && prs->str[prs->c] == '$' && (prs->str[prs->c + 1] == '?' ||
-		prs->str[prs->c + 1] == '_'))
+	if (start == 1 && prs->str[prs->c] == '$' && (prs->str[prs->c + 1] == '?'
+		|| prs->str[prs->c + 1] == '_'))
 		return (0);
-	if (((!prs->str[prs->c + 1] || prs->str[prs->c] == '?' || is_quote(prs->str[prs->c + 1], 0) ||
+	if (((!prs->str[prs->c + 1] || prs->str[prs->c] == '?' ||
+		is_quote(prs->str[prs->c + 1], 0) ||
 		!ft_isalnum(prs->str[prs->c + 1]) || prs->str[prs->c + 1] == ' '
 		|| prs->str[prs->c + 1] == '$'))
 		&& prs->quote != 1 && prs->tmp && start == 1)
 		return (1);
 	return (0);
 }
-
 
 char	*parse_env_var(char *str, t_shell *shell)
 {
@@ -123,7 +124,7 @@ char	*parse_env_var(char *str, t_shell *shell)
 		if (var_checker_pass(prs, 1))
 		{
 			prs->tmp = get_variable_name(prs, shell);
-			if (prs->quote != 1 ||ft_strlen(prs->tmp))
+			if (prs->quote != 1 || ft_strlen(prs->tmp))
 				prs->str = replace_var_str(prs);
 			ft_del(prs->tmp);
 			prs->tmp = NULL;
