@@ -51,7 +51,6 @@ char	*read_line(t_shell *shell)
 			exit_builtin(shell, shell->cmds);
 		validate_cursor(&shell->config, shell);
 		handle_keys(&shell->config);
-		printf("%ld \n", shell->config.buff);
 		if (ft_isprint(shell->config.buff))
 			print_char(&shell->config);
 		if (shell->config.buff == ENTER_BTN)
