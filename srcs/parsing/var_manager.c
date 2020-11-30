@@ -89,8 +89,7 @@ char	*parse_env_var(char *str, t_shell *shell)
 {
 	t_parser	*prs;
 
-	prs = init_parser(shell, str, 0);
-	ft_del(str);
+	prs = init_parser(shell, str, 3);
 	while (prs->str[prs->c])
 	{
 		if (prs->str[prs->c] == '\\' && prs->quote != 1)

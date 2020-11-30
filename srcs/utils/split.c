@@ -113,9 +113,11 @@ t_parser		*init_parser(t_shell *shell, char *line, int var)
 	parser->ignore = 0;
 	parser->quote = 0;
 	parser->tmp = NULL;
-	if (var)
+	if (var == 1)
 		parser->str = replace_string(ft_strdup(line), shell);
 	else
 		parser->str = ft_strdup(line);
+	if (var == 3)
+		ft_del(line);
 	return (parser);
 }
