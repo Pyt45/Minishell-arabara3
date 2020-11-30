@@ -89,6 +89,8 @@ int			main(int argc, char **argv, char **envp)
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
 	g_ret = 0;
+	shell->ret = 0;
+	shell->signal = 0;
 	if (argc && argv)
 	{
 		init_shell(shell);

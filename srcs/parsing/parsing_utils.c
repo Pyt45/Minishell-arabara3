@@ -102,16 +102,3 @@ int		manage_parsing(t_cmds **cmds, t_parser *prs)
 		(*cmds)->skip = 1;
 	return (prs->c);
 }
-
-int		create_cmd_line(t_cmds **cmds, char *tmp, int start, int end)
-{
-	if ((*cmds)->line)
-	{
-		(*cmds)->next = init_cmds(*cmds);
-		(*cmds) = (*cmds)->next;
-	}
-	(*cmds)->line = ft_substr(tmp, start, end - start + 1);
-	if (!validate_line((*cmds)->line))
-		return (-1);
-	return (end + 1);
-}

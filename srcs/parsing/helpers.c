@@ -12,24 +12,6 @@
 
 #include "../../includes/shell.h"
 
-void	quotes_checker(int *quote, int c)
-{
-	// if (is_quote(c, 0) != *quote && *quote)
-	// 	*quote = *quote;
-	if (!quote && is_quote(c, 0))
-		*quote = is_quote(c, 0);
-	if (*quote && is_quote(c, 0) == *quote)
-		*quote = 0;
-	// if (is_quote(c, 1) && !*quote)
-	// 	*quote = 1;
-	// else if (is_quote(c, 1) && *quote == 1)
-	// 	*quote = 0;
-	// if (is_quote(c, 2) && !*quote)
-	// 	*quote = 2;
-	// else if (is_quote(c, 2) && *quote == 2)
-	// 	*quote = 0;
-}
-
 char	*str_quotes_replacer(char *str, int i)
 {
 	int		j;
@@ -85,4 +67,17 @@ int		is_quote(char c, int type)
 	if (type == 0 && (c == '\'' || c == '\"'))
 		return (c == '\'' ? 1 : 2);
 	return (0);
+}
+
+int		create_cmd_line(t_cmds **cmds, char *tmp, int start, int end)
+{
+	if ((*cmds)->line)
+	{
+		(*cmds)->next = init_cmds(*cmds);
+		(*cmds) = (*cmds)->next;
+	}
+	(*cmds)->line = ft_substr(tmp, start, end - start + 1);
+	if (!validate_line((*cmds)->line))
+		return (-1);
+	return (end + 1);
 }

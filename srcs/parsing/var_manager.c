@@ -39,11 +39,12 @@ char	*replace_var_str(t_parser *prs)
 	char	*tmp;
 	char	*src;
 
+	if (prs->quote == 1 && !ft_strlen(prs->tmp))
+		return (prs->str);
 	prs->len = ft_strlen(prs->tmp);
 	tlen = ft_strlen(prs->str) + prs->len - (prs->c - prs->pos + 1) + 1;
 	tmp = (char *)malloc(sizeof(char) * tlen);
 	src = prs->str;
-	prs->move = 0;
 	while (*src)
 	{
 		src = prs->move == prs->pos ? src + prs->c - prs->pos + 1 : src;
@@ -53,7 +54,7 @@ char	*replace_var_str(t_parser *prs)
 		prs->move++;
 	}
 	prs->move = -1;
-	prs->c = prs->len ? prs->pos + prs->len - 1 : prs->pos; 
+	prs->c = prs->len ? prs->pos + prs->len - 1 : prs->pos;
 	while (++prs->move < prs->len)
 		*(tmp + prs->pos + prs->move) = *(prs->tmp + prs->move);
 	tmp[tlen - 1] = '\0';
@@ -63,9 +64,11 @@ char	*replace_var_str(t_parser *prs)
 
 int		var_checker_pass(t_parser *prs, int start)
 {
+	prs->move = 0;
 	if (start == 0 && prs->str[prs->c] == '$' &&
 		((prs->quote && is_quote(prs->str[prs->c + 1], 0) == prs->quote)
-		|| !prs->str[prs->c + 1] || prs->str[prs->c + 1] == '/'))
+		|| !prs->str[prs->c + 1] || prs->str[prs->c + 1] == '/' ||
+			prs->str[prs->c + 1] == '\\'))
 		return (0);
 	if (start == 0 && prs->quote != 1 && prs->str[prs->c] == '$' &&
 		!prs->ignore)
@@ -88,7 +91,6 @@ char	*parse_env_var(char *str, t_shell *shell)
 
 	prs = init_parser(shell, str, 0);
 	ft_del(str);
-	prs->c = 0;
 	while (prs->str[prs->c])
 	{
 		if (prs->str[prs->c] == '\\' && prs->quote != 1)
@@ -101,18 +103,14 @@ char	*parse_env_var(char *str, t_shell *shell)
 		if (var_checker_pass(prs, 1))
 		{
 			prs->tmp = get_variable_name(prs, shell);
-			if (prs->quote != 1 || ft_strlen(prs->tmp))
-				prs->str = replace_var_str(prs);
+			prs->str = replace_var_str(prs);
 			ft_del(prs->tmp);
 			prs->tmp = NULL;
 		}
 		prs->quote = quote_activer(prs->quote, prs->str[prs->c]);
-		if (prs->str[prs->c] == '$' && prs->str[prs->c + 1] == '\\')
-			break ;
 		prs->c = prs->str[prs->c] ? prs->c + 1 : prs->c;
 	}
 	str = prs->str;
 	ft_del(prs);
 	return (str);
 }
-

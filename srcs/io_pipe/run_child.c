@@ -20,6 +20,8 @@ void			check_file(char *file, int cas, t_shell *shell)
 	{
 		if (stat(file, &file_stat) < 0)
 			exit_error(strerror(errno), 200, shell);
+		if (file_stat.st_mode == 16877)
+			exit_error("its a directory", 126, shell);
 		if (!ft_access(file, 1))
 			exit_error("Permission denied", 1, shell);
 	}

@@ -30,7 +30,7 @@ int		move_to_dir(char **path, int *is_print)
 {
 	if (!*path && *is_print == 1)
 		return (0);
-	if (!ft_strlen(*path) && *is_print == 2)
+	if (!ft_strlen(*path))
 		return (1);
 	if (chdir(get_dir(path)))
 	{
@@ -44,12 +44,7 @@ char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 {
 	char	*tmp;
 
-	if (!path && !*is_print)
-	{
-		if (!(path = get_home_dir(shell)))
-			*is_print = 2;
-	}
-	else if (!ft_strcmp(path, "~"))
+	if (!ft_strcmp(path, "~"))
 		path = get_home_dir(shell);
 	else if (path[0] == '~' && path[1] == '/')
 	{
