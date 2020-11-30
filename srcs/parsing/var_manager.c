@@ -47,7 +47,6 @@ char	*get_variable_name(t_parser *prs, t_shell *shell)
 		g_ret = 0;
 	}
 	prs->tmp[prs->c - prs->pos] = '\0';
-	// printf("%d %d %s", prs->c, prs->pos, prs->tmp);
 	if (*(prs->tmp) == '?')
 		tmp = ft_itoa(shell->ret);
 	else if ((i = ft_getenv(prs->tmp, shell->env)) >= 0)
@@ -55,39 +54,6 @@ char	*get_variable_name(t_parser *prs, t_shell *shell)
 	ft_del(prs->tmp);
 	return (tmp);
 }
-
-// void	replace_in_string(char *src, char *dest)
-// {
-// 	*dest = *src;
-// }
-
-// char	*replace_var_string(char *src, int i, char *var, int len)
-// {
-// 	char	*tmp;
-// 	int		j;
-// 	int		c_src;
-// 	int		c_var;
-// 	int		tlen;
-
-// 	j = 0;
-// 	c_var = 0;
-// 	c_src = 0;
-// 	tlen = ft_strlen(src) + ft_strlen(var) - len;
-// 	tmp = (char *)malloc(sizeof(char) * tlen);
-// 	while (j < tlen - 1)
-// 		if (j == i)
-// 		{
-// 			c_src = c_src + len + 1;
-// 			while (var && var[c_var])
-// 				replace_in_string(tmp + j, var + c_var++, &j);
-// 			i = -1;
-// 		}
-// 		else
-// 			replace_in_string(tmp + j, src + c_src++, &j);
-// 	ft_del(src);
-// 	tmp[j] = '\0';
-// 	return (tmp);
-// }
 
 char	*replace_var_str(t_parser *prs)
 {
@@ -125,10 +91,10 @@ int		var_checker_pass(t_parser *prs, int start)
 	if (start == 0 && prs->quote != 1 && prs->str[prs->c] == '$' &&
 		!prs->ignore)
 		return (1);
-	if (start == 1 && (prs->str[prs->c + 1] == '?' ||
+	if (start == 1 && prs->str[prs->c] == '$' && (prs->str[prs->c + 1] == '?' ||
 		prs->str[prs->c + 1] == '_'))
 		return (0);
-	if (((!prs->str[prs->c + 1] || is_quote(prs->str[prs->c + 1], 0) ||
+	if (((!prs->str[prs->c + 1] || prs->str[prs->c + 1] == '?' || is_quote(prs->str[prs->c + 1], 0) ||
 		!ft_isalnum(prs->str[prs->c + 1]) || prs->str[prs->c + 1] == ' '
 		|| prs->str[prs->c + 1] == '$'))
 		&& prs->quote != 1 && prs->tmp && start == 1)
