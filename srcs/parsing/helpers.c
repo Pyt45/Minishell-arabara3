@@ -14,14 +14,20 @@
 
 void	quotes_checker(int *quote, int c)
 {
-	if (is_quote(c, 1) && !*quote)
-		*quote = 1;
-	else if (is_quote(c, 1) && *quote == 1)
+	// if (is_quote(c, 0) != *quote && *quote)
+	// 	*quote = *quote;
+	if (!quote && is_quote(c, 0))
+		*quote = is_quote(c, 0);
+	if (*quote && is_quote(c, 0) == *quote)
 		*quote = 0;
-	if (is_quote(c, 2) && !*quote)
-		*quote = 2;
-	else if (is_quote(c, 2) && *quote == 2)
-		*quote = 0;
+	// if (is_quote(c, 1) && !*quote)
+	// 	*quote = 1;
+	// else if (is_quote(c, 1) && *quote == 1)
+	// 	*quote = 0;
+	// if (is_quote(c, 2) && !*quote)
+	// 	*quote = 2;
+	// else if (is_quote(c, 2) && *quote == 2)
+	// 	*quote = 0;
 }
 
 char	*str_quotes_replacer(char *str, int i)
