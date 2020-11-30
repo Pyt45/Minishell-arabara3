@@ -44,7 +44,12 @@ char	*manage_path_cd(t_shell *shell, char *path, int *is_print)
 {
 	char	*tmp;
 
-	if (!ft_strcmp(path, "~"))
+	if (!path && !*is_print)
+	{
+		if (!(path = get_home_dir(shell)))
+			*is_print = 2;
+	}
+	else if (!ft_strcmp(path, "~"))
 		path = get_home_dir(shell);
 	else if (path[0] == '~' && path[1] == '/')
 	{
@@ -84,22 +89,15 @@ int		cd_builtin(t_shell *shell, t_cmds *cmds)
 	pwd = getcwd(NULL, 0);
 	path = manage_path_cd(shell, cmds->args[1], &is_print);
 	ret = move_to_dir(&path, &is_print);
-	(ret && is_print) ? ft_putendl_fd(path, 1) : 0;
-	if (ret == 0)
-	{
-		if (is_print == 1)
-			print_error("OLDPWD not set", errno, 0);
-		else if (!is_print)
-			print_error(cmds->args[1], errno, 0);
-		ft_del(pwd);
-		return (!ret);
-	}
-	if (ret == 1 && is_print == 2)
-	{
+	(ret && is_print == 1) ? ft_putendl_fd(path, 1) : 0;
+	if (!ret && is_print == 1)
+		print_error("OLDPWD not set", 0, 0);
+	else if (!ret && !is_print)
+		print_error(cmds->args[1], errno, 0);
+	else if (ret && is_print == 2)
 		print_error("cd: HOME not set", errno, 0);
-		return (ret);
-	}
-	set_pwd(shell, pwd);
-	ft_del(path);
-	return (!ret);
+	!ret || (ret && is_print == 2) ? ft_del(pwd) : 0;
+	ret && is_print != 2 ? set_pwd(shell, pwd) : 0;
+	ret ? ft_del(path) : 0;
+	return (ret && is_print == 2 ? ret : !ret);
 }
