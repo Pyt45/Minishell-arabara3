@@ -50,6 +50,10 @@ void	init_prompt(t_config *config, int err)
 	config->c = 0;
 	config->len = 0;
 	config->buff = 0;
+	config->control.str = NULL;
+	config->control.len = 0;
+	config->control.start = 0;
+	config->control.cut = 0;
 	config->term.c_lflag &= ~(ICANON | ECHO);
 	config->cursor = tgetstr("cm", NULL);
 	if (tcsetattr(0, 0, &config->term) == -1)
