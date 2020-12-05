@@ -53,23 +53,51 @@ void		sig_handle(int sig)
 	}
 }
 
+static void	make_line(t_config *config, t_shell *shell, int save)
+{
+	char	*tmp;
+
+	if (save)
+	{
+		tmp = config->tmp ? ft_strjoin(config->tmp, shell->line) :
+			ft_strdup(shell->line);
+		ft_del(config->tmp);
+		config->tmp = tmp;
+	}
+	else
+	{
+		if (config->tmp && g_ret != 1 && shell->signal != 1)
+		{
+			tmp = ft_strjoin(config->tmp, shell->line);
+			ft_del(shell->line);
+			shell->line = tmp;
+		}
+		if (config->tmp)
+		{
+			ft_del(config->tmp);
+			config->tmp = NULL;
+		}
+	}
+}
+
 void		command_line(t_shell *shell)
 {
 	int		r;
-	int		status;
 
-	status = 1;
 	r = 1;
-	while (status)
+	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_handle);
 		if (shell->ret != 130 && shell->signal != 1 && r != 0)
 			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
-		shell->signal = 0;
 		r = get_next_line(0, &shell->line);
-		if (r == 0 && !ft_strlen(shell->line))
+		make_line(&shell->config, shell, 0);
+		shell->signal = 0;
+		if (r == 0 && !ft_strlen(shell->line) && !shell->config.tmp)
 			exit_builtin(shell, shell->cmds);
+		else if (r == 0)
+			make_line(&shell->config, shell, 1);
 		else if (r != 0)
 		{
 			if (ft_strlen(shell->line))
