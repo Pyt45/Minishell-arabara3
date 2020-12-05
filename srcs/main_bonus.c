@@ -47,7 +47,7 @@ char	*read_line(t_shell *shell)
 		shell->config.buff || read(0, &shell->config.buff,
 			sizeof(&shell->config.buff)))
 	{
-		if (shell->config.buff == 4)
+		if (shell->config.buff == 4 && !ft_strlen(shell->config.str))
 			exit_builtin(shell, shell->cmds);
 		validate_cursor(&shell->config, shell);
 		handle_keys(&shell->config);

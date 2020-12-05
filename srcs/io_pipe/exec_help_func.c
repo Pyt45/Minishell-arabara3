@@ -47,17 +47,6 @@ void	close_pipes(int *fds, int num_pipe)
 		close(fds[i++]);
 }
 
-int		get_status_number(int status)
-{
-	if (status > 200)
-		return (status - 129);
-	else if (status == 2)
-		return (130);
-	else if (status == 3)
-		return (131);
-	return (status);
-}
-
 int		wait_child(t_shell *shell, pid_t pid)
 {
 	int		i;

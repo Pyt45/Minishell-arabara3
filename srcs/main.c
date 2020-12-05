@@ -63,6 +63,7 @@ static void	make_line(t_config *config, t_shell *shell, int save)
 			ft_strdup(shell->line);
 		ft_del(config->tmp);
 		config->tmp = tmp;
+		ft_del(shell->line);
 	}
 	else
 	{
@@ -119,6 +120,7 @@ int			main(int argc, char **argv, char **envp)
 	g_ret = 0;
 	shell->ret = 0;
 	shell->signal = 0;
+	shell->config.tmp = NULL;
 	if (argc && argv)
 	{
 		init_shell(shell);

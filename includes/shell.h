@@ -159,7 +159,6 @@ int					open_input(char *args);
 int					get_num_pipes(t_cmds *cmds);
 int					is_builtin(char *cmd);
 void				close_pipes(int *fds, int num_pipe);
-int					get_status_number(int status);
 int					wait_child(t_shell *shell, pid_t pid);
 int					redirect_forward(t_cmds *tmp, t_cmds *cmd);
 int					redirect_backward(t_cmds *tmp);
