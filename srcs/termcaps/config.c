@@ -59,7 +59,12 @@ void	init_prompt(t_config *config, int err)
 	if (tcsetattr(0, 0, &config->term) == -1)
 		print_error("Terminal error", 0, 0);
 	if (err != 130)
-		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
+	{
+		if (err == 0)
+			ft_putstr_fd("\033[1;34mminishell\033[0m\033[1;32m~>\033[0m", 1);
+		else
+			ft_putstr_fd("\033[1;34mminishell\033[0m\033[1;31m~>\033[0m", 1);
+	}
 	get_cursor_pos(config);
 	config->x = config->o_x - 1;
 	config->y = config->o_y;

@@ -60,7 +60,7 @@ int		ft_isalnum_str(char *str)
 	int i;
 
 	i = 0;
-	while (ft_isalnum(str[i]) || str[i] == '=' || str[i] == '_')
+	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	if (!str[i])
 		return (1);

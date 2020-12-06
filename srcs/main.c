@@ -43,13 +43,14 @@ void		sig_handle(int sig)
 	if (sig == SIGINT)
 	{
 		g_ret = 1;
-		ft_putstr_fd("\n", 2);
-		ft_putstr_fd("\033[0;33mminishell~>\033[0m", 2);
+		ft_putstr_fd("\b\b  \b\b\n\033[1;36mminishell\033[0m\033[1;31m~>\033[0m", 1);
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putendl_fd("Quit: 3", 2);
-		return ;
+		if (g_ret == 2)
+			ft_putendl_fd("Quit: 3", 2);
+		else
+			ft_putstr_fd("\b\b  \b\b", 1);
 	}
 }
 
@@ -59,6 +60,7 @@ static void	make_line(t_config *config, t_shell *shell, int save)
 
 	if (save)
 	{
+		ft_putstr_fd("  \b\b", 1);
 		tmp = config->tmp ? ft_strjoin(config->tmp, shell->line) :
 			ft_strdup(shell->line);
 		ft_del(config->tmp);
@@ -85,15 +87,18 @@ void		command_line(t_shell *shell)
 {
 	int		r;
 
-	r = 1;
 	while (1)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, sig_handle);
 		if (shell->ret != 130 && shell->signal != 1 && r != 0)
-			ft_putstr_fd("\033[0;33mminishell~>\033[0m", 1);
+		{
+			if (shell->ret == 0)
+				ft_putstr_fd("\033[1;36mminishell\033[0m\033[1;32m~>\033[0m", 1);
+			else
+				ft_putstr_fd("\033[1;36mminishell\033[0m\033[1;31m~>\033[0m", 1);
+		}
 		r = get_next_line(0, &shell->line);
 		make_line(&shell->config, shell, 0);
+		// printf("shel line %d\n", r);
 		shell->signal = 0;
 		if (r == 0 && !ft_strlen(shell->line) && !shell->config.tmp)
 			exit_builtin(shell, shell->cmds);
@@ -117,6 +122,7 @@ int			main(int argc, char **argv, char **envp)
 
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
+	signal(SIGQUIT, sig_handle);
 	g_ret = 0;
 	shell->ret = 0;
 	shell->signal = 0;

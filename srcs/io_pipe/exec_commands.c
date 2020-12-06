@@ -36,7 +36,8 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
-	while (cmds && cmds->append > 0)
+	// check why cmds->append > 0 was added
+	while (cmds && cmds->append)
 	{
 		if (!cmds->next)
 			break ;
@@ -88,6 +89,7 @@ void			run_commands(t_shell *shell)
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
 	shell = parse_commands(shell);
+	g_ret = 2;
 	if (check_parsing(shell))
 	{
 		cmds = shell->cmds;
@@ -97,7 +99,7 @@ void			run_commands(t_shell *shell)
 				parse_command(shell, cmds);
 			if (!check_parsing(shell))
 				break ;
-			signal(SIGQUIT, sig_handle);
+			// signal(SIGQUIT, sig_handle);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
 			if (shell->num_pipe)

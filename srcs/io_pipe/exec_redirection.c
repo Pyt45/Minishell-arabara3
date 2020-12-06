@@ -37,11 +37,16 @@ int		redirect_backward(t_cmds *tmp)
 	i = -1;
 	while (tmp->next->args[++i])
 	{
-		file = tmp->next->args[i];
-		if (stat(file, &file_stat) < 0)
+		if (tmp->next->args[i][0] == '-')
+			tmp->args = ft_get_arr(tmp->next->args[i], tmp->args);
+		else
 		{
-			print_error(file, errno, 0);
-			exit(1);
+			file = tmp->next->args[i];
+			if (stat(file, &file_stat) < 0)
+			{
+				print_error(file, errno, 0);
+				exit(1);
+			}
 		}
 	}
 	return (open_input(file));

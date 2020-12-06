@@ -76,7 +76,6 @@ void	command_line(t_shell *shell)
 		if (ft_strlen(shell->line))
 			run_commands(shell);
 		free_shell(shell);
-		signal(SIGQUIT, SIG_IGN);
 	}
 }
 
@@ -85,7 +84,7 @@ void	sig_handle(int sig)
 	if (sig == SIGINT)
 	{
 		ft_putstr_fd("\n", 2);
-		ft_putstr_fd("\033[1;32mminishell~>\033[0m", 2);
+		ft_putstr_fd("\033[1;34mminishell\033[0m\033[1;31m~>\033[0m", 1);
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -101,7 +100,11 @@ int		main(int argc, char **argv, char **envp)
 
 	shell = malloc(sizeof(t_shell));
 	signal(SIGINT, sig_handle);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, sig_handle);
+	g_ret = 0;
+	shell->ret = 0;
+	shell->signal = 0;
+	shell->config.tmp = NULL;
 	if (argc && argv)
 	{
 		init_shell(shell);

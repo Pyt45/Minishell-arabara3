@@ -55,6 +55,17 @@ static void		exec_help(t_shell *shell, t_cmds *cmds)
 	}
 }
 
+t_cmds			*clear_whitespaces(t_cmds *cmds)
+{
+	int	i;
+
+	i = -1;
+	cmds->cmd = ft_strtrim(cmds->cmd, "\t\v");
+	while (cmds->args && cmds->args[++i])
+		cmds->args[i] = ft_strtrim(cmds->args[i], "\t\v");
+	return (cmds);
+}
+
 int				exec_commands(t_shell *shell, t_cmds *cmds)
 {
 	int		ret;
@@ -62,6 +73,7 @@ int				exec_commands(t_shell *shell, t_cmds *cmds)
 	ret = 1;
 	if (!cmds->cmd || !cmds->cmd[0])
 		return (0);
+	cmds = clear_whitespaces(cmds);
 	cmds->cmd = clear_quotes(cmds->cmd);
 	if (!ft_strcmp(cmds->cmd, "env"))
 		ret = env_builtin(cmds, shell->env);
