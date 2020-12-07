@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 10:04:49 by zlayine           #+#    #+#             */
-/*   Updated: 2020/12/07 11:56:20 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:34:12 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int			exit_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds && cmds->args[1])
 	{
 		status = ft_atoi_l(cmds->args[1]);
-		tstatus = valid_status(cmds->args[1], status);
+		tstatus = valid_status(cmds->args[1]);
+		if (!check_exit_ret(cmds->args[1], status))
+			tstatus = 0;
 	}
 	ft_del(shell->line);
 	free_shell(shell);

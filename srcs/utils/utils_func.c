@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 12:23:17 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/12/07 11:59:33 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:35:05 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,32 @@ int		check_len(t_cmds *cmds)
 			return (0);
 		}
 	}
+	return (1);
+}
+
+int		ft_nbr_len(long n)
+{
+	int i;
+
+	i = 1;
+	while (n / 10)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
+}
+
+int		check_exit_ret(char *tmp, long st)
+{
+	int		sign;
+
+	sign = 0;
+	if (tmp[0] == '+' || tmp[0] == '-')
+		sign = 1;
+	printf("%d %d %ld\n", ft_nbr_len(st), (int)ft_strlen(tmp), st);
+	if (ft_nbr_len(st) + sign != (int)ft_strlen(tmp))
+		return (0);
 	return (1);
 }
 
@@ -50,15 +76,13 @@ long	ft_atoi_l(const char *str)
 		i++;
 	}
 	n = n * sign;
-	return (n);
+	return (ft_check_long(n, sign));
 }
 
-int		valid_status(char *arg, long l)
+int		valid_status(char *arg)
 {
 	int i;
 
-	if (l > INT64_MAX || l < INT64_MIN)
-		return (0);
 	i = 0;
 	i = (arg[0] == '-' || arg[0] == '+') - 1;
 	while (arg[++i] && ft_isdigit(arg[i]))
