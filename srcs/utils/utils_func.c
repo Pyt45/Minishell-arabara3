@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_func.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 12:23:17 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/11/20 09:21:08 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/12/07 11:59:33 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		valid_status(char *arg, long l)
 {
 	int i;
 
-	if (l > INT32_MAX || l < INT32_MIN)
+	if (l > INT64_MAX || l < INT64_MIN)
 		return (0);
 	i = 0;
 	i = (arg[0] == '-' || arg[0] == '+') - 1;
