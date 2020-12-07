@@ -99,7 +99,6 @@ void			run_commands(t_shell *shell)
 				parse_command(shell, cmds);
 			if (!check_parsing(shell))
 				break ;
-			// signal(SIGQUIT, sig_handle);
 			shell->exec.j = 0;
 			shell->num_pipe = get_num_pipes(cmds);
 			if (shell->num_pipe)
