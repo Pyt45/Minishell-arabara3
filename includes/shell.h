@@ -120,8 +120,10 @@ typedef struct		s_history
 
 # define ARRW_LEFT 4479771
 # define ARRW_RIGHT 4414235
-# define ALT_LEFT 1146821403
-# define ALT_RIGHT 1130044187
+# define ALT_LEFT_1 1146821403
+# define ALT_LEFT_2 25115
+# define ALT_RIGHT_1 1130044187
+# define ALT_RIGHT_2 26139
 # define HOME_BTN 4610843
 # define END_BTN 4741915
 # define ALT_V 10127586

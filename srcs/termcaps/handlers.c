@@ -46,9 +46,9 @@ void	handle_keys(t_config *config)
 		move_cursor(config, 1);
 	else if (config->buff == ARRW_RIGHT)
 		move_cursor(config, 3);
-	else if (config->buff == ALT_LEFT)
+	else if (config->buff == ALT_LEFT_1 || config->buff == ALT_LEFT_2)
 		move_cursor(config, 2);
-	else if (config->buff == ALT_RIGHT)
+	else if (config->buff == ALT_RIGHT_1 || config->buff == ALT_RIGHT_2)
 		move_cursor(config, 4);
 	else if (config->buff == ALT_UP)
 		move_cursor(config, 5);
