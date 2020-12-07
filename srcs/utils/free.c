@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlayine <zlayine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 10:29:31 by zlayine           #+#    #+#             */
-/*   Updated: 2020/11/18 12:18:27 by zlayine          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:35:08 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,13 @@ void	init_shell(t_shell *shell)
 	shell->parse_err = 0;
 	shell->ret = 0;
 	shell->cmds = NULL;
+}
+
+long	ft_check_long(long n, int sign)
+{
+	if (n < 0 && sign > 0)
+		return (-1);
+	if (n > 0 && sign < 0)
+		return (0);
+	return (n);
 }

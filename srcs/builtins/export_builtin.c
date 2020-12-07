@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:11:38 by zlayine           #+#    #+#             */
-/*   Updated: 2020/12/07 12:08:12 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:42:49 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,10 @@ int				ft_export_cmd(t_shell *shell, char *value)
 	}
 	if (ft_strcmp(argv[0], "_") && (i = ft_getenv(argv[0], shell->env)) >= 0)
 	{
-		if (argv[1] || (i = ft_getenv(argv[0], shell->env)) >= 0)
+		if (argv[1] || ((i = ft_getenv(argv[0], shell->env)) >= 0
+		&& ft_strchr(value, '=')))
 		{
+			printf("%s\n", shell->env[i]);
 			free(shell->env[i]);
 			shell->env[i] = value;
 		}

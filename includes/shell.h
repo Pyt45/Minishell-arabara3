@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/12/07 11:56:31 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/07 12:35:18 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,8 +247,10 @@ int					create_cmd_line(t_cmds **cmds, char *tmp,
 int					manage_parsing(t_cmds **cmds, t_parser *parser);
 int					validate_line(char *str);
 long				ft_atoi_l(const char *str);
-int					valid_status(char *arg, long l);
+int					valid_status(char *arg);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
+int					check_exit_ret(char *tmp, long st);
+long				ft_check_long(long n, int sign);
 
 #endif
