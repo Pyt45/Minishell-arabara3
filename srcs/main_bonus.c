@@ -26,10 +26,11 @@ int		exit_builtin(t_shell *shell, t_cmds *cmds)
 	if (cmds && cmds->args[1])
 	{
 		status = ft_atoi_l(cmds->args[1]);
-		tstatus = valid_status(cmds->args[1], status);
+		tstatus = valid_status(cmds->args[1]);
+		if (!check_exit_ret(cmds->args[1], status))
+			tstatus = 0;
 	}
-	if (!shell->num_pipe)
-		end_terminal(&shell->config);
+	(!shell->num_pipe) ? end_terminal(&shell->config) : 0;
 	free_shell(shell);
 	free_config(&shell->config);
 	ft_free_arr(shell->env);

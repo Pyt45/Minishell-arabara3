@@ -45,7 +45,8 @@ void		sig_handle(int sig)
 	if (sig == SIGINT)
 	{
 		g_ret = 1;
-		ft_putstr_fd("\b\b  \b\b\n\033[1;36mminishell\033[0m\033[1;31m~>\033[0m", 1);
+		ft_putstr_fd(
+			"\b\b  \b\b\n\033[1;36mminishell\033[0m\033[1;31m~>\033[0m", 2);
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -85,33 +86,29 @@ static void	make_line(t_config *config, t_shell *shell, int save)
 	}
 }
 
-void		command_line(t_shell *shell)
+void		command_line(t_shell *shl)
 {
 	int		r;
 
+	r = 1;
 	while (1)
 	{
-		if (shell->ret != 130 && shell->signal != 1 && r != 0)
-		{
-			if (shell->ret == 0)
-				ft_putstr_fd("\033[1;36mminishell\033[0m\033[1;32m~>\033[0m", 1);
-			else
-				ft_putstr_fd("\033[1;36mminishell\033[0m\033[1;31m~>\033[0m", 1);
-		}
-		r = get_next_line(0, &shell->line);
-		make_line(&shell->config, shell, 0);
-		// printf("shel line %d\n", r);
-		shell->signal = 0;
-		if (r == 0 && !ft_strlen(shell->line) && !shell->config.tmp)
-			exit_builtin(shell, shell->cmds);
+		if (shl->ret != 130 && shl->signal != 1 && r != 0 && shl->ret == 0)
+			ft_putstr_fd("\033[1;36mminishell\033[0m\033[1;32m~>\033[0m", 2);
+		else if (shl->ret != 130 && shl->signal != 1 && r != 0)
+			ft_putstr_fd("\033[1;36mminishell\033[0m\033[1;31m~>\033[0m", 2);
+		r = get_next_line(0, &shl->line);
+		make_line(&shl->config, shl, 0);
+		shl->signal = 0;
+		if (r == 0 && !ft_strlen(shl->line) && !shl->config.tmp)
+			exit_builtin(shl, shl->cmds);
 		else if (r == 0)
-			make_line(&shell->config, shell, 1);
+			make_line(&shl->config, shl, 1);
 		else if (r != 0)
 		{
-			if (ft_strlen(shell->line))
-				run_commands(shell);
-			ft_del(shell->line);
-			free_shell(shell);
+			ft_strlen(shl->line) ? run_commands(shl) : 0;
+			ft_del(shl->line);
+			free_shell(shl);
 			g_ret = 0;
 		}
 	}

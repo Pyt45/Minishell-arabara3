@@ -64,7 +64,6 @@ int			get_next_line(int fd, char **line)
 		return (free_bufs(*line, NULL, -1));
 	while ((rs = read(fd, buf, BUFFER_SIZE)))
 	{
-		// printf("read %d \n", buf[0]);
 		buf[rs] = '\0';
 		if (!(tmp = (s[fd]) ? ft_strjoin(s[fd], buf) : ft_strdup(buf)))
 			return (free_bufs(*line, buf, -1));

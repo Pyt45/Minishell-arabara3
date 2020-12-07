@@ -163,7 +163,7 @@ int					is_builtin(char *cmd);
 void				close_pipes(int *fds, int num_pipe);
 int					wait_child(t_shell *shell, pid_t pid);
 int					redirect_forward(t_cmds *tmp, t_cmds *cmd);
-int					redirect_backward(t_cmds *tmp);
+int					redirect_backward(t_cmds *tmp, t_cmds *cmd);
 void				do_redirect(t_cmds *cmd, int *fd);
 void				exec_io_redi(t_shell *shell, t_cmds *cmd);
 int					open_output(t_cmds *cmd, int append);

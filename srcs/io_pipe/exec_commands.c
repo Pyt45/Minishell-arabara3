@@ -36,7 +36,6 @@ static void		excute_cmd_help(t_shell *shell, t_cmds *cmds, pid_t pid)
 
 static t_cmds	*excute_loop_append(t_cmds *cmds)
 {
-	// check why cmds->append > 0 was added
 	while (cmds && cmds->append)
 	{
 		if (!cmds->next)

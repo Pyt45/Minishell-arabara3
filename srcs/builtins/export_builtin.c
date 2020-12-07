@@ -95,16 +95,12 @@ int				ft_export_cmd(t_shell *shell, char *value)
 		return (0);
 	argv = ft_split(value, '=');
 	if (!valid_arg_name(argv[0]))
-	{
-		ft_free_arr(argv);
-		return (0);
-	}
+		return (!(ft_free_arr(argv)));
 	if (ft_strcmp(argv[0], "_") && (i = ft_getenv(argv[0], shell->env)) >= 0)
 	{
 		if (argv[1] || ((i = ft_getenv(argv[0], shell->env)) >= 0
 		&& ft_strchr(value, '=')))
 		{
-			printf("%s\n", shell->env[i]);
 			free(shell->env[i]);
 			shell->env[i] = value;
 		}

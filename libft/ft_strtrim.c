@@ -55,16 +55,19 @@ static size_t		ft_trim_end(const char *s, const char *set)
 char				*ft_strtrim(char const *s1, char const *set)
 {
 	char	*r;
+	char	*tmp;
 	size_t	len;
 
 	if (!s1)
 		return (NULL);
+	tmp = (char *)s1;
 	s1 = ft_trim_start(s1, set);
 	len = ft_trim_end(s1, set) + 1;
 	r = malloc(sizeof(char) * len);
 	if (!r)
 		return (NULL);
 	ft_strlcpy(r, s1, len);
-	r[len] = '\0';
+	ft_del(tmp);
+	r[len - 1] = '\0';
 	return (r);
 }

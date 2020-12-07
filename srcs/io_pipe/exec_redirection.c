@@ -28,28 +28,33 @@ int		redirect_forward(t_cmds *tmp, t_cmds *cmd)
 	return (open_output(tmp, tmp->append - 1));
 }
 
-int		redirect_backward(t_cmds *tmp)
+int		redirect_backward(t_cmds *tmp, t_cmds *cmd)
 {
 	int			i;
 	char		*file;
 	struct stat	file_stat;
 
 	i = -1;
-	while (tmp->next->args[++i])
+	if (ft_arr_len(tmp->next->args) > 1 && !tmp->next->start)
 	{
-		if (tmp->next->args[i][0] == '-')
-			tmp->args = ft_get_arr(tmp->next->args[i], tmp->args);
-		else
+		i = 1;
+		while (tmp->next->args[i])
 		{
-			file = tmp->next->args[i];
-			if (stat(file, &file_stat) < 0)
-			{
-				print_error(file, errno, 0);
-				exit(1);
-			}
+			cmd->args = ft_get_arr(tmp->next->args[i], cmd->args);
+			i++;
 		}
 	}
-	return (open_input(file));
+	if (tmp && tmp->next && tmp->next->args)
+	{
+		file = tmp->next->args[0];
+		if (stat(file, &file_stat) < 0)
+		{
+			print_error(file, errno, 0);
+			exit(1);
+		}
+		return (open_input(file));
+	}
+	return (0);
 }
 
 void	dup_fds(t_shell *shell)
@@ -91,7 +96,7 @@ void	exec_io_redi(t_shell *shell, t_cmds *cmd)
 		}
 		else
 		{
-			shell->exec.fdin = redirect_backward(tmp);
+			shell->exec.fdin = redirect_backward(tmp, cmd);
 			if (!shell->exec.fdin)
 				cmd->ret = 1;
 		}
