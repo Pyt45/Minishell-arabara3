@@ -89,7 +89,7 @@ void			run_commands(t_shell *shell)
 	shell->num_pipe = 0;
 	shell->parse_err = 0;
 	shell = parse_commands(shell);
-	g_ret = 2;
+	g_ret = !g_ret ? 2 : g_ret;
 	if (check_parsing(shell))
 	{
 		cmds = shell->cmds;
