@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/12/07 11:47:06 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/07 11:56:31 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <dirent.h>
 # include <stdio.h>
 # include <termios.h>
-# include <limits.h>
 # include <curses.h>
 # include <term.h>
 # include "../libft/libft.h"
