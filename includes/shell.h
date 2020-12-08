@@ -6,7 +6,7 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 09:22:58 by zlayine           #+#    #+#             */
-/*   Updated: 2020/12/07 12:35:18 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/08 19:28:08 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,5 +251,6 @@ long				valid_status(char *arg);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
 long				ft_check_long(long n, int sign);
+int					valid_first_arg(char *arg);
 
 #endif
