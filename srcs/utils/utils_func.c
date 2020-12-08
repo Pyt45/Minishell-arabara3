@@ -46,7 +46,6 @@ int		check_exit_ret(char *tmp, long st)
 	sign = 0;
 	if (tmp[0] == '+' || tmp[0] == '-')
 		sign = 1;
-	printf("%d %d %ld\n", ft_nbr_len(st), (int)ft_strlen(tmp), st);
 	if (ft_nbr_len(st) + sign != (int)ft_strlen(tmp))
 		return (0);
 	return (1);

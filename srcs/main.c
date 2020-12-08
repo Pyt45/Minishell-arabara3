@@ -32,9 +32,9 @@ int			exit_builtin(t_shell *shell, t_cmds *cmds)
 	}
 	ft_del(shell->line);
 	free_shell(shell);
-	ft_free_arr(shell->env);
-	ft_putstr_fd("exit\n", 2);
-	(!tstatus) ? print_error("exit", 33, 0) : 0;
+	(cmds->start) ? ft_free_arr(shell->env) : 0;
+	(cmds->start) ? ft_putstr_fd("exit\n", 2) : 0;
+	(cmds->start && !tstatus) ? print_error("exit", 33, 0) : 0;
 	ft_del(shell);
 	exit(status);
 	return (0);
