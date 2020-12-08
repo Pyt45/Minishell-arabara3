@@ -6,17 +6,27 @@
 /*   By: aaqlzim <aaqlzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 12:23:17 by aaqlzim           #+#    #+#             */
-/*   Updated: 2020/12/07 12:35:05 by aaqlzim          ###   ########.fr       */
+/*   Updated: 2020/12/08 19:29:50 by aaqlzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/shell.h"
 
+int		valid_first_arg(char *arg)
+{
+	int		i;
+
+	i = -1;
+	while (arg[++i] && ft_isdigit(arg[i]))
+		;
+	return ((arg[i] == '\0') ? 1 : 0);
+}
+
 int		check_len(t_cmds *cmds)
 {
 	if (cmds && cmds->args)
 	{
-		if (ft_arr_len(cmds->args) > 2)
+		if (ft_arr_len(cmds->args) > 2 && valid_first_arg(cmds->args[1]))
 		{
 			ft_putstr_fd("exit\n", 2);
 			print_error("exit", 7, 0);
