@@ -81,8 +81,6 @@ long	valid_status(char *arg)
 		sign = 0;
 		if (arg[0] == '+' || arg[0] == '-')
 			sign = 1;
-		// if (status < 0)
-			// return (233);
 		if (ft_nbr_len(status) + sign == (int)ft_strlen(arg))
 			return (status);
 	}
