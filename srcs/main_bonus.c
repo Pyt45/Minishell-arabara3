@@ -14,29 +14,22 @@
 
 int		exit_builtin(t_shell *shell, t_cmds *cmds)
 {
-	double	tstatus;
 	long	status;
 	int		i;
 
 	if (!check_len(cmds))
 		return (1);
-	tstatus = 1;
 	status = 0;
 	i = -1;
 	if (cmds && cmds->args[1])
-	{
-		status = ft_atoi_l(cmds->args[1]);
-		tstatus = valid_status(cmds->args[1]);
-		if (!check_exit_ret(cmds->args[1], status))
-			tstatus = 0;
-	}
+		status = valid_status(cmds->args[1]);
 	(!shell->num_pipe) ? end_terminal(&shell->config) : 0;
-	free_shell(shell);
-	free_config(&shell->config);
-	ft_free_arr(shell->env);
-	ft_putstr_fd("exit\n", 1);
-	(!tstatus) ? print_error("exit", 33, 0) : 0;
-	ft_del(shell);
+	(cmds && cmds->start) ? free_config(&shell->config) : 0;
+	(cmds && cmds->start) ? ft_free_arr(shell->env) : 0;
+	(cmds && cmds->start) ? free_shell(shell) : 0;
+	((cmds && cmds->start )|| !cmds) ? ft_putstr_fd("exit\n", 2) : 0;
+	(status > 200 && status < 300) ? print_error("exit", 33, 0) : 0;
+	(cmds && cmds->start) ? ft_del(shell) : 0;
 	exit(status);
 	return (0);
 }

@@ -247,10 +247,9 @@ int					create_cmd_line(t_cmds **cmds, char *tmp,
 int					manage_parsing(t_cmds **cmds, t_parser *parser);
 int					validate_line(char *str);
 long				ft_atoi_l(const char *str);
-int					valid_status(char *arg);
+long				valid_status(char *arg);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
-int					check_exit_ret(char *tmp, long st);
 long				ft_check_long(long n, int sign);
 
 #endif

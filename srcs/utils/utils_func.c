@@ -39,18 +39,6 @@ int		ft_nbr_len(long n)
 	return (i);
 }
 
-int		check_exit_ret(char *tmp, long st)
-{
-	int		sign;
-
-	sign = 0;
-	if (tmp[0] == '+' || tmp[0] == '-')
-		sign = 1;
-	if (ft_nbr_len(st) + sign != (int)ft_strlen(tmp))
-		return (0);
-	return (1);
-}
-
 long	ft_atoi_l(const char *str)
 {
 	int			i;
@@ -78,13 +66,25 @@ long	ft_atoi_l(const char *str)
 	return (ft_check_long(n, sign));
 }
 
-int		valid_status(char *arg)
+long	valid_status(char *arg)
 {
-	int i;
+	int 	i;
+	int		sign;
+	long	status;
 
-	i = 0;
 	i = (arg[0] == '-' || arg[0] == '+') - 1;
 	while (arg[++i] && ft_isdigit(arg[i]))
 		;
-	return (arg[i] == '\0');
+	if (!arg[i])
+	{
+		status = ft_atoi_l(arg);
+		sign = 0;
+		if (arg[0] == '+' || arg[0] == '-')
+			sign = 1;
+		// if (status < 0)
+			// return (233);
+		if (ft_nbr_len(status) + sign == (int)ft_strlen(arg))
+			return (status);
+	}
+	return (255);
 }
