@@ -72,7 +72,10 @@ int		var_checker_pass(t_parser *prs, int start)
 		return (0);
 	if (start == 0 && prs->quote != 1 && prs->str[prs->c] == '$' &&
 		!prs->ignore)
+	{
+		prs->pos = prs->c;
 		return (1);
+	}
 	if (start == 1 && prs->str[prs->c] == '$' && (prs->str[prs->c + 1] == '?'
 		|| prs->str[prs->c + 1] == '_'))
 		return (0);
@@ -97,10 +100,7 @@ char	*parse_env_var(char *str, t_shell *shell)
 		if (is_quote(prs->str[prs->c], 0) && !prs->ignore)
 			prs->quote = quote_activer(prs->quote, prs->str[prs->c]);
 		if (!prs->ignore && var_checker_pass(prs, 0))
-		{
 			prs->tmp = ft_strdup(prs->str + prs->c + 1);
-			prs->pos = prs->c;
-		}
 		if (!prs->ignore && var_checker_pass(prs, 1))
 		{
 			prs->tmp = get_variable_name(prs, shell);

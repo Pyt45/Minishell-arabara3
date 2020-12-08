@@ -68,7 +68,7 @@ long	ft_atoi_l(const char *str)
 
 long	valid_status(char *arg)
 {
-	int 	i;
+	int		i;
 	int		sign;
 	long	status;
 

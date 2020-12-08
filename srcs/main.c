@@ -16,19 +16,21 @@ int			exit_builtin(t_shell *shell, t_cmds *cmds)
 {
 	long	status;
 	int		i;
+	int		is_cmd;
 
 	if (!check_len(cmds))
 		return (1);
 	status = 0;
+	is_cmd = cmds && cmds->start ? 1 : 0;
 	i = -1;
 	if (cmds && cmds->args[1])
 		status = valid_status(cmds->args[1]);
-	(cmds && cmds->start) ? ft_del(shell->line) : 0;
-	(cmds && cmds->start) ? ft_free_arr(shell->env) : 0;
-	(cmds && cmds->start) ? free_shell(shell) : 0;
-	((cmds && cmds->start )|| !cmds) ? ft_putstr_fd("exit\n", 2) : 0;
+	(is_cmd) ? ft_del(shell->line) : 0;
+	(is_cmd) ? ft_free_arr(shell->env) : 0;
+	(is_cmd || !cmds) ? ft_putstr_fd("exit\n", 2) : 0;
 	(status > 200 && status < 300) ? print_error("exit", 33, 0) : 0;
-	(cmds && cmds->start) ? ft_del(shell) : 0;
+	(is_cmd) ? free_shell(shell) : 0;
+	(is_cmd || !cmds) ? ft_del(shell) : 0;
 	exit(status);
 	return (0);
 }

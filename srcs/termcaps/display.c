@@ -69,3 +69,39 @@ void	newline_config(t_config *config, int x)
 	}
 	tputs(tgoto(config->cursor, x, config->y), 0, ft_putchars);
 }
+
+void	display_content(t_config *config)
+{
+	config->str[config->len] = 0;
+	ft_putchars((int)config->str[config->len]);
+	display_cursor(config);
+}
+
+void	print_char(t_config *config)
+{
+	char	tmp;
+	int		i;
+
+	if (config->c < config->len)
+	{
+		i = config->c;
+		tputs(tgetstr("cd", NULL), 0, ft_putchars);
+		while (i <= config->len)
+		{
+			tmp = config->str[i];
+			config->str[i] = config->buff;
+			config->buff = tmp;
+			ft_putchars((int)config->str[i++]);
+		}
+		config->c++;
+		config->len++;
+	}
+	else
+	{
+		config->str[config->c] = config->buff;
+		ft_putchars((int)config->buff);
+		config->c++;
+		config->len = config->c;
+	}
+	display_content(config);
+}

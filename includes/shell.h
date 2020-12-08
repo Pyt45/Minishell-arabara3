@@ -74,6 +74,7 @@ typedef struct		s_control
 	int		start;
 	int		len;
 	int		cut;
+	int		cpy;
 }					t_control;
 
 typedef struct		s_config
@@ -251,5 +252,6 @@ long				valid_status(char *arg);
 int					check_len(t_cmds *cmds);
 void				check_file(char *file, int cas, t_shell *shell);
 long				ft_check_long(long n, int sign);
+void				init_control(t_control *control, int del);
 
 #endif

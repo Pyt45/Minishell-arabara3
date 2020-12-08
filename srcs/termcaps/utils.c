@@ -18,13 +18,6 @@ int		ft_putchars(int c)
 	return (0);
 }
 
-void	display_content(t_config *config)
-{
-	config->str[config->len] = 0;
-	ft_putchars((int)config->str[config->len]);
-	display_cursor(config);
-}
-
 void	delete_char(t_config *config)
 {
 	int	i;
@@ -51,35 +44,6 @@ void	delete_char(t_config *config)
 		display_content(config);
 		tputs(tgetstr("cd", NULL), 0, ft_putchars);
 	}
-}
-
-void	print_char(t_config *config)
-{
-	char	tmp;
-	int		i;
-
-	if (config->c < config->len)
-	{
-		i = config->c;
-		tputs(tgetstr("cd", NULL), 0, ft_putchars);
-		while (i <= config->len)
-		{
-			tmp = config->str[i];
-			config->str[i] = config->buff;
-			config->buff = tmp;
-			ft_putchars((int)config->str[i++]);
-		}
-		config->c++;
-		config->len++;
-	}
-	else
-	{
-		config->str[config->c] = config->buff;
-		ft_putchars((int)config->buff);
-		config->c++;
-		config->len = config->c;
-	}
-	display_content(config);
 }
 
 char	*get_cursor_buff(t_config *config, int active)

@@ -46,7 +46,7 @@ void	init_prompt(t_config *config, int err)
 		config = add_history(config);
 	else
 		init_config_data(config);
-	ft_bzero(config->str, 512 * sizeof(char));
+	ft_bzero(config->str, 1048576 * sizeof(char));
 	config->c = 0;
 	config->len = 0;
 	config->buff = 0;
@@ -80,7 +80,7 @@ void	init_config_data(t_config *config)
 		print_error("Terminal error", 0, 0);
 	if (tcgetattr(0, &config->term) == -1)
 		print_error("Terminal error", 0, 0);
-	config->str = malloc(sizeof(char) * 512);
+	config->str = malloc(sizeof(char) * 1048576);
 	config->history = malloc(sizeof(t_history));
 	config->history->data = NULL;
 	config->history->prev = NULL;
@@ -90,6 +90,7 @@ void	init_config_data(t_config *config)
 	config->tmp = NULL;
 	config->o_x = 0;
 	config->o_y = 0;
+	init_control(&config->control, 0);
 }
 
 void	end_terminal(t_config *config)
