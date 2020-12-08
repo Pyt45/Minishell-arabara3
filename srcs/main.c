@@ -30,12 +30,12 @@ int			exit_builtin(t_shell *shell, t_cmds *cmds)
 		if (!check_exit_ret(cmds->args[1], status))
 			tstatus = 0;
 	}
-	ft_del(shell->line);
-	free_shell(shell);
-	(cmds->start) ? ft_free_arr(shell->env) : 0;
-	(cmds->start) ? ft_putstr_fd("exit\n", 2) : 0;
-	(cmds->start && !tstatus) ? print_error("exit", 33, 0) : 0;
-	ft_del(shell);
+	(cmds && cmds->start) ? ft_del(shell->line) : 0;
+	(cmds && cmds->start) ? ft_free_arr(shell->env) : 0;
+	(cmds && cmds->start) ? free_shell(shell) : 0;
+	((cmds && cmds->start )|| !cmds) ? ft_putstr_fd("exit\n", 2) : 0;
+	(!tstatus) ? print_error("exit", 33, 0) : 0;
+	(cmds && cmds->start) ? ft_del(shell) : 0;
 	exit(status);
 	return (0);
 }
@@ -124,6 +124,7 @@ int			main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, sig_handle);
 	g_ret = 0;
 	shell->ret = 0;
+	shell->line = NULL;
 	shell->signal = 0;
 	shell->config.tmp = NULL;
 	if (argc && argv)

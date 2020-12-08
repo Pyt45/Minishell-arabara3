@@ -94,19 +94,21 @@ char	*parse_env_var(char *str, t_shell *shell)
 	{
 		if (prs->str[prs->c] == '\\' && prs->quote != 1)
 			prs->ignore = prs->ignore ? 0 : 1;
-		if (var_checker_pass(prs, 0))
+		if (is_quote(prs->str[prs->c], 0) && !prs->ignore)
+			prs->quote = quote_activer(prs->quote, prs->str[prs->c]);
+		if (!prs->ignore && var_checker_pass(prs, 0))
 		{
 			prs->tmp = ft_strdup(prs->str + prs->c + 1);
 			prs->pos = prs->c;
 		}
-		if (var_checker_pass(prs, 1))
+		if (!prs->ignore && var_checker_pass(prs, 1))
 		{
 			prs->tmp = get_variable_name(prs, shell);
 			prs->str = replace_var_str(prs);
 			ft_del(prs->tmp);
 			prs->tmp = NULL;
 		}
-		prs->quote = quote_activer(prs->quote, prs->str[prs->c]);
+		prs->ignore = prs->ignore && prs->str[prs->c] != '\\' ? 0 : prs->ignore;
 		prs->c = prs->str[prs->c] ? prs->c + 1 : prs->c;
 	}
 	str = prs->str;
