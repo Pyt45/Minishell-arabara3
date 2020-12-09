@@ -35,15 +35,15 @@ int		*create_fds(t_cmds *cmds, int j, int *fds)
 	{
 		if (dup2(fds[j - 2], 0) < 0)
 		{
-			print_error("Dup2 error", 2, 0);
+			print_error("Dup2 error", 0, 0);
 			exit(1);
 		}
 	}
-	if (cmds->next && (cmds->p || (!cmds->next->end)))
+	if (cmds->next && !cmds->end && (cmds->p || (!cmds->next->end)))
 	{
 		if (dup2(fds[j + 1], 1) < 0)
 		{
-			print_error("Dup2 error", 2, 0);
+			print_error("Dup2 error", 0, 0);
 			exit(1);
 		}
 	}
