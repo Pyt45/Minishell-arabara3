@@ -25,8 +25,8 @@ int			exit_builtin(t_shell *shell, t_cmds *cmds)
 	i = -1;
 	if (cmds && cmds->args[1])
 		status = valid_status(cmds->args[1]);
-	(is_cmd) ? ft_del(shell->line) : 0;
-	(is_cmd) ? ft_free_arr(shell->env) : 0;
+	(is_cmd || !cmds) ? ft_del(shell->line) : 0;
+	(is_cmd || !cmds) ? ft_free_arr(shell->env) : 0;
 	(is_cmd || !cmds) ? ft_putstr_fd("exit\n", 2) : 0;
 	(status > 200 && status < 300) ? print_error("exit", 33, 0) : 0;
 	(is_cmd) ? free_shell(shell) : 0;
