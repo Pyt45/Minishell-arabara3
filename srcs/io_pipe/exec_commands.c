@@ -77,7 +77,9 @@ t_cmds			*excute_command_by_order(t_shell *shell, t_cmds *cmds)
 		excute_cmd_help(shell, cmds, pid);
 	}
 	else if (cmds->cmd)
+	{
 		cmds->ret = exec_commands(shell, cmds);
+	}
 	return (cmds);
 }
 

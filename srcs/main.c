@@ -95,6 +95,7 @@ void		command_line(t_shell *shl)
 		r = get_next_line(0, &shl->line);
 		make_line(&shl->config, shl, 0);
 		shl->signal = 0;
+		shl->line = ft_strtrim(shl->line, " \t");
 		if (r == 0 && !ft_strlen(shl->line) && !shl->config.tmp)
 			exit_builtin(shl, shl->cmds);
 		else if (r == 0)
