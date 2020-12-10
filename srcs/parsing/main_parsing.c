@@ -20,7 +20,7 @@ int				validate_line(char *str)
 	int		j;
 
 	i = ft_strlen(str);
-	while (str[--i] == ' ')
+	while (str[--i] == ' ' && str[i - 1] != '\\')
 		str[i] = '\0';
 	i = -1;
 	pos = 0;
@@ -70,10 +70,12 @@ t_shell			*parse_commands(t_shell *shell)
 			prs->ignore = prs->ignore ? 0 : 1;
 		if (is_quote(prs->str[i], 0) && !prs->ignore)
 			prs->quote = quote_activer(prs->quote, prs->str[i]);
-		if (!prs->quote && (prs->str[i] == ';' || prs->str[i + 1] == '\0'))
+		if (!prs->quote && !prs->ignore &&
+			(prs->str[i] == ';' || prs->str[i + 1] == '\0'))
 			prs->pos = create_cmd_line(&cmds, prs->str, prs->pos, i);
 		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 	}
+	(prs->pos == 0) ? create_cmd_line(&cmds, prs->str, prs->pos, i) : 0;
 	shell->parse_err = prs->quote || prs->ignore ? -1 : prs->pos;
 	ft_del(prs->str);
 	ft_del(prs);
@@ -87,6 +89,7 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 
 	prs = init_parser(shell, cmds->line, 1);
 	i = -1;
+	// printf("len %zu\n", ft_strlen(cmds->line));
 	while (prs->str[++i] && prs->pos != -1)
 	{
 		prs->c = i;
@@ -94,7 +97,7 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 			prs->ignore = prs->ignore ? 0 : 1;
 		if (is_quote(prs->str[i], 0) && !prs->ignore)
 			prs->quote = quote_activer(prs->quote, prs->str[i]);
-		if (!prs->quote)
+		if (!prs->quote && !prs->ignore)
 			i = manage_parsing(&cmds, prs);
 		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 	}

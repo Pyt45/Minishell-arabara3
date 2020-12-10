@@ -89,12 +89,11 @@ int		parse_full(t_cmds **cmds, t_parser *prs)
 int		manage_parsing(t_cmds **cmds, t_parser *prs)
 {
 	prs->len = prs->c - prs->pos;
-	if (prs->str[prs->c] == '|' && !prs->ignore)
+	if (prs->str[prs->c] == '|')
 		prs->pos = parse_pipes(cmds, prs);
-	else if ((prs->str[prs->c] == '>' || prs->str[prs->c] == '<') &&
-		!prs->ignore)
+	else if ((prs->str[prs->c] == '>' || prs->str[prs->c] == '<'))
 		prs->pos = parse_redirections(cmds, prs);
-	else if ((prs->str[prs->c] == ';' && !prs->ignore))
+	else if (prs->str[prs->c] == ';')
 		prs->pos = parse_semicolons(cmds, prs);
 	else if (prs->str[prs->c + 1] == '\0')
 		prs->pos = parse_full(cmds, prs);

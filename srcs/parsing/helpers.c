@@ -31,7 +31,6 @@ char	*clear_quotes(char *str)
 	i = -1;
 	quote = 0;
 	ignore = 0;
-	str = ft_strtrim(str, "\t\v\n\f\r");
 	while (str[++i])
 	{
 		if ((str[i] == '\\' || ignore) && quote != 1)
@@ -46,6 +45,7 @@ char	*clear_quotes(char *str)
 			|| str[i + 1] == '\\') && quote == 2) || !quote))
 			str = str_quotes_replacer(str, i--);
 	}
+	str = ft_strtrim(str, "\t\v\n\f\r ");
 	return (str);
 }
 

@@ -44,7 +44,7 @@ static int		count_strings(char *str)
 			quote = quote_activer(quote, str[i]);
 		j = str[i] == ' ' && !quote && !ignore && start ? j + 1 : j;
 		start = str[i] == ' ' && !quote && !ignore && start ? 0 : start;
-		start = str[i] != ' ' ? 1 : start;
+		start = str[i] != ' '  && str[i] != '\t' ? 1 : start;
 		ignore = ignore && str[i] != '\\' ? 0 : ignore;
 	}
 	return (start ? j + 1 : j);
@@ -71,7 +71,7 @@ static char		**ft_make_splits(char **split, char *str, char x)
 				return (free_list_quote(split));
 			j = -1;
 		}
-		else if (str[i] != x && j == -1)
+		else if (str[i] != x && str[i] != '\t' && j == -1)
 			j = i;
 	}
 	if (j != -1 && !(split[c] = clear_quotes(ft_substr(str, j, i - j))))

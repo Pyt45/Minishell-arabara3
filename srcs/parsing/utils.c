@@ -35,28 +35,31 @@ char	*get_cmd(char *str, int n)
 {
 	int		i;
 	char	*cmd;
-	int		quote;
-
+	t_parser	*prs;
+	
 	i = 0;
-	quote = 0;
-	while ((!ft_isprint(*str) || *str == ' ') && *str != '\0')
-		str++;
-	if (n == 0)
-		n = ft_strlen(str);
-	while (ft_isprint(str[i]) && i < n)
+	prs = init_parser(NULL, str, 0);
+	while ((prs->str[i] == ' ') && prs->str[i])
+		i++;
+	n = n == 0 ? ft_strlen(prs->str + i) : n;
+	while (prs->str[i] && i < n)
 	{
-		if (is_quote(str[i], 0))
-			quote = quote_activer(quote, str[i]);
-		if ((str[i] == ' ' || str[i] == ';' || str[i] == '|'
-			|| str[i] == '>' || str[i] == '<') && !quote)
+		if (prs->str[i] == '\\' && prs->quote != 1)
+			prs->ignore = prs->ignore ? 0 : 1;
+		if (is_quote(prs->str[i], 0) && !prs->ignore)
+			prs->quote = quote_activer(prs->quote, prs->str[i]);
+		if (!prs->ignore && !prs->quote && ft_strchr(" ;|><", prs->str[i]))
 			break ;
+		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 		i++;
 	}
+	while (ft_strchr(" \t", prs->str[i]) && prs->str[i])
+		i++;
 	cmd = malloc(sizeof(char) * (++i));
-	ft_strlcpy(cmd, str, i);
-	if (*cmd)
-		return (cmd);
-	return (NULL);
+	ft_strlcpy(cmd, prs->str, i);
+	ft_del(prs->str);
+	ft_del(prs);
+	return (*cmd ? cmd : NULL);
 }
 
 char	**get_args(char *str, int n)
