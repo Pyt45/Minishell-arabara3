@@ -51,8 +51,6 @@ char	*get_cmd(char *str, int n)
 		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 		i++;
 	}
-	// while (ft_strchr(" \t", prs->str[i]) && prs->str[i])
-	// 	i++;
 	cmd = malloc(sizeof(char) * (++i));
 	ft_strlcpy(cmd, prs->str, i);
 	ft_del(prs->str);
