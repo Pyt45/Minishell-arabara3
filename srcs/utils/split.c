@@ -44,7 +44,7 @@ static int		count_strings(char *str)
 			quote = quote_activer(quote, str[i]);
 		j = str[i] == ' ' && !quote && !ignore && start ? j + 1 : j;
 		start = str[i] == ' ' && !quote && !ignore && start ? 0 : start;
-		start = str[i] != ' '  && str[i] != '\t' ? 1 : start;
+		start = str[i] != ' ' && str[i] != '\t' ? 1 : start;
 		ignore = ignore && str[i] != '\\' ? 0 : ignore;
 	}
 	return (start ? j + 1 : j);
@@ -119,5 +119,7 @@ t_parser		*init_parser(t_shell *shell, char *line, int var)
 		parser->str = ft_strdup(line);
 	if (var == 3)
 		ft_del(line);
+	if (var == 4)
+		parser->str = ft_strtrim(parser->str, " \t");
 	return (parser);
 }

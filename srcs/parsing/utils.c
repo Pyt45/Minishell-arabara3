@@ -33,14 +33,12 @@ t_cmds	*init_cmds(t_cmds *prev)
 
 char	*get_cmd(char *str, int n)
 {
-	int		i;
-	char	*cmd;
+	int			i;
+	char		*cmd;
 	t_parser	*prs;
-	
+
 	i = 0;
-	prs = init_parser(NULL, str, 0);
-	while ((prs->str[i] == ' ') && prs->str[i])
-		i++;
+	prs = init_parser(NULL, str, 4);
 	n = n == 0 ? ft_strlen(prs->str + i) : n;
 	while (prs->str[i] && i < n)
 	{

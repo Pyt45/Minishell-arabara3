@@ -89,7 +89,6 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 
 	prs = init_parser(shell, cmds->line, 1);
 	i = -1;
-	// printf("len %zu\n", ft_strlen(cmds->line));
 	while (prs->str[++i] && prs->pos != -1)
 	{
 		prs->c = i;
@@ -101,6 +100,7 @@ t_cmds			*parse_command(t_shell *shell, t_cmds *cmds)
 			i = manage_parsing(&cmds, prs);
 		prs->ignore = prs->ignore && prs->str[i] != '\\' ? 0 : prs->ignore;
 	}
+	(prs->pos == 0) ? manage_parsing(&cmds, prs) : 0;
 	shell->parse_err = prs->quote || prs->ignore ? -1 : prs->pos;
 	ft_del(prs->str);
 	ft_del(prs);

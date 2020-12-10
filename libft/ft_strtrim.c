@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static const char	*ft_trim_start(const char *s, const char *set)
 {
@@ -41,7 +42,7 @@ static size_t		ft_trim_end(const char *s, const char *set)
 	len = ft_strlen(s);
 	while (set[j] && len)
 	{
-		if (set[j] == s[len - 1])
+		if (set[j] == s[len - 1] && s[len - 2] && s[len - 2] != '\\')
 		{
 			len--;
 			j = 0;
